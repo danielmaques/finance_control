@@ -3,23 +3,31 @@ import 'package:finance_control/core/ds/style/finance_text.dart';
 import 'package:flutter/material.dart';
 
 class ButtonComponet extends StatelessWidget {
-  const ButtonComponet({super.key});
+  const ButtonComponet({
+    super.key,
+    this.lock = false,
+  });
+
+  final bool lock;
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      width: 335,
-      height: 54,
-      decoration: BoxDecoration(
-        color: AppColors.softGray,
-        borderRadius: BorderRadius.circular(12),
-      ),
-      child: Center(
-        child: FinanceText.p16(
-          'Sign in',
-          fontWeight: FontWeight.w500,
-          color: AppColors.white,
-          textAlign: TextAlign.center,
+    return GestureDetector(
+      onTap: () {},
+      child: Container(
+        width: 335,
+        height: 54,
+        decoration: BoxDecoration(
+          color: lock == true ? AppColors.softGray : AppColors.navyBlue,
+          borderRadius: BorderRadius.circular(12),
+        ),
+        child: const Center(
+          child: FinanceText.p16(
+            'Sign in',
+            fontWeight: FontWeight.w500,
+            color: AppColors.white,
+            textAlign: TextAlign.center,
+          ),
         ),
       ),
     );
