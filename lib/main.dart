@@ -1,3 +1,4 @@
+import 'package:finance_control/app/home/home.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 
