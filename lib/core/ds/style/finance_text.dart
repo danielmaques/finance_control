@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class FinanceText extends StatelessWidget {
   final String text;
   final FontWeight fontWeight;
   final double fontSize;
-  final TextAlign textAlign;
   final Color color;
 
   const FinanceText.h1(
@@ -12,7 +12,6 @@ class FinanceText extends StatelessWidget {
     super.key,
     this.fontWeight = FontWeight.normal,
     this.fontSize = 52,
-    this.textAlign = TextAlign.left,
     this.color = Colors.black,
   });
 
@@ -21,7 +20,6 @@ class FinanceText extends StatelessWidget {
     super.key,
     this.fontWeight = FontWeight.normal,
     this.fontSize = 38,
-    this.textAlign = TextAlign.left,
     this.color = Colors.black,
   });
 
@@ -30,7 +28,6 @@ class FinanceText extends StatelessWidget {
     super.key,
     this.fontWeight = FontWeight.normal,
     this.fontSize = 24,
-    this.textAlign = TextAlign.left,
     this.color = Colors.black,
   });
 
@@ -39,7 +36,6 @@ class FinanceText extends StatelessWidget {
     super.key,
     this.fontWeight = FontWeight.normal,
     this.fontSize = 20,
-    this.textAlign = TextAlign.left,
     this.color = Colors.black,
   });
 
@@ -48,7 +44,6 @@ class FinanceText extends StatelessWidget {
     super.key,
     this.fontWeight = FontWeight.normal,
     this.fontSize = 18,
-    this.textAlign = TextAlign.left,
     this.color = Colors.black,
   });
 
@@ -57,7 +52,6 @@ class FinanceText extends StatelessWidget {
     super.key,
     this.fontWeight = FontWeight.normal,
     this.fontSize = 16,
-    this.textAlign = TextAlign.left,
     this.color = Colors.black,
   });
 
@@ -66,7 +60,6 @@ class FinanceText extends StatelessWidget {
     super.key,
     this.fontWeight = FontWeight.normal,
     this.fontSize = 14,
-    this.textAlign = TextAlign.left,
     this.color = Colors.black,
   });
 
@@ -75,7 +68,6 @@ class FinanceText extends StatelessWidget {
     super.key,
     this.fontWeight = FontWeight.normal,
     this.fontSize = 12,
-    this.textAlign = TextAlign.left,
     this.color = Colors.black,
   });
 
@@ -83,12 +75,11 @@ class FinanceText extends StatelessWidget {
   Widget build(BuildContext context) {
     return Text(
       text,
-      style: TextStyle(
+      style: GoogleFonts.poppins(
         color: color,
         fontWeight: fontWeight,
         fontSize: fontSize,
       ),
-      textAlign: textAlign,
     );
   }
 }

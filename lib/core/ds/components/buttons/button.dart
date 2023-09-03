@@ -26,7 +26,6 @@ class ButtonComponet extends StatelessWidget {
             'Sign in',
             fontWeight: FontWeight.w500,
             color: AppColors.white,
-            textAlign: TextAlign.center,
           ),
         ),
       ),
