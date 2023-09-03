@@ -1,4 +1,5 @@
 import 'package:finance_control/core/ds/style/app_colors.dart';
+import 'package:finance_control/core/ds/style/finance_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -16,6 +17,7 @@ class FinanceTextField extends StatelessWidget {
     this.inputFormatters,
     this.keyboardType,
     this.textCapitalization = TextCapitalization.none,
+    required this.label,
   });
 
   final String? hintText;
@@ -29,44 +31,54 @@ class FinanceTextField extends StatelessWidget {
   final List<TextInputFormatter>? inputFormatters;
   final TextInputType? keyboardType;
   final TextCapitalization textCapitalization;
+  final String label;
 
   @override
   Widget build(BuildContext context) {
-    return TextFormField(
-      controller: controller,
-      obscureText: obscureText,
-      validator: validator,
-      onChanged: onChanged,
-      keyboardType: keyboardType,
-      inputFormatters: inputFormatters,
-      style: const TextStyle(
-        fontSize: 16,
-        color: AppColors.midnightBlack,
-        fontWeight: FontWeight.w400,
-      ),
-      textCapitalization: textCapitalization,
-      cursorColor: AppColors.slateGray,
-      decoration: InputDecoration(
-        suffixIcon: suffixIcon,
-        hintText: hintText,
-        hintStyle: const TextStyle(
-          color: AppColors.slateGray,
-          fontSize: 16,
-          fontWeight: FontWeight.w400,
-        ),
-        labelText: labelText,
-        labelStyle: const TextStyle(
-          color: AppColors.midnightBlack,
-          fontSize: 14,
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        FinanceText.p14(
+          label,
           fontWeight: FontWeight.w500,
         ),
-        focusedBorder: const UnderlineInputBorder(
-          borderSide: BorderSide(
+        TextFormField(
+          controller: controller,
+          obscureText: obscureText,
+          validator: validator,
+          onChanged: onChanged,
+          keyboardType: keyboardType,
+          inputFormatters: inputFormatters,
+          style: const TextStyle(
+            fontSize: 16,
             color: AppColors.midnightBlack,
-            width: 1,
+            fontWeight: FontWeight.w400,
+          ),
+          textCapitalization: textCapitalization,
+          cursorColor: AppColors.slateGray,
+          decoration: InputDecoration(
+            suffixIcon: suffixIcon,
+            hintText: hintText,
+            hintStyle: const TextStyle(
+              color: AppColors.slateGray,
+              fontSize: 16,
+              fontWeight: FontWeight.w400,
+            ),
+            labelText: labelText,
+            labelStyle: const TextStyle(
+              color: AppColors.midnightBlack,
+              fontSize: 14,
+              fontWeight: FontWeight.w500,
+            ),
+            focusedBorder: const UnderlineInputBorder(
+              borderSide: BorderSide(
+                color: AppColors.midnightBlack,
+                width: 1,
+              ),
+            ),
           ),
         ),
-      ),
+      ],
     );
   }
 }

@@ -15,6 +15,7 @@ class HomePage extends StatelessWidget {
           children: [
             FinanceTextField(
               hintText: 'Email',
+              label: 'Email',
             ),
           ],
         ),
