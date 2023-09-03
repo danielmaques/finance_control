@@ -1,17 +1,26 @@
-# finance_control
+# Finance Control 📊
 
-A new Flutter project.
+## Visão Geral 🌐
+Finance Control é um aplicativo em Flutter desenvolvido com o objetivo de ajudar casais a gerenciar suas finanças de forma eficaz e transparente. Este projeto é uma iniciativa de aprendizado colaborativo entre Daniel e Guilherme.
 
-## Getting Started
+## Funcionalidades 🛠️
+- Rastreamento de despesas e receitas
+- Criação de orçamentos
+- Relatórios financeiros visuais
+- Notificações para pagamentos pendentes
 
-This project is a starting point for a Flutter application.
+## Tecnologias Utilizadas 💻
+- **Flutter**: Para o desenvolvimento do aplicativo móvel.
+- **Modular**: Utilizado para injeção de dependência.
+- **Value Notifier**: Para o gerenciamento eficaz do estado da aplicação.
 
-A few resources to get you started if this is your first Flutter project:
+## Instalação e Uso 📲
+1. Clone o repositório.
+2. Execute `flutter pub get`.
+3. Execute `flutter run`.
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+## Contribuição 🤝
+Contribuições são muito bem-vindas! Se você tem uma feature que gostaria de adicionar, abra um 'pull request'. Para bugs, questões ou discussões, por favor, abra uma 'issue'.
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
-# finance_control
+## Licença 📝
+Este projeto está sob a licença MIT. Veja o arquivo [LICENSE](LICENSE) para mais detalhes.
