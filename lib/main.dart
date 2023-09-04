@@ -1,4 +1,4 @@
-import 'package:finance_control/app/home/ui/page/home.dart';
+import 'package:finance_control/app/create_account/create_account_module.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 
@@ -25,6 +25,6 @@ class AppModule extends Module {
 
   @override
   void routes(r) {
-    r.child('/', child: (context) => const HomePage());
+    r.module('/', module: CreateAccountModule());
   }
 }
