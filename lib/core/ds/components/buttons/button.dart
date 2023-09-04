@@ -15,7 +15,6 @@ class ButtonComponet extends StatelessWidget {
     return GestureDetector(
       onTap: () {},
       child: Container(
-        width: 335,
         height: 54,
         decoration: BoxDecoration(
           color: lock == true ? AppColors.softGray : AppColors.navyBlue,
