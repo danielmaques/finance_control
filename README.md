@@ -14,6 +14,9 @@ Finance Control é um aplicativo em Flutter desenvolvido com o objetivo de ajuda
 - **Modular**: Utilizado para injeção de dependência.
 - **Value Notifier**: Para o gerenciamento eficaz do estado da aplicação.
 
+## Estrutura de pastas 📂
+![image](https://github.com/danielmaques/finance_control/assets/76397634/e58b4877-1b4e-4e2c-a818-8951ef709ed5)
+
 ## Instalação e Uso 📲
 1. Clone o repositório.
 2. Execute `flutter pub get`.
