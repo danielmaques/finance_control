@@ -9,7 +9,10 @@ import 'package:flutter_modular/flutter_modular.dart';
 import '../../../../core/ds/components/checkbox/finance_check_box.dart';
 
 class CreateAccountPage extends StatelessWidget {
-  const CreateAccountPage({super.key, required this.controller});
+  const CreateAccountPage({
+    super.key,
+    required this.controller,
+  });
 
   final CreateAccountController controller;
 
@@ -34,25 +37,37 @@ class CreateAccountPage extends StatelessWidget {
               builder: (context, value, child) => FinanceTextField(
                 label: 'Nome',
                 hintText: 'Digite seu nome',
-                controller: controller.name.value,
+                controller: value,
                 textCapitalization: TextCapitalization.sentences,
               ),
             ),
             const SizedBox(height: 24),
-            const FinanceTextField(
-              label: 'Email',
-              hintText: 'Digite seu email',
-              keyboardType: TextInputType.emailAddress,
+            ValueListenableBuilder(
+              valueListenable: controller.email,
+              builder: (context, value, child) => FinanceTextField(
+                label: 'Email',
+                hintText: 'Digite seu email',
+                controller: value,
+                keyboardType: TextInputType.emailAddress,
+              ),
             ),
             const SizedBox(height: 24),
-            const FinanceTextField(
-              label: 'Senha',
-              hintText: 'Digite sua senha',
+            ValueListenableBuilder(
+              valueListenable: controller.password,
+              builder: (context, value, child) => FinanceTextField(
+                label: 'Senha',
+                hintText: 'Digite sua senha',
+                controller: value,
+              ),
             ),
             const SizedBox(height: 24),
-            const FinanceTextField(
-              label: 'Confirme sua senha',
-              hintText: 'Digite sua senha',
+            ValueListenableBuilder(
+              valueListenable: controller.confirmPassword,
+              builder: (context, value, child) => FinanceTextField(
+                label: 'Confirme sua senha',
+                hintText: 'Digite sua senha',
+                controller: value,
+              ),
             ),
             const SizedBox(height: 20),
             const FinanceCheckBox(
@@ -61,7 +76,17 @@ class CreateAccountPage extends StatelessWidget {
               isChecked: false,
             ),
             const SizedBox(height: 28),
-            const ButtonComponet(),
+            ValueListenableBuilder<bool>(
+              valueListenable: controller.isBlockedNotifier,
+              builder: (context, value, child) => FinanceButton(
+                title: 'Criar conta',
+                disabled: value,
+                onTap: () => controller.signUp(
+                  email: controller.email.value.text,
+                  password: controller.password.value.text,
+                ),
+              ),
+            ),
             const Spacer(),
             const Center(
               child: Row(
