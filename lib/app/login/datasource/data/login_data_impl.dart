@@ -1,6 +1,5 @@
 import 'package:finance_control/app/login/datasource/data/login_data.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_core/firebase_core.dart';
 
 class LoginDataImpl implements LoginData {
   final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
