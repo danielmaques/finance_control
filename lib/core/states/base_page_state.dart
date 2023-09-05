@@ -59,3 +59,23 @@ class EmptyState implements BaseState {
   @override
   bool get stringify => false;
 }
+
+class BlockedState implements BaseState {
+  const BlockedState();
+
+  @override
+  List<Object?> get props => [];
+
+  @override
+  bool get stringify => false;
+}
+
+class UnblockedState implements BaseState {
+  const UnblockedState();
+
+  @override
+  List<Object?> get props => [];
+
+  @override
+  bool get stringify => false;
+}
