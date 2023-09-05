@@ -35,7 +35,9 @@ class LoginPage extends StatelessWidget {
               textCapitalization: TextCapitalization.sentences,
             ),
             const SizedBox(height: 24),
-            const ButtonComponet(),
+            const FinanceButton(
+              title: 'Entrar',
+            ),
             const SizedBox(height: 20),
             Center(
               child: GestureDetector(
