@@ -14,7 +14,7 @@ class LoginPage extends StatelessWidget {
         title: const Text('Create Account'),
       ),
       body: Padding(
-          padding: EdgeInsets.symmetric(horizontal: 20, vertical: 40),
+          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 40),
           child:
               Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
             const FinanceText.h3(

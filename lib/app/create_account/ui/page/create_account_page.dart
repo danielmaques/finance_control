@@ -7,7 +7,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 
 import '../../../../core/ds/components/checkbox/finance_check_box.dart';
-import 'package:flutter_modular/flutter_modular.dart';
 
 class CreateAccountPage extends StatelessWidget {
   const CreateAccountPage({
