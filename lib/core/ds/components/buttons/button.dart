@@ -63,7 +63,7 @@ class _FinanceButtonState extends State<FinanceButton> {
     return Material(
       color: Colors.transparent,
       child: InkWell(
-        onTap: widget.loading || _disabled ? null : widget.onTap,
+        onTap: widget.loading || widget.disabled ? null : widget.onTap,
         child: Ink(
           decoration: BoxDecoration(
             color: !_disabled ? _colorBackground : _colorDisabled,

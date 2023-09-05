@@ -1,26 +1,26 @@
 // ignore_for_file: unnecessary_null_comparison
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:finance_control/core/states/base_page_state.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../domain/usecase/create_account_usecase.dart';
 
-abstract class CreateAccountController {
-  ValueNotifier<TextEditingController> name =
-      ValueNotifier(TextEditingController());
+abstract class CreateAccountController extends Cubit<BaseState> {
+  CreateAccountController(BaseState initialState) : super(initialState);
 
-  ValueNotifier<TextEditingController> email =
-      ValueNotifier(TextEditingController());
+  TextEditingController name = TextEditingController();
 
-  ValueNotifier<TextEditingController> password =
-      ValueNotifier(TextEditingController());
+  TextEditingController email = TextEditingController();
 
-  ValueNotifier<TextEditingController> confirmPassword =
-      ValueNotifier(TextEditingController());
+  TextEditingController password = TextEditingController();
 
-  ValueNotifier<bool> isBlockedNotifier = ValueNotifier<bool>(false);
+  TextEditingController confirmPassword = TextEditingController();
+
+  ValueNotifier<bool> isBlockedNotifier = ValueNotifier<bool>(true);
 
   Future<void> signUp({required String email, required String password});
 }
@@ -28,8 +28,8 @@ abstract class CreateAccountController {
 class CreateAccountControllerImpl extends CreateAccountController {
   final CreateAccountUseCase _createAccountUseCase;
 
-  CreateAccountControllerImpl(this._createAccountUseCase) {
-    // Adding listeners to update the isBlockedNotifier value
+  CreateAccountControllerImpl(this._createAccountUseCase)
+      : super(const EmptyState()) {
     name.addListener(updateIsBlocked);
     email.addListener(updateIsBlocked);
     password.addListener(updateIsBlocked);
@@ -37,23 +37,19 @@ class CreateAccountControllerImpl extends CreateAccountController {
   }
 
   void updateIsBlocked() {
-    // Checking if all fields are not empty
-    if (name.value.text.isNotEmpty &&
-        email.value.text.isNotEmpty &&
-        password.value.text.isNotEmpty &&
-        confirmPassword.value.text.isNotEmpty) {
-      isBlockedNotifier.value = false;
-    } else {
-      isBlockedNotifier.value = true;
-    }
+    isBlockedNotifier.value = name.value.text.isEmpty ||
+        email.value.text.isEmpty ||
+        password.value.text.isEmpty ||
+        confirmPassword.value.text.isEmpty ||
+        password.value.text != confirmPassword.value.text;
   }
 
   @override
   Future<void> signUp({required String email, required String password}) async {
     try {
+      emit(const LoadingState());
       final user = await _createAccountUseCase.signUp(email, password);
 
-      // Null checks for user and its properties
       if (user != null && user.id != null && user.email != null) {
         await FirebaseFirestore.instance.collection('users').doc(user.id).set({
           'email': user.email,
@@ -62,9 +58,11 @@ class CreateAccountControllerImpl extends CreateAccountController {
         });
 
         final prefs = await SharedPreferences.getInstance();
-        await prefs.setString('user_id', user.id); // Using null check
+        await prefs.setString('user_id', user.id);
+        emit(SuccessState(user));
       }
     } catch (e) {
+      emit(const ErrorState(''));
       if (kDebugMode) {
         print(e);
       }

@@ -32,42 +32,30 @@ class CreateAccountPage extends StatelessWidget {
               fontWeight: FontWeight.w500,
             ),
             const SizedBox(height: 32),
-            ValueListenableBuilder(
-              valueListenable: controller.name,
-              builder: (context, value, child) => FinanceTextField(
-                label: 'Nome',
-                hintText: 'Digite seu nome',
-                controller: value,
-                textCapitalization: TextCapitalization.sentences,
-              ),
+            FinanceTextField(
+              label: 'Nome',
+              hintText: 'Digite seu nome',
+              controller: controller.name,
+              textCapitalization: TextCapitalization.sentences,
             ),
             const SizedBox(height: 24),
-            ValueListenableBuilder(
-              valueListenable: controller.email,
-              builder: (context, value, child) => FinanceTextField(
-                label: 'Email',
-                hintText: 'Digite seu email',
-                controller: value,
-                keyboardType: TextInputType.emailAddress,
-              ),
+            FinanceTextField(
+              label: 'Email',
+              hintText: 'Digite seu email',
+              controller: controller.email,
+              keyboardType: TextInputType.emailAddress,
             ),
             const SizedBox(height: 24),
-            ValueListenableBuilder(
-              valueListenable: controller.password,
-              builder: (context, value, child) => FinanceTextField(
-                label: 'Senha',
-                hintText: 'Digite sua senha',
-                controller: value,
-              ),
+            FinanceTextField(
+              label: 'Senha',
+              hintText: 'Digite sua senha',
+              controller: controller.password,
             ),
             const SizedBox(height: 24),
-            ValueListenableBuilder(
-              valueListenable: controller.confirmPassword,
-              builder: (context, value, child) => FinanceTextField(
-                label: 'Confirme sua senha',
-                hintText: 'Digite sua senha',
-                controller: value,
-              ),
+            FinanceTextField(
+              label: 'Confirme sua senha',
+              hintText: 'Digite sua senha',
+              controller: controller.confirmPassword,
             ),
             const SizedBox(height: 20),
             const FinanceCheckBox(
@@ -76,15 +64,19 @@ class CreateAccountPage extends StatelessWidget {
               isChecked: false,
             ),
             const SizedBox(height: 28),
-            ValueListenableBuilder<bool>(
-              valueListenable: controller.isBlockedNotifier,
-              builder: (context, value, child) => FinanceButton(
-                title: 'Criar conta',
-                disabled: value,
-                onTap: () => controller.signUp(
-                  email: controller.email.value.text,
-                  password: controller.password.value.text,
-                ),
+            FinanceButton(
+              title: 'Criar conta',
+              disabled: controller.name.value.text.isEmpty ||
+                      controller.email.value.text.isEmpty ||
+                      controller.password.value.text.isEmpty ||
+                      controller.confirmPassword.value.text.isEmpty ||
+                      controller.password.value.text !=
+                          controller.confirmPassword.value.text
+                  ? true
+                  : false,
+              onTap: () => controller.signUp(
+                email: controller.email.value.text,
+                password: controller.password.value.text,
               ),
             ),
             const Spacer(),
