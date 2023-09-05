@@ -1,4 +1,5 @@
 import 'package:finance_control/app/create_account/create_account_module.dart';
+import 'package:finance_control/app/login/login_module.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 
@@ -26,5 +27,6 @@ class AppModule extends Module {
   @override
   void routes(r) {
     r.module('/', module: CreateAccountModule());
+    r.module('/login', module: LoginModule());
   }
 }

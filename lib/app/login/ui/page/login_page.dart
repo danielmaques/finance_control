@@ -4,8 +4,8 @@ import 'package:finance_control/core/ds/style/finance_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 
-class CreateAccountPage extends StatelessWidget {
-  const CreateAccountPage({super.key});
+class LoginPage extends StatelessWidget {
+  const LoginPage({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -14,65 +14,70 @@ class CreateAccountPage extends StatelessWidget {
         title: const Text('Create Account'),
       ),
       body: Padding(
-        padding: EdgeInsets.symmetric(horizontal: 20, vertical: 40),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
+          padding: EdgeInsets.symmetric(horizontal: 20, vertical: 40),
+          child:
+              Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
             const FinanceText.h3(
-              'Create account',
+              'Entrar',
               fontWeight: FontWeight.w500,
             ),
-            SizedBox(height: 32),
-            const FinanceTextField(
-              label: 'Nome',
-              hintText: 'Digite seu nome',
-              textCapitalization: TextCapitalization.sentences,
-            ),
-            const SizedBox(height: 24),
+            const SizedBox(height: 31),
             const FinanceTextField(
               label: 'Email',
               hintText: 'Digite seu email',
-              keyboardType: TextInputType.emailAddress,
+              textCapitalization: TextCapitalization.sentences,
             ),
             const SizedBox(height: 24),
             const FinanceTextField(
               label: 'Senha',
               hintText: 'Digite sua senha',
+              obscureText: true,
+              textCapitalization: TextCapitalization.sentences,
             ),
             const SizedBox(height: 24),
-            const FinanceTextField(
-              label: 'Confirme sua senha',
-              hintText: 'Digite sua senha',
-            ),
-            // TODO: Implementar o checkbox
-            const SizedBox(height: 28),
             const ButtonComponet(),
-            const Spacer(),
+            const SizedBox(height: 20),
             Center(
               child: GestureDetector(
                 onTap: () {
-                  Modular.to.pushNamed('/login/');
+                  Modular.to.pushNamed('');
+                  // TODO: Implementar modulo de esqueceu a senha
+                },
+                child: const Row(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      FinanceText.p16(
+                        'Esqueceu a senha?',
+                        fontWeight: FontWeight.w400,
+                      ),
+                    ]),
+              ),
+            ),
+            const Spacer(flex: 2),
+            Center(
+              child: GestureDetector(
+                onTap: () {
+                  Modular.to.pushNamed('/');
                 },
                 child: const Row(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     FinanceText.p16(
-                      'Já possui uma conta?',
+                      'Não possui uma conta?',
                       fontWeight: FontWeight.w400,
                     ),
                     SizedBox(width: 5),
                     FinanceText.p16(
-                      'Entrar',
+                      'Registrar.',
                       fontWeight: FontWeight.w600,
                     ),
                   ],
                 ),
               ),
-            ),
-          ],
-        ),
-      ),
+            )
+          ])),
     );
   }
 }

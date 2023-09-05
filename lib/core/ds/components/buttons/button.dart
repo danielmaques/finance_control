@@ -22,7 +22,7 @@ class ButtonComponet extends StatelessWidget {
         ),
         child: const Center(
           child: FinanceText.p16(
-            'Sign in',
+            'Entrar',
             fontWeight: FontWeight.w500,
             color: AppColors.white,
           ),
