@@ -15,7 +15,7 @@ class CreateAccountModule extends Module {
     i.addSingleton<CreateAccountData>(CreateAccountDataImpl.new);
     i.addSingleton<CreateAccountRepository>(CreateAccountRepositoryImpl.new);
     i.addSingleton<CreateAccountUseCase>(CreateAccountUseCaseImpl.new);
-    i.addSingleton<CreateAccountController>(CreateAccountControllerImpl.new);
+    i.addSingleton<CreateAccountController>(CreateAccountController.new);
   }
 
   @override

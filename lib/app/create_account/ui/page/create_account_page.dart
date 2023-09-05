@@ -10,100 +10,105 @@ import '../../../../core/ds/components/checkbox/finance_check_box.dart';
 
 class CreateAccountPage extends StatelessWidget {
   const CreateAccountPage({
-    super.key,
+    Key? key,
     required this.controller,
-  });
+  }) : super(key: key);
 
   final CreateAccountController controller;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 40),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            FinanceAppBar(
-              onTap: () => Modular.to.pop(),
-            ),
-            const FinanceText.h3(
-              'Create account',
-              fontWeight: FontWeight.w500,
-            ),
-            const SizedBox(height: 32),
-            ValueListenableBuilder(
-              valueListenable: controller.name,
-              builder: (context, value, child) => FinanceTextField(
-                label: 'Nome',
-                hintText: 'Digite seu nome',
-                controller: value,
-                textCapitalization: TextCapitalization.sentences,
-              ),
-            ),
-            const SizedBox(height: 24),
-            ValueListenableBuilder(
-              valueListenable: controller.email,
-              builder: (context, value, child) => FinanceTextField(
-                label: 'Email',
-                hintText: 'Digite seu email',
-                controller: value,
-                keyboardType: TextInputType.emailAddress,
-              ),
-            ),
-            const SizedBox(height: 24),
-            ValueListenableBuilder(
-              valueListenable: controller.password,
-              builder: (context, value, child) => FinanceTextField(
-                label: 'Senha',
-                hintText: 'Digite sua senha',
-                controller: value,
-              ),
-            ),
-            const SizedBox(height: 24),
-            ValueListenableBuilder(
-              valueListenable: controller.confirmPassword,
-              builder: (context, value, child) => FinanceTextField(
-                label: 'Confirme sua senha',
-                hintText: 'Digite sua senha',
-                controller: value,
-              ),
-            ),
-            const SizedBox(height: 20),
-            const FinanceCheckBox(
-              label:
-                  'Ao criar uma conta, você concorda com nossos Termos e Condições.',
-              isChecked: false,
-            ),
-            const SizedBox(height: 28),
-            ValueListenableBuilder<bool>(
-              valueListenable: controller.isBlockedNotifier,
-              builder: (context, value, child) => FinanceButton(
-                title: 'Criar conta',
-                disabled: value,
-                onTap: () => controller.signUp(
-                  email: controller.email.value.text,
-                  password: controller.password.value.text,
-                ),
-              ),
-            ),
-            const Spacer(),
-            const Center(
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                mainAxisAlignment: MainAxisAlignment.center,
+      body: ValueListenableBuilder<bool>(
+        valueListenable: controller.isBlockedNotifier,
+        builder: (context, isBlocked, child) {
+          return SingleChildScrollView(
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 40),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  FinanceText.p16(
-                    'Já possui uma conta?',
-                    fontWeight: FontWeight.w400,
+                  FinanceAppBar(
+                    onTap: () => Modular.to.pop(),
                   ),
-                  SizedBox(width: 5),
-                  FinanceText.p16(
-                    'Entrar',
-                    fontWeight: FontWeight.w600,
+                  const FinanceText.h3(
+                    'Create account',
+                    fontWeight: FontWeight.w500,
+                  ),
+                  const SizedBox(height: 32),
+                  FinanceTextField(
+                    label: 'Nome',
+                    hintText: 'Digite seu nome',
+                    controller: controller.name,
+                    onChanged: (p0) {
+                      controller.name.text = p0;
+                      controller.updateIsBlocked();
+                    },
+                    textCapitalization: TextCapitalization.words,
+                  ),
+                  const SizedBox(height: 24),
+                  FinanceTextField(
+                    label: 'Email',
+                    hintText: 'Digite seu email',
+                    controller: controller.email,
+                    keyboardType: TextInputType.emailAddress,
+                    onChanged: (p0) {
+                      controller.updateIsBlocked();
+                    },
+                  ),
+                  const SizedBox(height: 24),
+                  FinanceTextField(
+                    label: 'Senha',
+                    hintText: 'Digite sua senha',
+                    controller: controller.password,
+                    onChanged: (p0) {
+                      controller.updateIsBlocked();
+                    },
+                  ),
+                  const SizedBox(height: 24),
+                  FinanceTextField(
+                    label: 'Confirme sua senha',
+                    hintText: 'Digite sua senha',
+                    controller: controller.confirmPassword,
+                    onChanged: (p0) {
+                      controller.updateIsBlocked();
+                    },
+                  ),
+                  const SizedBox(height: 20),
+                  const FinanceCheckBox(
+                    label:
+                        'Ao criar uma conta, você concorda com nossos Termos e Condições.',
+                    isChecked: false,
+                  ),
+                  const SizedBox(height: 28),
+                  FinanceButton(
+                    title: 'Criar conta',
+                    disabled: isBlocked,
+                    onTap: () => controller.signUp(
+                      email: controller.email.text,
+                      password: controller.password.text,
+                    ),
                   ),
                 ],
               ),
+            ),
+          );
+        },
+      ),
+      bottomNavigationBar: const Padding(
+        padding: EdgeInsets.only(bottom: 40),
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            FinanceText.p16(
+              'Já possui uma conta?',
+              fontWeight: FontWeight.w400,
+            ),
+            SizedBox(width: 5),
+            FinanceText.p16(
+              'Entrar',
+              fontWeight: FontWeight.w600,
             ),
           ],
         ),
