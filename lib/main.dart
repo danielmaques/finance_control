@@ -3,6 +3,8 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 
+import 'app/home/home_modular.dart';
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
@@ -29,5 +31,6 @@ class AppModule extends Module {
   @override
   void routes(r) {
     r.module('/', module: CreateAccountModule());
+    r.module('/home', module: HomeModule());
   }
 }

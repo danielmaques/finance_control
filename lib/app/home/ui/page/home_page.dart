@@ -1,4 +1,3 @@
-import 'package:finance_control/core/ds/components/text_field/finance_text_field.dart';
 import 'package:flutter/material.dart';
 
 class HomePage extends StatelessWidget {
@@ -12,12 +11,7 @@ class HomePage extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            FinanceTextField(
-              hintText: 'Email',
-              label: 'Email',
-            ),
-          ],
+          children: [],
         ),
       ),
     );
