@@ -7,62 +7,39 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../domain/usecase/create_account_usecase.dart';
 
-abstract class CreateAccountController {
-  ValueNotifier<TextEditingController> name =
-      ValueNotifier(TextEditingController());
-
-  ValueNotifier<TextEditingController> email =
-      ValueNotifier(TextEditingController());
-
-  ValueNotifier<TextEditingController> password =
-      ValueNotifier(TextEditingController());
-
-  ValueNotifier<TextEditingController> confirmPassword =
-      ValueNotifier(TextEditingController());
-
-  ValueNotifier<bool> isBlockedNotifier = ValueNotifier<bool>(false);
-
-  Future<void> signUp({required String email, required String password});
-}
-
-class CreateAccountControllerImpl extends CreateAccountController {
+class CreateAccountController {
   final CreateAccountUseCase _createAccountUseCase;
 
-  CreateAccountControllerImpl(this._createAccountUseCase) {
-    // Adding listeners to update the isBlockedNotifier value
-    name.addListener(updateIsBlocked);
-    email.addListener(updateIsBlocked);
-    password.addListener(updateIsBlocked);
-    confirmPassword.addListener(updateIsBlocked);
-  }
+  CreateAccountController(this._createAccountUseCase);
+
+  TextEditingController name = TextEditingController();
+  TextEditingController email = TextEditingController();
+  TextEditingController password = TextEditingController();
+  TextEditingController confirmPassword = TextEditingController();
+
+  ValueNotifier<bool> isBlockedNotifier = ValueNotifier(true);
 
   void updateIsBlocked() {
-    // Checking if all fields are not empty
-    if (name.value.text.isNotEmpty &&
-        email.value.text.isNotEmpty &&
-        password.value.text.isNotEmpty &&
-        confirmPassword.value.text.isNotEmpty) {
-      isBlockedNotifier.value = false;
-    } else {
-      isBlockedNotifier.value = true;
-    }
+    isBlockedNotifier.value = name.text.isEmpty ||
+        email.text.isEmpty ||
+        password.text.isEmpty ||
+        confirmPassword.text.isEmpty ||
+        password.text != confirmPassword.text;
   }
 
-  @override
   Future<void> signUp({required String email, required String password}) async {
     try {
       final user = await _createAccountUseCase.signUp(email, password);
 
-      // Null checks for user and its properties
       if (user != null && user.id != null && user.email != null) {
         await FirebaseFirestore.instance.collection('users').doc(user.id).set({
           'email': user.email,
           'id': user.id,
-          'name': name.value.text,
+          'name': name.text,
         });
 
         final prefs = await SharedPreferences.getInstance();
-        await prefs.setString('user_id', user.id); // Using null check
+        await prefs.setString('user_id', user.id);
       }
     } catch (e) {
       if (kDebugMode) {
