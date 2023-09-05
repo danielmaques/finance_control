@@ -1,19 +1,24 @@
 name: finance_control
 description: A new Flutter project.
 
-publish_to: 'none' 
+publish_to: "none"
 
 version: 1.0.0+1
 
 environment:
-  sdk: '>=3.1.0 <4.0.0'
+  sdk: ">=3.1.0 <4.0.0"
 
 dependencies:
   flutter:
     sdk: flutter
+  firebase_core: ^2.15.1
   cupertino_icons: ^1.0.2
   flutter_modular: ^6.3.1
   google_fonts: ^5.1.0
+  firebase_auth: ^4.9.0
+  cloud_firestore: ^4.9.1
+  equatable: ^2.0.5
+  shared_preferences: ^2.2.1
 
 dev_dependencies:
   flutter_test:
@@ -21,9 +26,7 @@ dev_dependencies:
 
   flutter_lints: ^2.0.0
 
-
 flutter:
-
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in
   # the material Icons class.
