@@ -30,7 +30,7 @@ class AppModule extends Module {
 
   @override
   void routes(r) {
-    r.module('/', module: CreateAccountModule());
-    r.module('/home', module: HomeModule());
+    // r.module('/', module: CreateAccountModule());
+    r.module('/', module: HomeModule());
   }
 }
