@@ -30,6 +30,7 @@ class CreateAccountPage extends StatelessWidget {
                 children: [
                   FinanceAppBar(
                     onTap: () => Modular.to.pop(),
+                    icon: true,
                   ),
                   const FinanceText.h3(
                     'Create account',

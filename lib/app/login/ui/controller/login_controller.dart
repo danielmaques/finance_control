@@ -1,5 +1,6 @@
+// ignore_for_file: unnecessary_null_comparison
+
 import 'package:finance_control/app/login/domain/usecase/login_usecase.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -10,6 +11,7 @@ class LoginController {
   LoginController(this._loginUseCase);
 
   TextEditingController email = TextEditingController();
+  
   TextEditingController password = TextEditingController();
 
   ValueNotifier<bool> isBlockedNotifier = ValueNotifier(true);
