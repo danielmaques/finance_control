@@ -1,7 +1,9 @@
-import 'package:finance_control/app/create_account/create_account_module.dart';
+import 'package:finance_control/app/login/login_module.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
+
+import 'app/create_account/create_account_module.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -28,6 +30,7 @@ class AppModule extends Module {
 
   @override
   void routes(r) {
-    r.module('/', module: CreateAccountModule());
+    r.module('/', module: LoginModule());
+    r.module('/createAccount', module: CreateAccountModule());
   }
 }
