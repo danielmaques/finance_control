@@ -2,6 +2,7 @@ import 'package:finance_control/app/login/domain/usecase/login_usecase.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class LoginController {
   final LoginUseCase _loginUseCase;
@@ -13,6 +14,8 @@ class LoginController {
 
   ValueNotifier<bool> isBlockedNotifier = ValueNotifier(true);
 
+  ValueNotifier<bool> isLoggedInNotifier = ValueNotifier(false);
+
   void updateIsBlocked() {
     isBlockedNotifier.value = email.text.isEmpty || password.text.isEmpty;
   }
@@ -20,10 +23,24 @@ class LoginController {
   Future<void> login({required String email, required String password}) async {
     try {
       final user = await _loginUseCase.login(email, password);
+      if (user != null && user.id != null && user.email != null) {
+        final prefs = await SharedPreferences.getInstance();
+        await prefs.setString('user_id', user.id);
+        isLoggedInNotifier.value = true;
+      }
     } catch (e) {
       if (kDebugMode) {
         print(e);
       }
+    }
+  }
+
+  Future<void> autoLogin() async {
+    final prefs = await SharedPreferences.getInstance();
+    final userId = prefs.getString('user_id');
+
+    if (userId != null && userId.isNotEmpty) {
+      isLoggedInNotifier.value = true;
     }
   }
 }

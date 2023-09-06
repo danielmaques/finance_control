@@ -1,3 +1,4 @@
+import 'package:finance_control/app/login/ui/controller/login_controller.dart';
 import 'package:finance_control/core/ds/components/buttons/button.dart';
 import 'package:finance_control/core/ds/components/text_field/finance_text_field.dart';
 import 'package:finance_control/core/ds/style/finance_text.dart';
@@ -6,6 +7,8 @@ import 'package:flutter_modular/flutter_modular.dart';
 
 class LoginPage extends StatelessWidget {
   const LoginPage({super.key});
+
+  final LoginController controller;
 
   @override
   Widget build(BuildContext context) {
