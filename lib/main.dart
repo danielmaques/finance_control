@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 
 import 'app/create_account/create_account_module.dart';
-
 import 'app/home/home_modular.dart';
 
 void main() async {
@@ -20,6 +19,7 @@ class AppWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp.router(
       title: 'My Smart App',
+      debugShowCheckedModeBanner: false,
       theme: ThemeData(primarySwatch: Colors.blue),
       routerConfig: Modular.routerConfig,
     );
