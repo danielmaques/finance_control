@@ -7,4 +7,6 @@ abstract class HomeRepository {
   Future<List<Map<String, dynamic>>> getTransaction(String uid);
   Future<String> upload(File imageFile, String uid);
   Future<double> getBalance(String uid);
+  Future<Map<String, double>> getGastos(String uid);
+  Future<Map<String, double>> getGanhos(String uid);
 }

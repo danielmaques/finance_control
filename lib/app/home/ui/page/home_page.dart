@@ -1,8 +1,11 @@
 import 'package:finance_control/app/home/ui/controller/home_controller.dart';
+import 'package:finance_control/core/helpers/ads.dart';
 import 'package:finance_control/core/ds/components/transaction_list/finance_transaction_list.dart';
 import 'package:finance_control/core/ds/style/app_colors.dart';
 import 'package:finance_control/core/ds/style/finance_text.dart';
 import 'package:flutter/material.dart';
+
+import '../../../../core/helpers/formater.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({
@@ -22,9 +25,12 @@ class _HomePageState extends State<HomePage> {
   @override
   void initState() {
     super.initState();
-    widget.controller
-        .addTransaction(DateTime.now(), 1, 'nome', 'categoria', 'add');
     widget.controller.getTransactions();
+    widget.controller.getBalance();
+    widget.controller.getGastosEGanhos();
+
+    // Carregar o anúncio intersticial
+    AdHelper().createInterstitialAd();
   }
 
   @override
@@ -62,7 +68,7 @@ class _HomePageState extends State<HomePage> {
             ValueListenableBuilder(
               valueListenable: widget.controller.balance,
               builder: (context, value, child) => FinanceText.h2(
-                'R\$ $value',
+                formatMoney(value),
                 fontWeight: FontWeight.w600,
               ),
             ),
@@ -85,14 +91,19 @@ class _HomePageState extends State<HomePage> {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
-                  const Column(
+                  Column(
                     children: [
-                      FinanceText.p18(
-                        'text',
-                        fontWeight: FontWeight.w600,
-                        color: AppColors.cherryRed,
+                      ValueListenableBuilder(
+                        valueListenable: widget.controller.gastos,
+                        builder: (context, value, child) {
+                          return FinanceText.p18(
+                            formatMoney(value),
+                            fontWeight: FontWeight.w600,
+                            color: AppColors.cherryRed,
+                          );
+                        },
                       ),
-                      FinanceText.p16('Gastos')
+                      const FinanceText.p16('Gastos')
                     ],
                   ),
                   Container(
@@ -100,14 +111,19 @@ class _HomePageState extends State<HomePage> {
                     height: 60,
                     color: AppColors.slateGray,
                   ),
-                  const Column(
+                  Column(
                     children: [
-                      FinanceText.p18(
-                        'text',
-                        fontWeight: FontWeight.w600,
-                        color: AppColors.forestGreen,
+                      ValueListenableBuilder(
+                        valueListenable: widget.controller.ganhos,
+                        builder: (context, value, child) {
+                          return FinanceText.p18(
+                            formatMoney(value),
+                            fontWeight: FontWeight.w600,
+                            color: AppColors.forestGreen,
+                          );
+                        },
                       ),
-                      FinanceText.p16('Ganhos')
+                      const FinanceText.p16('Ganhos')
                     ],
                   ),
                 ],
@@ -126,11 +142,11 @@ class _HomePageState extends State<HomePage> {
                 FinanceText.p16('Mais'),
               ],
             ),
-            const SizedBox(height: 8),
             ValueListenableBuilder(
               valueListenable: widget.controller.transaction,
               builder: (context, value, child) => FinanceTransactionList(
                 transaction: value,
+                itemCount: value.length > 8 ? 8 : value.length,
               ),
             ),
           ],
@@ -158,6 +174,7 @@ class _HomePageState extends State<HomePage> {
               mini: true,
               tooltip: 'Gasto',
               onPressed: () {
+                AdHelper().showInterstitialAd();
                 print('Opção 2 clicada');
               },
               backgroundColor: AppColors.navyBlue,
@@ -171,6 +188,8 @@ class _HomePageState extends State<HomePage> {
               mini: true,
               tooltip: 'Adicionar',
               onPressed: () {
+                widget.controller.addTransaction(
+                    DateTime.now(), 1000, 'nome', 'categoria', 'add');
                 print('Opção 2 clicada');
               },
               backgroundColor: AppColors.navyBlue,

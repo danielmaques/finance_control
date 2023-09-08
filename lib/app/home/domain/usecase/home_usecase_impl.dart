@@ -28,4 +28,14 @@ class HomeUseCaseImpl implements HomeUseCase {
   Future<double> getBalance(String uid) {
     return _repository.getBalance(uid);
   }
+
+  @override
+  Future<Map<String, double>> getGanhos(String uid) {
+    return _repository.getGanhos(uid);
+  }
+
+  @override
+  Future<Map<String, double>> getGastos(String uid) {
+    return _repository.getGastos(uid);
+  }
 }

@@ -10,6 +10,7 @@ class HomeDataImpl implements HomeData {
   final FirebaseStorage _firebaseStorage = FirebaseStorage.instance;
 
   @override
+  @override
   Future<void> addTransaction(
       String uid, Map<String, dynamic> transactionData, String money) async {
     await _firestore
@@ -37,9 +38,28 @@ class HomeDataImpl implements HomeData {
       currentBalance -= valor;
     }
 
+    // Atualiza o saldo
     await _firestore.collection('users').doc(uid).update({
       'balance': currentBalance,
     });
+
+    // Atualiza gastos e ganhos
+    String currentMonth =
+        DateTime.now().toString().substring(0, 7); // "YYYY-MM"
+
+    if (money == "add") {
+      double currentGain = (userData['ganhos'] ?? {})[currentMonth] ?? 0.0;
+      currentGain += valor;
+      await _firestore.collection('users').doc(uid).update({
+        'ganhos.$currentMonth': currentGain,
+      });
+    } else if (money == "remove") {
+      double currentExpense = (userData['gastos'] ?? {})[currentMonth] ?? 0.0;
+      currentExpense += valor;
+      await _firestore.collection('users').doc(uid).update({
+        'gastos.$currentMonth': currentExpense,
+      });
+    }
   }
 
   @override
@@ -77,6 +97,36 @@ class HomeDataImpl implements HomeData {
       return (userDoc.data() as Map<String, dynamic>)['balance'].toDouble();
     } else {
       return 0.0;
+    }
+  }
+
+  @override
+  Future<Map<String, double>> getGastos(String uid) async {
+    DocumentSnapshot userDoc =
+        await _firestore.collection('users').doc(uid).get();
+    if (userDoc.exists &&
+        userDoc.data() != null &&
+        (userDoc.data() as Map<String, dynamic>)['gastos'] != null) {
+      Map<String, dynamic> gastosData =
+          (userDoc.data() as Map<String, dynamic>)['gastos'];
+      return gastosData.map((key, value) => MapEntry(key, value.toDouble()));
+    } else {
+      return {};
+    }
+  }
+
+  @override
+  Future<Map<String, double>> getGanhos(String uid) async {
+    DocumentSnapshot userDoc =
+        await _firestore.collection('users').doc(uid).get();
+    if (userDoc.exists &&
+        userDoc.data() != null &&
+        (userDoc.data() as Map<String, dynamic>)['ganhos'] != null) {
+      Map<String, dynamic> ganhosData =
+          (userDoc.data() as Map<String, dynamic>)['ganhos'];
+      return ganhosData.map((key, value) => MapEntry(key, value.toDouble()));
+    } else {
+      return {};
     }
   }
 }

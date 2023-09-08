@@ -28,4 +28,14 @@ class HomeRepositoryImpl implements HomeRepository {
   Future<double> getBalance(String uid) {
     return _dataSource.getBalance(uid);
   }
+
+  @override
+  Future<Map<String, double>> getGanhos(String uid) {
+    return _dataSource.getGanhos(uid);
+  }
+
+  @override
+  Future<Map<String, double>> getGastos(String uid) {
+    return _dataSource.getGastos(uid);
+  }
 }
