@@ -12,7 +12,7 @@ class HomeDataImpl implements HomeData {
   @override
   @override
   Future<void> addTransaction(
-      String uid, Map<String, dynamic> transactionData, String money) async {
+      String uid, Map<String, dynamic> transactionData, bool add) async {
     await _firestore
         .collection('users')
         .doc(uid)
@@ -21,7 +21,7 @@ class HomeDataImpl implements HomeData {
   }
 
   @override
-  Future<void> updateBalance(String uid, double valor, String money) async {
+  Future<void> updateBalance(String uid, double valor, bool add) async {
     DocumentSnapshot userDoc =
         await _firestore.collection('users').doc(uid).get();
     double currentBalance = 0.0;
@@ -32,9 +32,9 @@ class HomeDataImpl implements HomeData {
       currentBalance = userData['balance'].toDouble();
     }
 
-    if (money == "add") {
+    if (add == true) {
       currentBalance += valor;
-    } else if (money == "remove") {
+    } else if (add == false) {
       currentBalance -= valor;
     }
 
@@ -47,13 +47,13 @@ class HomeDataImpl implements HomeData {
     String currentMonth =
         DateTime.now().toString().substring(0, 7); // "YYYY-MM"
 
-    if (money == "add") {
+    if (add == true) {
       double currentGain = (userData['ganhos'] ?? {})[currentMonth] ?? 0.0;
       currentGain += valor;
       await _firestore.collection('users').doc(uid).update({
         'ganhos.$currentMonth': currentGain,
       });
-    } else if (money == "remove") {
+    } else if (add == false) {
       double currentExpense = (userData['gastos'] ?? {})[currentMonth] ?? 0.0;
       currentExpense += valor;
       await _firestore.collection('users').doc(uid).update({

@@ -4,6 +4,7 @@ import 'package:google_mobile_ads/google_mobile_ads.dart';
 class AdHelper {
   static final AdHelper _instance = AdHelper._internal();
   InterstitialAd? _interstitialAd;
+  bool isAdLoaded = true; // Adicione esta linha
 
   factory AdHelper() {
     return _instance;
@@ -12,10 +13,9 @@ class AdHelper {
   AdHelper._internal();
 
   // IDs de unidade de anúncio de teste fornecidos pelo Google
-  // Substitua por seus próprios IDs de unidade de anúncio quando for ao vivo
-  static const String bannerAdUnitId = 'ca-app-pub-3940256099942544/6300978111';
+  static const String bannerAdUnitId = 'ca-app-pub-6625580398265467/1218136997';
   static const String interstitialAdUnitId =
-      'ca-app-pub-3940256099942544/1033173712';
+      'ca-app-pub-6625580398265467/2550318392';
 
   BannerAd? bannerAd;
 
@@ -48,12 +48,14 @@ class AdHelper {
           if (kDebugMode) {
             print('InterstitialAd loaded: ${ad.adUnitId}');
           }
+          isAdLoaded = true; // Atualize esta linha
           _interstitialAd = ad;
         },
         onAdFailedToLoad: (LoadAdError error) {
           if (kDebugMode) {
             print('InterstitialAd failed to load: $error');
           }
+          isAdLoaded = false; // Atualize esta linha
           _interstitialAd = null;
         },
       ),
@@ -61,6 +63,12 @@ class AdHelper {
   }
 
   void showInterstitialAd() {
-    _interstitialAd?.show();
+    if (isAdLoaded) {
+      _interstitialAd?.show();
+    } else {
+      if (kDebugMode) {
+        print('Ad not loaded yet');
+      }
+    }
   }
 }

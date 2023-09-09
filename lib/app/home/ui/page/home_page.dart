@@ -1,5 +1,4 @@
 import 'package:finance_control/app/home/ui/controller/home_controller.dart';
-import 'package:finance_control/core/helpers/ads.dart';
 import 'package:finance_control/core/ds/components/transaction_list/finance_transaction_list.dart';
 import 'package:finance_control/core/ds/style/app_colors.dart';
 import 'package:finance_control/core/ds/style/finance_text.dart';
@@ -28,9 +27,6 @@ class _HomePageState extends State<HomePage> {
     widget.controller.getTransactions();
     widget.controller.getBalance();
     widget.controller.getGastosEGanhos();
-
-    // Carregar o anúncio intersticial
-    AdHelper().createInterstitialAd();
   }
 
   @override
@@ -174,7 +170,8 @@ class _HomePageState extends State<HomePage> {
               mini: true,
               tooltip: 'Gasto',
               onPressed: () {
-                AdHelper().showInterstitialAd();
+                widget.controller.addTransaction(
+                    DateTime.now(), 1000, 'nome', 'categoria', false);
                 print('Opção 2 clicada');
               },
               backgroundColor: AppColors.navyBlue,
@@ -189,7 +186,7 @@ class _HomePageState extends State<HomePage> {
               tooltip: 'Adicionar',
               onPressed: () {
                 widget.controller.addTransaction(
-                    DateTime.now(), 1000, 'nome', 'categoria', 'add');
+                    DateTime.now(), 1000, 'nome', 'categoria', true);
                 print('Opção 2 clicada');
               },
               backgroundColor: AppColors.navyBlue,

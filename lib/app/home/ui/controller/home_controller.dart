@@ -17,7 +17,7 @@ class HomeController {
   HomeController(this._useCase);
 
   Future<void> addTransaction(DateTime data, double valor, String nome,
-      String categoria, String money) async {
+      String categoria, bool add) async {
     final prefs = await SharedPreferences.getInstance();
     final userId = prefs.getString('user_id');
 
@@ -27,10 +27,11 @@ class HomeController {
         'valor': valor,
         'nome': nome,
         'categoria': categoria,
+        'add': add,
       };
 
-      await _useCase.addTransaction(userId, gastoData, money);
-      await _useCase.updateBalance(userId, valor, money);
+      await _useCase.addTransaction(userId, gastoData, add);
+      await _useCase.updateBalance(userId, valor, add);
 
       // Após atualizar o saldo no Firestore, obtenha o saldo atualizado
       await getBalance();

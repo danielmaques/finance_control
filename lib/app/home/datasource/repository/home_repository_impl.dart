@@ -10,8 +10,8 @@ class HomeRepositoryImpl implements HomeRepository {
 
   @override
   Future<void> addTransaction(
-          String uid, Map<String, dynamic> transactionData, String money) =>
-      _dataSource.addTransaction(uid, transactionData, money);
+          String uid, Map<String, dynamic> transactionData, bool add) =>
+      _dataSource.addTransaction(uid, transactionData, add);
   @override
   Future<List<Map<String, dynamic>>> getTransaction(String uid) =>
       _dataSource.getTransaction(uid);
@@ -20,8 +20,8 @@ class HomeRepositoryImpl implements HomeRepository {
       _dataSource.upload(imageFile, uid);
 
   @override
-  Future<void> updateBalance(String uid, double valor, String money) {
-    return _dataSource.updateBalance(uid, valor, money);
+  Future<void> updateBalance(String uid, double valor, bool add) {
+    return _dataSource.updateBalance(uid, valor, add);
   }
 
   @override

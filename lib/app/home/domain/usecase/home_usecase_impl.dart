@@ -10,8 +10,8 @@ class HomeUseCaseImpl implements HomeUseCase {
 
   @override
   Future<void> addTransaction(
-          String uid, Map<String, dynamic> transactionData, money) =>
-      _repository.addTransaction(uid, transactionData, money);
+          String uid, Map<String, dynamic> transactionData, add) =>
+      _repository.addTransaction(uid, transactionData, add);
   @override
   Future<List<Map<String, dynamic>>> getTransaction(String uid) =>
       _repository.getTransaction(uid);
@@ -20,8 +20,8 @@ class HomeUseCaseImpl implements HomeUseCase {
       _repository.upload(imageFile, uid);
 
   @override
-  Future<void> updateBalance(String uid, double valor, String money) {
-    return _repository.updateBalance(uid, valor, money);
+  Future<void> updateBalance(String uid, double valor, bool add) {
+    return _repository.updateBalance(uid, valor, add);
   }
 
   @override

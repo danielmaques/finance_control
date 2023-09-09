@@ -64,6 +64,9 @@ class FinanceTransactionList extends StatelessWidget {
             FinanceText.p18(
               formatMoney(currentTransaction['valor']),
               fontWeight: FontWeight.w500,
+              color: currentTransaction['add'] == true
+                  ? AppColors.forestGreen
+                  : AppColors.cherryRed,
             ),
           ],
         );
