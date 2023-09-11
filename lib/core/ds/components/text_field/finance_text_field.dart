@@ -1,7 +1,8 @@
 import 'package:finance_control/core/ds/style/app_colors.dart';
-import 'package:finance_control/core/ds/style/finance_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+
+import '../../style/afinz_text.dart';
 
 class FinanceTextField extends StatelessWidget {
   const FinanceTextField({
@@ -40,7 +41,6 @@ class FinanceTextField extends StatelessWidget {
       children: [
         FinanceText.p14(
           label,
-          fontWeight: FontWeight.w500,
         ),
         TextFormField(
           controller: controller,

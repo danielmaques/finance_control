@@ -2,9 +2,10 @@ import 'package:finance_control/app/login/ui/controller/login_controller.dart';
 import 'package:finance_control/core/ds/components/app_bar/finance_app_bar.dart';
 import 'package:finance_control/core/ds/components/buttons/button.dart';
 import 'package:finance_control/core/ds/components/text_field/finance_text_field.dart';
-import 'package:finance_control/core/ds/style/finance_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
+
+import '../../../../core/ds/style/afinz_text.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key, required this.controller});
@@ -50,9 +51,8 @@ class _LoginPageState extends State<LoginPage> {
                           const FinanceAppBar(
                             icon: false,
                           ),
-                          const FinanceText.h3(
+                          FinanceText.h3(
                             'Entrar',
-                            fontWeight: FontWeight.w500,
                           ),
                           const SizedBox(height: 31),
                           FinanceTextField(
@@ -91,13 +91,12 @@ class _LoginPageState extends State<LoginPage> {
                                 Modular.to.pushNamed('');
                                 // TODO: Implementar modulo de esqueceu a senha
                               },
-                              child: const Row(
+                              child: Row(
                                   crossAxisAlignment: CrossAxisAlignment.center,
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
                                     FinanceText.p16(
                                       'Esqueceu a senha?',
-                                      fontWeight: FontWeight.w400,
                                     ),
                                   ]),
                             ),
@@ -108,18 +107,16 @@ class _LoginPageState extends State<LoginPage> {
                               onTap: () {
                                 Modular.to.pushNamed('/createAccount');
                               },
-                              child: const Row(
+                              child: Row(
                                 crossAxisAlignment: CrossAxisAlignment.center,
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
                                   FinanceText.p16(
                                     'Não possui uma conta?',
-                                    fontWeight: FontWeight.w400,
                                   ),
-                                  SizedBox(width: 5),
+                                  const SizedBox(width: 5),
                                   FinanceText.p16(
                                     'Criar conta.',
-                                    fontWeight: FontWeight.w600,
                                   ),
                                 ],
                               ),

@@ -1,8 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:finance_control/core/ds/style/app_colors.dart';
-import 'package:finance_control/core/ds/style/finance_text.dart';
 import 'package:finance_control/core/helpers/formater.dart';
 import 'package:flutter/material.dart';
+
+import '../../style/afinz_text.dart';
 
 class FinanceTransactionList extends StatelessWidget {
   const FinanceTransactionList({
@@ -50,12 +51,10 @@ class FinanceTransactionList extends StatelessWidget {
                 children: [
                   FinanceText.p16(
                     currentTransaction['nome'],
-                    fontWeight: FontWeight.w500,
                     color: AppColors.midnightBlack,
                   ),
                   FinanceText.p16(
                     formatDate(dateTime),
-                    fontWeight: FontWeight.w500,
                     color: AppColors.slateGray,
                   ),
                 ],
@@ -63,7 +62,6 @@ class FinanceTransactionList extends StatelessWidget {
             ),
             FinanceText.p18(
               formatMoney(currentTransaction['valor']),
-              fontWeight: FontWeight.w500,
               color: currentTransaction['add'] == true
                   ? AppColors.forestGreen
                   : AppColors.cherryRed,

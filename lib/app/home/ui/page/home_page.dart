@@ -1,7 +1,7 @@
 import 'package:finance_control/app/home/ui/controller/home_controller.dart';
 import 'package:finance_control/core/ds/components/transaction_list/finance_transaction_list.dart';
+import 'package:finance_control/core/ds/style/afinz_text.dart';
 import 'package:finance_control/core/ds/style/app_colors.dart';
-import 'package:finance_control/core/ds/style/finance_text.dart';
 import 'package:flutter/material.dart';
 
 import '../../../../core/helpers/formater.dart';
@@ -42,9 +42,8 @@ class _HomePageState extends State<HomePage> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                const FinanceText.p16(
+                FinanceText.p16(
                   'Saldo',
-                  fontWeight: FontWeight.w400,
                   color: AppColors.midnightBlack,
                 ),
                 Container(
@@ -65,7 +64,6 @@ class _HomePageState extends State<HomePage> {
               valueListenable: widget.controller.balance,
               builder: (context, value, child) => FinanceText.h2(
                 formatMoney(value),
-                fontWeight: FontWeight.w600,
               ),
             ),
             const SizedBox(height: 24),
@@ -94,12 +92,11 @@ class _HomePageState extends State<HomePage> {
                         builder: (context, value, child) {
                           return FinanceText.p18(
                             formatMoney(value),
-                            fontWeight: FontWeight.w600,
                             color: AppColors.cherryRed,
                           );
                         },
                       ),
-                      const FinanceText.p16('Gastos')
+                      FinanceText.p16('Gastos')
                     ],
                   ),
                   Container(
@@ -114,25 +111,23 @@ class _HomePageState extends State<HomePage> {
                         builder: (context, value, child) {
                           return FinanceText.p18(
                             formatMoney(value),
-                            fontWeight: FontWeight.w600,
                             color: AppColors.forestGreen,
                           );
                         },
                       ),
-                      const FinanceText.p16('Ganhos')
+                      FinanceText.p16('Ganhos')
                     ],
                   ),
                 ],
               ),
             ),
             const SizedBox(height: 24),
-            const Row(
+            Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 FinanceText.h4(
                   'Transações',
-                  fontWeight: FontWeight.w500,
                   color: AppColors.midnightBlack,
                 ),
                 FinanceText.p16('Mais'),
