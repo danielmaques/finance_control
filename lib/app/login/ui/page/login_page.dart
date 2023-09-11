@@ -33,7 +33,7 @@ class _LoginPageState extends State<LoginPage> {
             builder: (context, isLoggedIn, child) {
               if (isLoggedIn) {
                 WidgetsBinding.instance.addPostFrameCallback((_) {
-                  Modular.to.pushReplacementNamed('/homePage/');
+                  Modular.to.pushReplacementNamed('/home/');
                 });
                 return Container();
               }
