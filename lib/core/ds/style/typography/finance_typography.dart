@@ -59,14 +59,14 @@ class FinanceTitleTypography extends _FinanceTypography {
   FinanceTextStyle get p14 => FinanceTextStyle(
         fontFamily: montserrat,
         fontWeight: medium,
-        fontSize: 16,
+        fontSize: 14,
         lineHeightInPx: 20,
       );
 
   FinanceTextStyle get p12 => FinanceTextStyle(
         fontFamily: montserrat,
         fontWeight: medium,
-        fontSize: 16,
+        fontSize: 12,
         lineHeightInPx: 20,
       );
 }
