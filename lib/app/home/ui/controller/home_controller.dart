@@ -33,7 +33,6 @@ class HomeController {
       await _useCase.addTransaction(userId, gastoData, add);
       await _useCase.updateBalance(userId, valor, add);
 
-      // Após atualizar o saldo no Firestore, obtenha o saldo atualizado
       await getBalance();
 
       getTransactions();
@@ -58,7 +57,6 @@ class HomeController {
     }
   }
 
-  // Função para obter o saldo atual do usuário
   Future<void> getBalance() async {
     final prefs = await SharedPreferences.getInstance();
     final userId = prefs.getString('user_id');
@@ -77,9 +75,7 @@ class HomeController {
       Map<String, double> userGastos = await _useCase.getGastos(userId);
       Map<String, double> userGanhos = await _useCase.getGanhos(userId);
 
-      // Obtenha o mês atual
-      String currentMonth =
-          DateTime.now().toString().substring(0, 7); // "YYYY-MM"
+      String currentMonth = DateTime.now().toString().substring(0, 7);
 
       double gastosDoMesAtual = userGastos[currentMonth] ?? 0.0;
       double ganhosDoMesAtual = userGanhos[currentMonth] ?? 0.0;
