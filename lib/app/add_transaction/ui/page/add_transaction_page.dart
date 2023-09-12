@@ -1,4 +1,7 @@
+import 'dart:io';
+
 import 'package:dotted_border/dotted_border.dart';
+import 'package:finance_control/app/add_transaction/ui/controller/add_transaction_controller.dart';
 import 'package:finance_control/core/ds/components/app_bar/finance_add_transaction_app_bar.dart';
 import 'package:finance_control/core/ds/components/buttons/button.dart';
 import 'package:finance_control/core/ds/components/drop_down/finance_drop_down.dart';
@@ -6,10 +9,16 @@ import 'package:finance_control/core/ds/components/text_field/finance_text_field
 import 'package:finance_control/core/ds/style/afinz_text.dart';
 import 'package:finance_control/core/ds/style/app_colors.dart';
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 
 class AddTransactionPage extends StatefulWidget {
-  const AddTransactionPage({Key? key}) : super(key: key);
+  const AddTransactionPage({
+    super.key,
+    required this.controller,
+  });
+
+  final AddTransactionController controller;
 
   @override
   State<AddTransactionPage> createState() => _AddTransactionPageState();
@@ -92,6 +101,7 @@ class _AddTransactionPageState extends State<AddTransactionPage> {
                     const SizedBox(height: 16),
                     GestureDetector(
                       onTap: () {
+                        widget.controller.requestGalleryPermission();
                         showModalBottomSheet(
                           context: context,
                           isScrollControlled: true,
@@ -144,29 +154,45 @@ class _AddTransactionPageState extends State<AddTransactionPage> {
                                           ],
                                         ),
                                       ),
-                                      Container(
-                                        height: 100,
-                                        width: 100,
-                                        decoration: BoxDecoration(
-                                          color: AppColors.lighterBlue
-                                              .withOpacity(0.3),
-                                          borderRadius:
-                                              BorderRadius.circular(10),
-                                        ),
-                                        child: Column(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.center,
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.center,
-                                          children: [
-                                            const Icon(
-                                              Icons.image,
-                                              size: 40,
-                                              color: AppColors.royalBlue,
+                                      ValueListenableBuilder<XFile?>(
+                                        valueListenable: widget
+                                            .controller.selectedImageNotifier,
+                                        builder: (context, image, child) {
+                                          return GestureDetector(
+                                            onTap: widget.controller
+                                                .pickImageFromGallery,
+                                            child: Container(
+                                              height: 100,
+                                              width: 100,
+                                              decoration: BoxDecoration(
+                                                color: AppColors.lighterBlue
+                                                    .withOpacity(0.3),
+                                                borderRadius:
+                                                    BorderRadius.circular(10),
+                                              ),
+                                              child: Column(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.center,
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.center,
+                                                children: [
+                                                  if (image == null)
+                                                    const Icon(
+                                                      Icons.image,
+                                                      size: 40,
+                                                      color:
+                                                          AppColors.royalBlue,
+                                                    )
+                                                  else
+                                                    Image.file(File(image.path),
+                                                        fit: BoxFit.cover),
+                                                  if (image == null)
+                                                    const Text('Galeria'),
+                                                ],
+                                              ),
                                             ),
-                                            FinanceText.p14('Galeria'),
-                                          ],
-                                        ),
+                                          );
+                                        },
                                       ),
                                     ],
                                   ),

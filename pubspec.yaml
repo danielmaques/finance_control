@@ -3,7 +3,7 @@ description: A new Flutter project.
 
 publish_to: "none"
 
-version: 1.0.0+2
+version: 1.0.0+3
 
 environment:
   sdk: ">=3.1.0 <4.0.0"
@@ -25,6 +25,7 @@ dependencies:
   dotted_border: ^2.0.0+3
   currency_text_input_formatter: ^2.1.10
   image_picker: ^1.0.4
+  permission_handler: ^11.0.0
 
 dev_dependencies:
   flutter_test:
