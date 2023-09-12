@@ -53,7 +53,7 @@ class _FinanceButtonState extends State<FinanceButton> {
 
   void _setButtonAttributes() {
     _disabled = widget.disabled || widget.onTap == null;
-    _colorBackground = AppColors.navyBlue;
+    _colorBackground = AppColors.lighterBlue;
     _colorDisabled = AppColors.softGray;
     _textIconColor = Colors.white;
   }
@@ -67,7 +67,7 @@ class _FinanceButtonState extends State<FinanceButton> {
         child: Ink(
           decoration: BoxDecoration(
             color: !_disabled ? _colorBackground : _colorDisabled,
-            borderRadius: BorderRadius.circular(12),
+            borderRadius: BorderRadius.circular(16),
           ),
           child: SizedBox(
             height: widget.small ? 36 : 48,

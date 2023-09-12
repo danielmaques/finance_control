@@ -3,6 +3,7 @@ import 'package:finance_control/core/ds/components/transaction_list/finance_tran
 import 'package:finance_control/core/ds/style/afinz_text.dart';
 import 'package:finance_control/core/ds/style/app_colors.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_modular/flutter_modular.dart';
 
 import '../../../../core/helpers/formater.dart';
 
@@ -152,7 +153,7 @@ class _HomePageState extends State<HomePage> {
               mini: true,
               tooltip: 'Histórico',
               onPressed: () {
-                print('Opção 1 clicada');
+                Modular.to.pushNamed('/addTransaction/');
               },
               backgroundColor: AppColors.navyBlue,
               child: const Icon(Icons.poll_outlined),

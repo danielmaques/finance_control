@@ -3,7 +3,6 @@ import 'package:finance_control/core/ds/components/app_bar/finance_app_bar.dart'
 import 'package:finance_control/core/ds/components/buttons/button.dart';
 import 'package:finance_control/core/ds/components/text_field/finance_text_field.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_modular/flutter_modular.dart';
 
 import '../../../../core/ds/components/checkbox/finance_check_box.dart';
 import '../../../../core/ds/style/afinz_text.dart';
@@ -28,8 +27,7 @@ class CreateAccountPage extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  FinanceAppBar(
-                    onTap: () => Modular.to.pop(),
+                  const FinanceAppBar(
                     icon: true,
                   ),
                   FinanceText.h3(
