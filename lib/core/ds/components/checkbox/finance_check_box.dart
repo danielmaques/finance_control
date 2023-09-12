@@ -1,6 +1,7 @@
 import 'package:finance_control/core/ds/style/app_colors.dart';
-import 'package:finance_control/core/ds/style/finance_text.dart';
 import 'package:flutter/material.dart';
+
+import '../../style/afinz_text.dart';
 
 class FinanceCheckBox extends StatefulWidget {
   const FinanceCheckBox({
@@ -49,7 +50,6 @@ class _FinanceCheckBoxState extends State<FinanceCheckBox> {
             Flexible(
               child: FinanceText.p14(
                 widget.label,
-                fontWeight: FontWeight.w500,
               ),
             ),
           }
