@@ -27,6 +27,7 @@ class AddTransactionPage extends StatefulWidget {
 
 class _AddTransactionPageState extends State<AddTransactionPage> {
   late String price;
+  DateTime selectedDate = DateTime.now();
 
   @override
   void initState() {
@@ -87,8 +88,37 @@ class _AddTransactionPageState extends State<AddTransactionPage> {
                       ],
                     ),
                     const SizedBox(height: 16),
-                    FinanceTextField(
-                      hintText: DateFormat('dd/MM/yyyy').format(DateTime.now()),
+                    GestureDetector(
+                      onTap: () async {
+                        DateTime? pickedDate = await showDatePicker(
+                          context: context,
+                          initialDatePickerMode: DatePickerMode.day,
+                          initialDate: DateTime.now(),
+                          firstDate: DateTime(2000),
+                          lastDate: DateTime(2101),
+                        );
+                        if (pickedDate != null) {
+                          setState(() {
+                            selectedDate = pickedDate;
+                          });
+                        }
+                      },
+                      child: Container(
+                        height: 56,
+                        width: MediaQuery.of(context).size.width,
+                        alignment: Alignment.centerLeft,
+                        padding: const EdgeInsets.symmetric(horizontal: 16),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(16),
+                          border: Border.all(
+                            color: Colors.grey[200]!,
+                          ),
+                        ),
+                        child: FinanceText.p16(
+                          DateFormat('dd/MM/yyyy').format(selectedDate),
+                          color: Colors.grey[500],
+                        ),
+                      ),
                     ),
                     const Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -135,33 +165,51 @@ class _AddTransactionPageState extends State<AddTransactionPage> {
                                         mainAxisAlignment:
                                             MainAxisAlignment.spaceAround,
                                         children: [
-                                          Container(
-                                            height: 100,
-                                            width: 100,
-                                            decoration: BoxDecoration(
-                                              color: AppColors.lighterBlue
-                                                  .withOpacity(0.3),
-                                              borderRadius:
-                                                  BorderRadius.circular(10),
-                                            ),
-                                            child: Column(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.center,
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.center,
-                                              children: [
-                                                const Icon(
-                                                  Icons.camera_alt,
-                                                  size: 40,
-                                                  color: AppColors.royalBlue,
-                                                ),
-                                                FinanceText.p14('Camera'),
-                                              ],
+                                          GestureDetector(
+                                            onTap: () async {
+                                              final XFile? file =
+                                                  await ImagePicker().pickImage(
+                                                      source:
+                                                          ImageSource.camera);
+                                              if (file != null) {
+                                                widget.controller.imagesNotifier
+                                                    .value = [
+                                                  ...widget.controller
+                                                      .imagesNotifier.value,
+                                                  file
+                                                ];
+                                              }
+                                            },
+                                            child: Container(
+                                              height: 100,
+                                              width: 100,
+                                              decoration: BoxDecoration(
+                                                color: AppColors.lighterBlue
+                                                    .withOpacity(0.3),
+                                                borderRadius:
+                                                    BorderRadius.circular(10),
+                                              ),
+                                              child: Column(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.center,
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.center,
+                                                children: [
+                                                  const Icon(
+                                                    Icons.camera_alt,
+                                                    size: 40,
+                                                    color: AppColors.royalBlue,
+                                                  ),
+                                                  FinanceText.p14('Camera'),
+                                                ],
+                                              ),
                                             ),
                                           ),
                                           GestureDetector(
-                                            onTap: widget.controller
-                                                .pickImageFromGallery,
+                                            onTap: () {
+                                              widget.controller
+                                                  .pickImageFromGallery();
+                                            },
                                             child: Container(
                                               height: 100,
                                               width: 100,
@@ -219,46 +267,67 @@ class _AddTransactionPageState extends State<AddTransactionPage> {
                                     ],
                                   )
                                 : Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceAround,
                                     children: [
                                       ...images.take(3).map(
-                                            (image) => Padding(
-                                              padding: const EdgeInsets.only(
-                                                  right: 20),
-                                              child: ClipRRect(
-                                                borderRadius:
-                                                    BorderRadius.circular(10),
-                                                child: Image.file(
-                                                  File(image!.path),
-                                                  fit: BoxFit.cover,
-                                                  width: 80,
-                                                  height: 80,
-                                                  errorBuilder: (BuildContext
-                                                          context,
-                                                      Object exception,
-                                                      StackTrace? stackTrace) {
-                                                    return const Text(
-                                                      'Erro ao carregar a imagem',
-                                                    );
-                                                  },
+                                            (image) => Stack(
+                                              children: [
+                                                ClipRRect(
+                                                  borderRadius:
+                                                      BorderRadius.circular(10),
+                                                  child: Image.file(
+                                                    File(image!.path),
+                                                    fit: BoxFit.cover,
+                                                    width: 80,
+                                                    height: 80,
+                                                    errorBuilder:
+                                                        (BuildContext context,
+                                                            Object exception,
+                                                            StackTrace?
+                                                                stackTrace) {
+                                                      return const Text(
+                                                          'Erro ao carregar a imagem');
+                                                    },
+                                                  ),
                                                 ),
-                                              ),
+                                                Positioned(
+                                                  top: 0,
+                                                  right: 0,
+                                                  child: GestureDetector(
+                                                    onTap: () {
+                                                      setState(() {
+                                                        images.remove(
+                                                            image); // Remove a imagem da lista
+                                                      });
+                                                    },
+                                                    child: const Icon(
+                                                      Icons.delete,
+                                                      size: 30,
+                                                      color:
+                                                          AppColors.cherryRed,
+                                                    ),
+                                                  ),
+                                                ),
+                                              ],
                                             ),
                                           ),
-                                      Container(
-                                        height: 80,
-                                        width: 80,
-                                        decoration: BoxDecoration(
-                                          color: AppColors.lighterBlue
-                                              .withOpacity(0.3),
-                                          borderRadius:
-                                              BorderRadius.circular(10),
+                                      if (images.length < 3)
+                                        Container(
+                                          height: 80,
+                                          width: 80,
+                                          decoration: BoxDecoration(
+                                            color: AppColors.lighterBlue
+                                                .withOpacity(0.3),
+                                            borderRadius:
+                                                BorderRadius.circular(10),
+                                          ),
+                                          child: const Icon(
+                                            Icons.add,
+                                            size: 40,
+                                            color: AppColors.royalBlue,
+                                          ),
                                         ),
-                                        child: const Icon(
-                                          Icons.add,
-                                          size: 40,
-                                          color: AppColors.royalBlue,
-                                        ),
-                                      ),
                                     ],
                                   ),
                           ),

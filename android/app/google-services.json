@@ -1,6 +1,7 @@
 {
   "project_info": {
     "project_number": "513199116842",
+    "firebase_url": "https://finance-control-77d24-default-rtdb.firebaseio.com",
     "project_id": "finance-control-77d24",
     "storage_bucket": "finance-control-77d24.appspot.com"
   },
@@ -29,6 +30,13 @@
             {
               "client_id": "513199116842-jn6n5m2plesclsi3e8u0cs14odvkpqml.apps.googleusercontent.com",
               "client_type": 3
+            },
+            {
+              "client_id": "513199116842-842ps7ap557ltll47p1pjnrt5c88k82p.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.financeControl"
+              }
             }
           ]
         }
