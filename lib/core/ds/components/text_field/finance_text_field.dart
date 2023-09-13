@@ -18,7 +18,8 @@ class FinanceTextField extends StatelessWidget {
     this.inputFormatters,
     this.keyboardType,
     this.textCapitalization = TextCapitalization.none,
-    required this.label,
+    this.label,
+    this.maxLines = 1,
   });
 
   final String? hintText;
@@ -32,21 +33,23 @@ class FinanceTextField extends StatelessWidget {
   final List<TextInputFormatter>? inputFormatters;
   final TextInputType? keyboardType;
   final TextCapitalization textCapitalization;
-  final String label;
+  final String? label;
+  final int maxLines;
 
   @override
   Widget build(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        FinanceText.p14(
-          label,
-        ),
+        if (label != null) FinanceText.p14(label!),
+        const SizedBox(height: 8),
         TextFormField(
           controller: controller,
           obscureText: obscureText,
           validator: validator,
           onChanged: onChanged,
+          maxLines: maxLines,
+          enableSuggestions: true,
           keyboardType: keyboardType,
           inputFormatters: inputFormatters,
           style: const TextStyle(
@@ -57,10 +60,11 @@ class FinanceTextField extends StatelessWidget {
           textCapitalization: textCapitalization,
           cursorColor: AppColors.slateGray,
           decoration: InputDecoration(
+            prefixIcon: iconData != null ? Icon(iconData) : null,
             suffixIcon: suffixIcon,
             hintText: hintText,
-            hintStyle: const TextStyle(
-              color: AppColors.slateGray,
+            hintStyle: TextStyle(
+              color: Colors.grey[500],
               fontSize: 16,
               fontWeight: FontWeight.w400,
             ),
@@ -70,12 +74,29 @@ class FinanceTextField extends StatelessWidget {
               fontSize: 14,
               fontWeight: FontWeight.w500,
             ),
-            focusedBorder: const UnderlineInputBorder(
-              borderSide: BorderSide(
+            focusedBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(16),
+              borderSide: const BorderSide(
                 color: AppColors.midnightBlack,
                 width: 1,
               ),
             ),
+            enabledBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(16),
+              borderSide: BorderSide(
+                color: Colors.grey[200]!,
+                width: 1,
+              ),
+            ),
+            border: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(16),
+              borderSide: BorderSide(
+                color: Colors.grey[200]!,
+                width: 1,
+              ),
+            ),
+            contentPadding:
+                const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
           ),
         ),
       ],
