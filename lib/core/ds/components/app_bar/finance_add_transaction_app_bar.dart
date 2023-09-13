@@ -6,7 +6,12 @@ import 'package:flutter_modular/flutter_modular.dart';
 import 'package:flutter_svg/svg.dart';
 
 class FinanceAddTransactionAppBar extends StatefulWidget {
-  const FinanceAddTransactionAppBar({Key? key}) : super(key: key);
+  const FinanceAddTransactionAppBar({
+    super.key,
+    required this.onChanged,
+  });
+
+  final Function(String) onChanged;
 
   @override
   State<FinanceAddTransactionAppBar> createState() =>
@@ -84,6 +89,7 @@ class _FinanceAddTransactionAppBarState
                   setState(() {
                     price = value;
                   });
+                  widget.onChanged(value);
                 },
                 decoration: const InputDecoration(
                   border: InputBorder.none,

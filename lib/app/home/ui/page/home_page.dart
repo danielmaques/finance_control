@@ -153,7 +153,9 @@ class _HomePageState extends State<HomePage> {
               mini: true,
               tooltip: 'Histórico',
               onPressed: () {
-                Modular.to.pushNamed('/addTransaction/');
+                Modular.to.pushNamed('/addTransaction/', arguments: {
+                  'add': true,
+                });
               },
               backgroundColor: AppColors.navyBlue,
               child: const Icon(Icons.poll_outlined),
