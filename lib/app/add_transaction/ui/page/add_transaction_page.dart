@@ -69,6 +69,13 @@ class _AddTransactionPageState extends State<AddTransactionPage> {
                       onChanged: (p0) {
                         widget.controller.description.value.text = p0;
                       },
+                      textCapitalization: TextCapitalization.sentences,
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Por favor, insira uma descrição';
+                        }
+                        return null;
+                      },
                     ),
                     const SizedBox(height: 16),
                     FinanceDropDown(
@@ -349,7 +356,7 @@ class _AddTransactionPageState extends State<AddTransactionPage> {
       ),
       bottomNavigationBar: Container(
         color: AppColors.white,
-        padding: const EdgeInsets.all(20),
+        padding: const EdgeInsets.only(left: 20, right: 20, bottom: 20),
         child: FinanceButton(
           title: 'Continuar',
           branded: false,
