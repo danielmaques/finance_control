@@ -1,12 +1,18 @@
 import 'package:currency_text_input_formatter/currency_text_input_formatter.dart';
 import 'package:finance_control/core/ds/style/afinz_text.dart';
 import 'package:finance_control/core/ds/style/app_colors.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:flutter_svg/svg.dart';
 
 class FinanceAddTransactionAppBar extends StatefulWidget {
-  const FinanceAddTransactionAppBar({Key? key}) : super(key: key);
+  const FinanceAddTransactionAppBar({
+    super.key,
+    required this.onChanged,
+  });
+
+  final Function(double) onChanged;
 
   @override
   State<FinanceAddTransactionAppBar> createState() =>
@@ -84,6 +90,28 @@ class _FinanceAddTransactionAppBarState
                   setState(() {
                     price = value;
                   });
+
+                  // Remova o "R\$" e espaços em branco
+                  String onlyNumbers = value.replaceAll('R\$', '').trim();
+
+                  // Substitua o ponto (separador de milhar) por nada
+                  onlyNumbers = onlyNumbers.replaceAll('.', '');
+
+                  // Substitua a vírgula (separador decimal) por um ponto
+                  onlyNumbers = onlyNumbers.replaceAll(',', '.');
+
+                  // Converta a string para double
+                  double? priceAsDouble;
+                  try {
+                    priceAsDouble = double.parse(onlyNumbers);
+                  } catch (e) {
+                    if (kDebugMode) {
+                      print("Erro ao converter o valor para double: $e");
+                    }
+                    return;
+                  }
+
+                  widget.onChanged(priceAsDouble);
                 },
                 decoration: const InputDecoration(
                   border: InputBorder.none,

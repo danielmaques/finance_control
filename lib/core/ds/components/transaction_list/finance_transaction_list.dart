@@ -50,7 +50,7 @@ class FinanceTransactionList extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   FinanceText.p16(
-                    currentTransaction['nome'],
+                    currentTransaction['descricao'],
                     color: AppColors.midnightBlack,
                   ),
                   FinanceText.p16(

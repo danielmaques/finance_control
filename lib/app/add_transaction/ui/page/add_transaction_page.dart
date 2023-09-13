@@ -8,6 +8,7 @@ import 'package:finance_control/core/ds/components/drop_down/finance_drop_down.d
 import 'package:finance_control/core/ds/components/text_field/finance_text_field.dart';
 import 'package:finance_control/core/ds/style/app_colors.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_modular/flutter_modular.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 
@@ -17,9 +18,11 @@ class AddTransactionPage extends StatefulWidget {
   const AddTransactionPage({
     super.key,
     required this.controller,
+    required this.add,
   });
 
   final AddTransactionController controller;
+  final bool add;
 
   @override
   State<AddTransactionPage> createState() => _AddTransactionPageState();
@@ -32,6 +35,8 @@ class _AddTransactionPageState extends State<AddTransactionPage> {
   @override
   void initState() {
     super.initState();
+    widget.controller.fetchCategories();
+    widget.controller.fetchPayments();
     price = '';
   }
 
@@ -41,7 +46,9 @@ class _AddTransactionPageState extends State<AddTransactionPage> {
       backgroundColor: AppColors.deepBlue,
       body: Column(
         children: [
-          const FinanceAddTransactionAppBar(),
+          FinanceAddTransactionAppBar(onChanged: (p0) {
+            widget.controller.pay.value = double.parse(p0.toString());
+          }),
           Expanded(
             child: Container(
               padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 24),
@@ -55,38 +62,49 @@ class _AddTransactionPageState extends State<AddTransactionPage> {
               child: SingleChildScrollView(
                 child: Column(
                   children: [
+                    FinanceTextField(
+                      hintText: 'Descrição',
+                      maxLines: 1,
+                      controller: widget.controller.description.value,
+                      onChanged: (p0) {
+                        widget.controller.description.value.text = p0;
+                      },
+                      textCapitalization: TextCapitalization.sentences,
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Por favor, insira uma descrição';
+                        }
+                        return null;
+                      },
+                    ),
                     const SizedBox(height: 16),
-                    const FinanceDropDown(
-                      hint: 'Categoria',
-                      items: [
-                        'Item 1',
-                        'Item 2',
-                        'Item 3',
-                        'Item 4',
-                        'Item 5',
-                        'Item 6',
-                        'Item 7',
-                        'Item 8',
-                        'Item 9',
-                        'Item 10',
+                    FinanceDropDown(
+                      hint: "Selecione uma categoria",
+                      categoriesList: widget.controller.categoriesList,
+                      onItemSelected: (p0) {
+                        widget.controller.categoriesValue.value = p0;
+                      },
+                      itemColors: const [
+                        Color(0xFFE57373),
+                        Color(0xFF81C784),
+                        Color(0xFF64B5F6),
+                        Color(0xFFFFD54F),
+                        Color(0xFFBA68C8),
+                        Color(0xFF4DB6AC),
+                        Color(0xFFFF8A65),
+                        Color(0xFFA1887F),
+                        Color(0xFF90A4AE),
+                        Color(0xFF7986CB),
+                        Color(0xFFD32F2F),
                       ],
                     ),
                     const SizedBox(height: 16),
-                    const FinanceDropDown(
-                      hint: 'Forma de pagamento',
-                      itemColors: [
-                        Colors.green,
-                        Colors.red,
-                        Colors.blue,
-                        Colors.yellow
-                      ],
-                      items: [
-                        'Dinheiro',
-                        'Pix',
-                        'Cartão de crédito',
-                        'Cartão de débito',
-                      ],
-                    ),
+                    FinanceDropDown(
+                        hint: 'Forma de pagamento',
+                        categoriesList: widget.controller.paymentsList,
+                        onItemSelected: (p0) {
+                          widget.controller.paymentsValue.value = p0;
+                        }),
                     const SizedBox(height: 16),
                     GestureDetector(
                       onTap: () async {
@@ -125,14 +143,8 @@ class _AddTransactionPageState extends State<AddTransactionPage> {
                       children: [],
                     ),
                     const SizedBox(height: 16),
-                    const FinanceTextField(
-                      hintText: 'Descrição',
-                      maxLines: 2,
-                    ),
-                    const SizedBox(height: 16),
                     ValueListenableBuilder<List<XFile?>>(
-                      valueListenable: widget.controller
-                          .imagesNotifier, // Atualizado para imagesNotifier
+                      valueListenable: widget.controller.imagesNotifier,
                       builder: (context, images, child) {
                         return GestureDetector(
                           onTap: () {
@@ -219,18 +231,18 @@ class _AddTransactionPageState extends State<AddTransactionPage> {
                                                 borderRadius:
                                                     BorderRadius.circular(10),
                                               ),
-                                              child: const Column(
+                                              child: Column(
                                                 mainAxisAlignment:
                                                     MainAxisAlignment.center,
                                                 crossAxisAlignment:
                                                     CrossAxisAlignment.center,
                                                 children: [
-                                                  Icon(
+                                                  const Icon(
                                                     Icons.image,
                                                     size: 40,
                                                     color: AppColors.royalBlue,
                                                   ),
-                                                  Text('Galeria'),
+                                                  FinanceText.p14('Galeria'),
                                                 ],
                                               ),
                                             ),
@@ -298,7 +310,8 @@ class _AddTransactionPageState extends State<AddTransactionPage> {
                                                     onTap: () {
                                                       setState(() {
                                                         images.remove(
-                                                            image); // Remove a imagem da lista
+                                                          image,
+                                                        );
                                                       });
                                                     },
                                                     child: const Icon(
@@ -343,13 +356,23 @@ class _AddTransactionPageState extends State<AddTransactionPage> {
       ),
       bottomNavigationBar: Container(
         color: AppColors.white,
-        padding: const EdgeInsets.all(20),
+        padding: const EdgeInsets.only(left: 20, right: 20, bottom: 20),
         child: FinanceButton(
           title: 'Continuar',
           branded: false,
           disabled: false,
           loading: false,
-          onTap: () {},
+          onTap: () {
+            widget.controller.addTransaction(
+              add: widget.add,
+              categoria: widget.controller.categoriesValue.value,
+              payments: widget.controller.paymentsValue.value,
+              data: widget.controller.date.value,
+              descricao: widget.controller.description.value.text,
+              valor: widget.controller.pay.value,
+            );
+            Modular.to.pushReplacementNamed('/home/');
+          },
         ),
       ),
     );

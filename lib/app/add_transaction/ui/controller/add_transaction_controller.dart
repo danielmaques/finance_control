@@ -1,14 +1,92 @@
+import 'package:finance_control/app/add_transaction/domain/usecase/add_transaction_usecase.dart';
 import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class AddTransactionController {
+  final AddTransactionUseCase _useCase;
+
+  final ValueNotifier<TextEditingController> value =
+      ValueNotifier(TextEditingController());
+
+  final ValueNotifier<double> pay = ValueNotifier(0);
+
+  ValueNotifier<DateTime> date = ValueNotifier(DateTime.now());
+
+  final ValueNotifier<TextEditingController> description =
+      ValueNotifier(TextEditingController());
+
+  final ValueNotifier<List<dynamic>> categoriesList = ValueNotifier([]);
+
+  final ValueNotifier<String> categoriesValue = ValueNotifier('');
+
+  final ValueNotifier<List<dynamic>> paymentsList = ValueNotifier([]);
+
+  final ValueNotifier<String> paymentsValue = ValueNotifier('');
+
   final ValueNotifier<XFile?> selectedImageNotifier =
       ValueNotifier<XFile?>(null);
+
   final ValueNotifier<List<XFile?>> imagesNotifier =
       ValueNotifier<List<XFile?>>([]);
 
-  AddTransactionController();
+  AddTransactionController(
+    this._useCase,
+  );
+
+  Future<void> addTransaction({
+    required DateTime data,
+    required double valor,
+    required String categoria,
+    required String payments,
+    required String descricao,
+    required bool add,
+  }) async {
+    final prefs = await SharedPreferences.getInstance();
+    final userId = prefs.getString('user_id');
+
+    if (userId != null) {
+      Map<String, dynamic> gastoData = {
+        'data': data,
+        'valor': valor,
+        'categoria': categoria,
+        'pagamento': payments,
+        'descricao': descricao,
+        'add': add,
+      };
+
+      await _useCase.addTransaction(userId, gastoData, add);
+      await _useCase.updateBalance(userId, valor, add);
+    } else {
+      if (kDebugMode) {
+        print("Erro: UID do usuário não encontrado.");
+      }
+    }
+  }
+
+  Future<void> fetchCategories() async {
+    try {
+      final List<dynamic> categories = await _useCase.getCategories();
+      categoriesList.value = categories;
+    } catch (e) {
+      if (kDebugMode) {
+        print("Erro ao buscar categorias: $e");
+      }
+    }
+  }
+
+  Future<void> fetchPayments() async {
+    try {
+      final List<dynamic> payments = await _useCase.getPayments();
+      paymentsList.value = payments;
+    } catch (e) {
+      if (kDebugMode) {
+        print("Erro ao buscar categorias: $e");
+      }
+    }
+  }
 
   Future<void> pickImageFromGallery() async {
     bool hasPermission = await requestGalleryPermission();
