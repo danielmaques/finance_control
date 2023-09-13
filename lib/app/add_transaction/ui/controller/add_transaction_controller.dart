@@ -11,7 +11,7 @@ class AddTransactionController {
   final ValueNotifier<TextEditingController> value =
       ValueNotifier(TextEditingController());
 
-  final ValueNotifier<String> pay = ValueNotifier('');
+  final ValueNotifier<double> pay = ValueNotifier(0);
 
   ValueNotifier<DateTime> date = ValueNotifier(DateTime.now());
 
@@ -38,7 +38,7 @@ class AddTransactionController {
 
   Future<void> addTransaction({
     required DateTime data,
-    required String valor,
+    required double valor,
     required String categoria,
     required String payments,
     required String descricao,
@@ -58,6 +58,7 @@ class AddTransactionController {
       };
 
       await _useCase.addTransaction(userId, gastoData, add);
+      await _useCase.updateBalance(userId, valor, add);
     } else {
       if (kDebugMode) {
         print("Erro: UID do usuário não encontrado.");

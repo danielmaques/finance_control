@@ -20,4 +20,9 @@ class AddTransactionUseCaseImpl implements AddTransactionUseCase {
   Future<List> getPayments() {
     return _repository.getPayments();
   }
+  
+  @override
+  Future<void> updateBalance(String uid, double valor, bool add) {
+    return _repository.updateBalance(uid, valor, add);
+  }
 }

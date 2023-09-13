@@ -11,7 +11,7 @@ class FinanceAddTransactionAppBar extends StatefulWidget {
     required this.onChanged,
   });
 
-  final Function(String) onChanged;
+  final Function(double) onChanged;
 
   @override
   State<FinanceAddTransactionAppBar> createState() =>
@@ -89,7 +89,21 @@ class _FinanceAddTransactionAppBarState
                   setState(() {
                     price = value;
                   });
-                  widget.onChanged(value);
+
+                  // Remova o "R\$", espaços em branco e vírgulas (separador de milhar)
+                  String onlyNumbers =
+                      value.replaceAll('R\$', '').replaceAll(',', '').trim();
+
+                  // Converta a string para double
+                  double? priceAsDouble;
+                  try {
+                    priceAsDouble = double.parse(onlyNumbers);
+                  } catch (e) {
+                    print("Erro ao converter o valor para double: $e");
+                    return;
+                  }
+
+                  widget.onChanged(priceAsDouble);
                 },
                 decoration: const InputDecoration(
                   border: InputBorder.none,

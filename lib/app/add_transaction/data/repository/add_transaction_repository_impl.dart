@@ -21,4 +21,9 @@ class AddTransactionRepositoryImpl implements AddTransactionRepository {
   Future<List> getPayments() {
     return _dataSource.getPayments();
   }
+  
+  @override
+  Future<void> updateBalance(String uid, double valor, bool add) {
+    return _dataSource.updateBalance(uid, valor, add);
+  }
 }

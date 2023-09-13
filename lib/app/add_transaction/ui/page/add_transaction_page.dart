@@ -8,6 +8,7 @@ import 'package:finance_control/core/ds/components/drop_down/finance_drop_down.d
 import 'package:finance_control/core/ds/components/text_field/finance_text_field.dart';
 import 'package:finance_control/core/ds/style/app_colors.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_modular/flutter_modular.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 
@@ -46,7 +47,7 @@ class _AddTransactionPageState extends State<AddTransactionPage> {
       body: Column(
         children: [
           FinanceAddTransactionAppBar(onChanged: (p0) {
-            widget.controller.pay.value = p0;
+            widget.controller.pay.value = double.parse(p0.toString());
           }),
           Expanded(
             child: Container(
@@ -61,6 +62,14 @@ class _AddTransactionPageState extends State<AddTransactionPage> {
               child: SingleChildScrollView(
                 child: Column(
                   children: [
+                    FinanceTextField(
+                      hintText: 'Descrição',
+                      maxLines: 1,
+                      controller: widget.controller.description.value,
+                      onChanged: (p0) {
+                        widget.controller.description.value.text = p0;
+                      },
+                    ),
                     const SizedBox(height: 16),
                     FinanceDropDown(
                       hint: "Selecione uma categoria",
@@ -125,15 +134,6 @@ class _AddTransactionPageState extends State<AddTransactionPage> {
                     const Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [],
-                    ),
-                    const SizedBox(height: 16),
-                    FinanceTextField(
-                      hintText: 'Descrição',
-                      maxLines: 2,
-                      controller: widget.controller.description.value,
-                      onChanged: (p0) {
-                        widget.controller.description.value.text = p0;
-                      },
                     ),
                     const SizedBox(height: 16),
                     ValueListenableBuilder<List<XFile?>>(
@@ -224,18 +224,18 @@ class _AddTransactionPageState extends State<AddTransactionPage> {
                                                 borderRadius:
                                                     BorderRadius.circular(10),
                                               ),
-                                              child: const Column(
+                                              child: Column(
                                                 mainAxisAlignment:
                                                     MainAxisAlignment.center,
                                                 crossAxisAlignment:
                                                     CrossAxisAlignment.center,
                                                 children: [
-                                                  Icon(
+                                                  const Icon(
                                                     Icons.image,
                                                     size: 40,
                                                     color: AppColors.royalBlue,
                                                   ),
-                                                  Text('Galeria'),
+                                                  FinanceText.p14('Galeria'),
                                                 ],
                                               ),
                                             ),
@@ -364,6 +364,7 @@ class _AddTransactionPageState extends State<AddTransactionPage> {
               descricao: widget.controller.description.value.text,
               valor: widget.controller.pay.value,
             );
+            Modular.to.pushReplacementNamed('/home/');
           },
         ),
       ),

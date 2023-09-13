@@ -17,6 +17,48 @@ class AddTransactionDataImpl implements AddTransactionData {
   }
 
   @override
+  Future<void> updateBalance(String uid, double valor, bool add) async {
+    DocumentSnapshot userDoc =
+        await _firestore.collection('users').doc(uid).get();
+    double currentBalance = 0.0;
+
+    Map<String, dynamic> userData = userDoc.data() as Map<String, dynamic>;
+
+    if (userDoc.exists && userData['balance'] != null) {
+      currentBalance = userData['balance'].toDouble();
+    }
+
+    if (add == true) {
+      currentBalance += valor;
+    } else if (add == false) {
+      currentBalance -= valor;
+    }
+
+    // Atualiza o saldo
+    await _firestore.collection('users').doc(uid).update({
+      'balance': currentBalance,
+    });
+
+    // Atualiza gastos e ganhos
+    String currentMonth =
+        DateTime.now().toString().substring(0, 7); // "YYYY-MM"
+
+    if (add == true) {
+      double currentGain = (userData['ganhos'] ?? {})[currentMonth] ?? 0.0;
+      currentGain += valor;
+      await _firestore.collection('users').doc(uid).update({
+        'ganhos.$currentMonth': currentGain,
+      });
+    } else if (add == false) {
+      double currentExpense = (userData['gastos'] ?? {})[currentMonth] ?? 0.0;
+      currentExpense += valor;
+      await _firestore.collection('users').doc(uid).update({
+        'gastos.$currentMonth': currentExpense,
+      });
+    }
+  }
+
+  @override
   Future<List<dynamic>> getCategories() async {
     try {
       DocumentSnapshot docSnapshot =
