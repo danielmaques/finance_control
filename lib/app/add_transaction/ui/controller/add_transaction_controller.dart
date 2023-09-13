@@ -1,42 +1,14 @@
-import 'package:camera/camera.dart';
 import 'package:flutter/foundation.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 class AddTransactionController {
-  CameraController? cameraController;
   final ValueNotifier<XFile?> selectedImageNotifier =
       ValueNotifier<XFile?>(null);
   final ValueNotifier<List<XFile?>> imagesNotifier =
       ValueNotifier<List<XFile?>>([]);
 
-  AddTransactionController() {
-    initializeCamera();
-  }
-
-  Future<void> initializeCamera() async {
-    try {
-      final cameras = await availableCameras();
-      if (cameras.isNotEmpty) {
-        final firstCamera = cameras.first;
-
-        cameraController = CameraController(
-          firstCamera,
-          ResolutionPreset.medium,
-        );
-
-        await cameraController!.initialize();
-      } else {
-        if (kDebugMode) {
-          print('No cameras available');
-        }
-      }
-    } catch (e) {
-      if (kDebugMode) {
-        print('Error initializing camera: $e');
-      }
-    }
-  }
+  AddTransactionController();
 
   Future<void> pickImageFromGallery() async {
     bool hasPermission = await requestGalleryPermission();
@@ -51,9 +23,6 @@ class AddTransactionController {
 
   void dispose() {
     selectedImageNotifier.dispose();
-    if (cameraController != null && cameraController!.value.isInitialized) {
-      cameraController!.dispose();
-    }
   }
 
   Future<bool> requestGalleryPermission() async {
