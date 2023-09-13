@@ -25,6 +25,7 @@ dependencies:
   dotted_border: ^2.0.0+3
   currency_text_input_formatter: ^2.1.10
   image_picker: ^1.0.4
+  camera: ^0.10.5+4
   permission_handler: ^8.3.0
 
 dev_dependencies:
