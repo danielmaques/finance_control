@@ -6,11 +6,12 @@ import 'package:finance_control/core/ds/components/app_bar/finance_add_transacti
 import 'package:finance_control/core/ds/components/buttons/button.dart';
 import 'package:finance_control/core/ds/components/drop_down/finance_drop_down.dart';
 import 'package:finance_control/core/ds/components/text_field/finance_text_field.dart';
-import 'package:finance_control/core/ds/style/afinz_text.dart';
 import 'package:finance_control/core/ds/style/app_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
+
+import '../../../../core/ds/style/afinz_text.dart';
 
 class AddTransactionPage extends StatefulWidget {
   const AddTransactionPage({
@@ -99,66 +100,66 @@ class _AddTransactionPageState extends State<AddTransactionPage> {
                       maxLines: 2,
                     ),
                     const SizedBox(height: 16),
-                    GestureDetector(
-                      onTap: () {
-                        widget.controller.requestGalleryPermission();
-                        showModalBottomSheet(
-                          context: context,
-                          isScrollControlled: true,
-                          shape: const RoundedRectangleBorder(
-                            borderRadius: BorderRadius.vertical(
-                              top: Radius.circular(32),
-                            ),
-                          ),
-                          builder: (context) {
-                            return Container(
-                              height: 180,
-                              padding: const EdgeInsets.symmetric(
-                                  horizontal: 20, vertical: 24),
-                              child: Column(
-                                children: [
-                                  Container(
-                                    height: 4,
-                                    width: 30,
-                                    decoration: BoxDecoration(
-                                      color: AppColors.slateGray,
-                                      borderRadius: BorderRadius.circular(2),
-                                    ),
-                                  ),
-                                  const Spacer(),
-                                  Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceAround,
+                    ValueListenableBuilder<List<XFile?>>(
+                      valueListenable: widget.controller
+                          .imagesNotifier, // Atualizado para imagesNotifier
+                      builder: (context, images, child) {
+                        return GestureDetector(
+                          onTap: () {
+                            showModalBottomSheet(
+                              context: context,
+                              isScrollControlled: true,
+                              shape: const RoundedRectangleBorder(
+                                borderRadius: BorderRadius.vertical(
+                                  top: Radius.circular(32),
+                                ),
+                              ),
+                              builder: (context) {
+                                return Container(
+                                  height: 180,
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 20, vertical: 24),
+                                  child: Column(
                                     children: [
                                       Container(
-                                        height: 100,
-                                        width: 100,
+                                        height: 4,
+                                        width: 30,
                                         decoration: BoxDecoration(
-                                          color: AppColors.lighterBlue
-                                              .withOpacity(0.3),
+                                          color: AppColors.slateGray,
                                           borderRadius:
-                                              BorderRadius.circular(10),
-                                        ),
-                                        child: Column(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.center,
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.center,
-                                          children: [
-                                            const Icon(
-                                              Icons.camera_alt,
-                                              size: 40,
-                                              color: AppColors.royalBlue,
-                                            ),
-                                            FinanceText.p14('Camera'),
-                                          ],
+                                              BorderRadius.circular(2),
                                         ),
                                       ),
-                                      ValueListenableBuilder<XFile?>(
-                                        valueListenable: widget
-                                            .controller.selectedImageNotifier,
-                                        builder: (context, image, child) {
-                                          return GestureDetector(
+                                      const Spacer(),
+                                      Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceAround,
+                                        children: [
+                                          Container(
+                                            height: 100,
+                                            width: 100,
+                                            decoration: BoxDecoration(
+                                              color: AppColors.lighterBlue
+                                                  .withOpacity(0.3),
+                                              borderRadius:
+                                                  BorderRadius.circular(10),
+                                            ),
+                                            child: Column(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.center,
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.center,
+                                              children: [
+                                                const Icon(
+                                                  Icons.camera_alt,
+                                                  size: 40,
+                                                  color: AppColors.royalBlue,
+                                                ),
+                                                FinanceText.p14('Camera'),
+                                              ],
+                                            ),
+                                          ),
+                                          GestureDetector(
                                             onTap: widget.controller
                                                 .pickImageFromGallery,
                                             child: Container(
@@ -170,60 +171,99 @@ class _AddTransactionPageState extends State<AddTransactionPage> {
                                                 borderRadius:
                                                     BorderRadius.circular(10),
                                               ),
-                                              child: Column(
+                                              child: const Column(
                                                 mainAxisAlignment:
                                                     MainAxisAlignment.center,
                                                 crossAxisAlignment:
                                                     CrossAxisAlignment.center,
                                                 children: [
-                                                  if (image == null)
-                                                    const Icon(
-                                                      Icons.image,
-                                                      size: 40,
-                                                      color:
-                                                          AppColors.royalBlue,
-                                                    )
-                                                  else
-                                                    Image.file(File(image.path),
-                                                        fit: BoxFit.cover),
-                                                  if (image == null)
-                                                    const Text('Galeria'),
+                                                  Icon(
+                                                    Icons.image,
+                                                    size: 40,
+                                                    color: AppColors.royalBlue,
+                                                  ),
+                                                  Text('Galeria'),
                                                 ],
                                               ),
                                             ),
-                                          );
-                                        },
+                                          ),
+                                        ],
+                                      ),
+                                      const Spacer(),
+                                    ],
+                                  ),
+                                );
+                              },
+                            );
+                          },
+                          child: DottedBorder(
+                            color: const Color(0xFFF1F1FA),
+                            borderType: BorderType.RRect,
+                            radius: const Radius.circular(12),
+                            padding: const EdgeInsets.all(12),
+                            child: images.isEmpty
+                                ? Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.center,
+                                    children: [
+                                      const Icon(
+                                        Icons.attachment_outlined,
+                                        color: AppColors.slateGray,
+                                      ),
+                                      const SizedBox(width: 10),
+                                      FinanceText.p16(
+                                        'Comprovante',
+                                        color: AppColors.slateGray,
+                                      ),
+                                    ],
+                                  )
+                                : Row(
+                                    children: [
+                                      ...images.take(3).map(
+                                            (image) => Padding(
+                                              padding: const EdgeInsets.only(
+                                                  right: 20),
+                                              child: ClipRRect(
+                                                borderRadius:
+                                                    BorderRadius.circular(10),
+                                                child: Image.file(
+                                                  File(image!.path),
+                                                  fit: BoxFit.cover,
+                                                  width: 80,
+                                                  height: 80,
+                                                  errorBuilder: (BuildContext
+                                                          context,
+                                                      Object exception,
+                                                      StackTrace? stackTrace) {
+                                                    return const Text(
+                                                      'Erro ao carregar a imagem',
+                                                    );
+                                                  },
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                      Container(
+                                        height: 80,
+                                        width: 80,
+                                        decoration: BoxDecoration(
+                                          color: AppColors.lighterBlue
+                                              .withOpacity(0.3),
+                                          borderRadius:
+                                              BorderRadius.circular(10),
+                                        ),
+                                        child: const Icon(
+                                          Icons.add,
+                                          size: 40,
+                                          color: AppColors.royalBlue,
+                                        ),
                                       ),
                                     ],
                                   ),
-                                  const Spacer(),
-                                ],
-                              ),
-                            );
-                          },
+                          ),
                         );
                       },
-                      child: DottedBorder(
-                        color: const Color(0xFFF1F1FA),
-                        borderType: BorderType.RRect,
-                        radius: const Radius.circular(12),
-                        padding: const EdgeInsets.all(12),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            const Icon(
-                              Icons.attachment_outlined,
-                              color: AppColors.slateGray,
-                            ),
-                            const SizedBox(width: 10),
-                            FinanceText.p16(
-                              'Comprovante',
-                              color: AppColors.slateGray,
-                            ),
-                          ],
-                        ),
-                      ),
                     ),
                   ],
                 ),

@@ -6,6 +6,8 @@ class AddTransactionController {
   final ImagePicker _picker = ImagePicker();
   final ValueNotifier<XFile?> selectedImageNotifier =
       ValueNotifier<XFile?>(null);
+  final ValueNotifier<List<XFile?>> imagesNotifier =
+      ValueNotifier<List<XFile?>>([]);
 
   Future<void> pickImageFromGallery() async {
     bool hasPermission = await requestGalleryPermission();
@@ -24,7 +26,9 @@ class AddTransactionController {
   Future<void> _pickImage(ImageSource source) async {
     try {
       final XFile? image = await _picker.pickImage(source: source);
-      selectedImageNotifier.value = image;
+      if (image != null) {
+        imagesNotifier.value = [...imagesNotifier.value, image];
+      }
     } catch (e) {
       if (kDebugMode) {
         print('Erro ao selecionar imagem: $e');
@@ -47,7 +51,7 @@ class AddTransactionController {
   Future<bool> _requestPermission(Permission permission) async {
     PermissionStatus status = await permission.status;
 
-    if (!status.isGranted) {
+    if (status.isDenied) {
       status = await permission.request();
     }
 
