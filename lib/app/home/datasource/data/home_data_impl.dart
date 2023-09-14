@@ -64,15 +64,28 @@ class HomeDataImpl implements HomeData {
 
   @override
   Future<List<Map<String, dynamic>>> getTransaction(String uid) async {
-    QuerySnapshot querySnapshot = await _firestore
-        .collection('users')
-        .doc(uid)
-        .collection('transaction')
-        .get();
+    DocumentSnapshot userDoc =
+        await _firestore.collection('users').doc(uid).get();
+    List<String> subcollections =
+        List<String>.from(userDoc['subcollections'] ?? []);
 
-    return querySnapshot.docs
-        .map((doc) => doc.data() as Map<String, dynamic>)
-        .toList();
+    List<Map<String, dynamic>> allTransactions = [];
+
+    for (var subcollection in subcollections) {
+      QuerySnapshot querySnapshot = await _firestore
+          .collection('users')
+          .doc(uid)
+          .collection(subcollection)
+          .get();
+
+      allTransactions.addAll(
+        querySnapshot.docs
+            .map((doc) => doc.data() as Map<String, dynamic>)
+            .toList(),
+      );
+    }
+
+    return allTransactions;
   }
 
   @override

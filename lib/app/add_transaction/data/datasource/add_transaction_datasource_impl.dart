@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/foundation.dart';
+import 'package:intl/intl.dart';
 
 import 'add_transaction_datasource.dart';
 
@@ -9,11 +10,19 @@ class AddTransactionDataImpl implements AddTransactionData {
   @override
   Future<void> addTransaction(
       String uid, Map<String, dynamic> transactionData, bool add) async {
+    // Determinar o mês e o ano atual
+    DateTime now = DateTime.now();
+    String monthYear = DateFormat('MMM yyyy').format(now);
+
     await _firestore
         .collection('users')
         .doc(uid)
-        .collection('transaction')
+        .collection(monthYear)
         .add(transactionData);
+
+    await _firestore.collection('users').doc(uid).set({
+      'subcollections': FieldValue.arrayUnion([monthYear])
+    }, SetOptions(merge: true));
   }
 
   @override
