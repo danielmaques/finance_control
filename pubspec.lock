@@ -114,7 +114,7 @@ packages:
     source: hosted
     version: "1.0.6"
   currency_text_input_formatter:
-    dependency: "direct main"
+    dependency: transitive
     description:
       name: currency_text_input_formatter
       sha256: "5d8db755ccde76817f6f5fb33e65304d7b1db442e1ccff079fe235584c6b7d5a"
@@ -193,6 +193,15 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "0.9.3+1"
+  finance_control_ui:
+    dependency: "direct main"
+    description:
+      path: "."
+      ref: HEAD
+      resolved-ref: b438431b29f729592a8bc86bb33ed77caf8ccaca
+      url: "https://github.com/danielmaques/finance_control_ds.git"
+    source: git
+    version: "0.0.1"
   firebase_auth:
     dependency: "direct main"
     description:
@@ -290,10 +299,10 @@ packages:
     dependency: "direct main"
     description:
       name: flutter_modular
-      sha256: e185410cff7a268cc58832932ae2af48a62c27739aa223241eafc7d122831f0e
+      sha256: ac6298ce1abd414286ee5a554fc45e81e358461979b5d4e02c8abd685e3b23f2
       url: "https://pub.dev"
     source: hosted
-    version: "6.3.1"
+    version: "6.3.2"
   flutter_plugin_android_lifecycle:
     dependency: transitive
     description:
@@ -303,7 +312,7 @@ packages:
     source: hosted
     version: "2.0.16"
   flutter_svg:
-    dependency: "direct main"
+    dependency: transitive
     description:
       name: flutter_svg
       sha256: "8c5d68a82add3ca76d792f058b186a0599414f279f00ece4830b9b231b570338"
@@ -460,10 +469,10 @@ packages:
     dependency: transitive
     description:
       name: modular_core
-      sha256: "306fc8010b37641525f3ada691fd0c66cf8479e149f46926409897e328b442c4"
+      sha256: "5baaa460ac9d85d457d6864ef41a2194b8115a6bdeb585a684789f2d9004c892"
       url: "https://pub.dev"
     source: hosted
-    version: "3.3.1"
+    version: "3.3.2"
   path:
     dependency: transitive
     description:

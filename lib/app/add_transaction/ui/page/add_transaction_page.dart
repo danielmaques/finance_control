@@ -2,17 +2,13 @@ import 'dart:io';
 
 import 'package:dotted_border/dotted_border.dart';
 import 'package:finance_control/app/add_transaction/ui/controller/add_transaction_controller.dart';
-import 'package:finance_control/core/ds/components/app_bar/finance_add_transaction_app_bar.dart';
 import 'package:finance_control/core/ds/components/buttons/button.dart';
-import 'package:finance_control/core/ds/components/drop_down/finance_drop_down.dart';
-import 'package:finance_control/core/ds/components/text_field/finance_text_field.dart';
-import 'package:finance_control/core/ds/style/app_colors.dart';
+import 'package:finance_control_ui/2_molecules/finance_top_bar/finance_add_transaction_top_bar.dart';
+import 'package:finance_control_ui/finance_control_ui.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
-
-import '../../../../core/ds/style/afinz_text.dart';
 
 class AddTransactionPage extends StatefulWidget {
   const AddTransactionPage({
@@ -46,9 +42,14 @@ class _AddTransactionPageState extends State<AddTransactionPage> {
       backgroundColor: AppColors.deepBlue,
       body: Column(
         children: [
-          FinanceAddTransactionAppBar(onChanged: (p0) {
-            widget.controller.pay.value = double.parse(p0.toString());
-          }),
+          FinanceAddTransactionAppBar(
+            onChanged: (p0) {
+              widget.controller.pay.value = double.parse(p0.toString());
+            },
+            onPressed: () {
+              Modular.to.pop();
+            },
+          ),
           Expanded(
             child: Container(
               padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 24),

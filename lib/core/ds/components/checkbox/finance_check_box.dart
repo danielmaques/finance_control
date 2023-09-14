@@ -1,7 +1,5 @@
-import 'package:finance_control/core/ds/style/app_colors.dart';
+import 'package:finance_control_ui/finance_control_ui.dart';
 import 'package:flutter/material.dart';
-
-import '../../style/afinz_text.dart';
 
 class FinanceCheckBox extends StatefulWidget {
   const FinanceCheckBox({

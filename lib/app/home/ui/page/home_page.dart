@@ -1,7 +1,6 @@
 import 'package:finance_control/app/home/ui/controller/home_controller.dart';
 import 'package:finance_control/core/ds/components/transaction_list/finance_transaction_list.dart';
-import 'package:finance_control/core/ds/style/afinz_text.dart';
-import 'package:finance_control/core/ds/style/app_colors.dart';
+import 'package:finance_control_ui/finance_control_ui.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 
