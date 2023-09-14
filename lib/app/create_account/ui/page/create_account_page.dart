@@ -1,9 +1,6 @@
 import 'package:finance_control/app/create_account/ui/controller/create_account_controller.dart';
-import 'package:finance_control/core/ds/components/buttons/button.dart';
 import 'package:finance_control_ui/finance_control_ui.dart';
 import 'package:flutter/material.dart';
-
-import '../../../../core/ds/components/checkbox/finance_check_box.dart';
 
 class CreateAccountPage extends StatelessWidget {
   const CreateAccountPage({

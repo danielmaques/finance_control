@@ -1,10 +1,8 @@
 import 'package:finance_control/app/home/ui/controller/home_controller.dart';
-import 'package:finance_control/core/ds/components/transaction_list/finance_transaction_list.dart';
 import 'package:finance_control_ui/finance_control_ui.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 
-import '../../../../core/helpers/formater.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({
@@ -138,6 +136,7 @@ class _HomePageState extends State<HomePage> {
               builder: (context, value, child) => FinanceTransactionList(
                 transaction: value,
                 itemCount: value.length > 8 ? 8 : value.length,
+                dateTime: DateTime.now(),
               ),
             ),
           ],

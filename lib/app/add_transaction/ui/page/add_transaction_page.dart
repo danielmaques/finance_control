@@ -2,8 +2,6 @@ import 'dart:io';
 
 import 'package:dotted_border/dotted_border.dart';
 import 'package:finance_control/app/add_transaction/ui/controller/add_transaction_controller.dart';
-import 'package:finance_control/core/ds/components/buttons/button.dart';
-import 'package:finance_control_ui/2_molecules/finance_top_bar/finance_add_transaction_top_bar.dart';
 import 'package:finance_control_ui/finance_control_ui.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
