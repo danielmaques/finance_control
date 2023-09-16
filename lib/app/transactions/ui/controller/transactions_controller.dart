@@ -46,6 +46,11 @@ class TransactionsController {
           monthMap[month]!.add(trans);
         }
 
+        monthMap.forEach((month, transactions) {
+          transactions
+              .sort((a, b) => a['data'].toDate().compareTo(b['data'].toDate()));
+        });
+
         transaction.value = transactions;
         transactionsByMonth.value = monthMap;
 
