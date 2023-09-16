@@ -198,7 +198,7 @@ packages:
     description:
       path: "."
       ref: HEAD
-      resolved-ref: "430363c826bf33aade06f77e3bfdb0c2e05260e4"
+      resolved-ref: "009e7766b15131352dbeffb6bc43c1a732093414"
       url: "https://github.com/danielmaques/finance_control_ds.git"
     source: git
     version: "0.0.1"
@@ -275,7 +275,7 @@ packages:
     source: hosted
     version: "3.6.6"
   fl_chart:
-    dependency: "direct main"
+    dependency: transitive
     description:
       name: fl_chart
       sha256: c1e26c7e48496be85104c16c040950b0436674cdf0737f3f6e95511b2529b592

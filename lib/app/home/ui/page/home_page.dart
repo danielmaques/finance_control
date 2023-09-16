@@ -29,109 +29,45 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Padding(
-        padding: const EdgeInsets.only(left: 20, right: 20, top: 70),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                FinanceText.p16(
-                  'Saldo',
-                  color: AppColors.midnightBlack,
-                ),
-                Container(
-                  padding: const EdgeInsets.all(5),
-                  decoration: const BoxDecoration(
-                    color: AppColors.navyBlue,
-                    shape: BoxShape.circle,
-                  ),
-                  child: const Icon(
-                    Icons.person,
-                    color: Colors.white,
-                    size: 15,
-                  ),
-                ),
-              ],
-            ),
-            ValueListenableBuilder(
-              valueListenable: widget.controller.balance,
-              builder: (context, value, child) => FinanceText.h2(
-                formatMoney(value),
-              ),
-            ),
-            const SizedBox(height: 24),
-            Container(
-              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 13),
-              decoration: BoxDecoration(
-                color: const Color(0xFFF3F5FA),
-                borderRadius: BorderRadius.circular(16),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.black.withOpacity(0.2),
-                    spreadRadius: 0.5,
-                    blurRadius: 2,
-                    offset: const Offset(0, 1),
-                  ),
-                ],
-              ),
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
+      backgroundColor: const Color(0xFFEEF2F8),
+      body: Column(
+        children: [
+          FinanceHomeTopBar(
+            addRoute: () {
+              Modular.to.pushNamed('/addTransaction/', arguments: {
+                'add': true,
+              });
+            },
+            removeRoute: () {
+              Modular.to.pushNamed('/addTransaction/', arguments: {
+                'add': false,
+              });
+            },
+            transactionRoute: () {
+              Modular.to.pushNamed('/transactions/');
+            },
+            menuRoute: () {},
+          ),
+          SingleChildScrollView(
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 18),
+              child: Column(
                 children: [
-                  Column(
-                    children: [
-                      ValueListenableBuilder(
-                        valueListenable: widget.controller.gastos,
-                        builder: (context, value, child) {
-                          return FinanceText.p18(
-                            formatMoney(value),
-                            color: AppColors.cherryRed,
-                          );
-                        },
-                      ),
-                      FinanceText.p16('Gastos')
-                    ],
-                  ),
-                  Container(
-                    width: 1,
-                    height: 60,
-                    color: AppColors.slateGray,
-                  ),
-                  Column(
-                    children: [
-                      ValueListenableBuilder(
-                        valueListenable: widget.controller.ganhos,
-                        builder: (context, value, child) {
-                          return FinanceText.p18(
-                            formatMoney(value),
-                            color: AppColors.forestGreen,
-                          );
-                        },
-                      ),
-                      FinanceText.p16('Ganhos')
-                    ],
+                  FinanceSpendingTile(spending: 5400, onTap: () {}),
+                  FinanceSpendingTile(spending: 5400, onTap: () {}),
+                  FinanceSpendingTile(spending: 5400, onTap: () {}),
+                  FinanceSpendingTile(spending: 5400, onTap: () {}),
+                  const SizedBox(height: 22),
+                  FinanceCredtCardTile(
+                    onTap: () {},
+                    card: 'card',
+                    cardName: 'cardName',
                   ),
                 ],
               ),
             ),
-            const SizedBox(height: 24),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                FinanceText.h4(
-                  'Transações',
-                  color: AppColors.midnightBlack,
-                ),
-                FinanceText.p16('Mais'),
-              ],
-            ),
-          ],
-        ),
+          ),
+        ],
       ),
       floatingActionButton: Column(
         mainAxisAlignment: MainAxisAlignment.end,
@@ -141,11 +77,7 @@ class _HomePageState extends State<HomePage> {
             child: FloatingActionButton(
               mini: true,
               tooltip: 'Histórico',
-              onPressed: () {
-                Modular.to.pushNamed('/addTransaction/', arguments: {
-                  'add': true,
-                });
-              },
+              onPressed: () {},
               backgroundColor: AppColors.navyBlue,
               child: const Icon(Icons.poll_outlined),
             ),
