@@ -4,10 +4,10 @@ import 'package:shimmer/shimmer.dart';
 class FinanceTransactionListShimmer extends StatelessWidget {
   const FinanceTransactionListShimmer({
     super.key,
-    required this.isLoading, // Adicione a propriedade isLoading
+    required this.isLoading, 
   });
 
-  final bool isLoading; // Estado para controlar o carregamento
+  final bool isLoading; 
 
   @override
   Widget build(BuildContext context) {
@@ -17,7 +17,7 @@ class FinanceTransactionListShimmer extends StatelessWidget {
       child: ListView.builder(
         shrinkWrap: true,
         physics: const NeverScrollableScrollPhysics(),
-        itemCount: 5, // Defina o número de itens de Shimmer desejado
+        itemCount: 8, // Defina o número de itens de Shimmer desejado
         itemBuilder: (context, index) {
           return Padding(
             padding: const EdgeInsets.symmetric(vertical: 14),

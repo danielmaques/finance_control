@@ -33,44 +33,47 @@ class _TransactionsPageState extends State<TransactionsPage> {
         icon: true,
         onTap: () => Modular.to.pop(),
       ),
-      body: Padding(
-        padding: const EdgeInsets.symmetric(vertical: 14),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            FinanceText.p14('Saldo', color: AppColors.slateGray),
-            ValueListenableBuilder(
-              valueListenable: widget.controller.balance,
-              builder: (context, value, child) => FinanceText.h3(
-                formatMoney(value),
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.symmetric(vertical: 14),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              FinanceText.p14('Saldo', color: AppColors.slateGray),
+              ValueListenableBuilder(
+                valueListenable: widget.controller.balance,
+                builder: (context, value, child) => FinanceText.h3(
+                  formatMoney(value),
+                ),
               ),
-            ),
-            const SizedBox(height: 26),
-            const Divider(
-              height: 1,
-              color: Colors.black45,
-            ),
-            Padding(
-              padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 20),
-              child: Column(
-                children: [
-                  ValueListenableBuilder(
-                    valueListenable: widget.controller.isLoading,
-                    builder: (context, value, child) => value == true
-                        ? const FinanceTransactionListShimmer(isLoading: true)
-                        : ValueListenableBuilder(
-                            valueListenable:
-                                widget.controller.transactionMonths,
-                            builder: (context, value, child) =>
-                                FinanceTransactionList(
-                              transactionsByMonth: value,
+              const SizedBox(height: 26),
+              const Divider(
+                height: 1,
+                color: Colors.black45,
+              ),
+              Padding(
+                padding:
+                    const EdgeInsets.symmetric(vertical: 20, horizontal: 20),
+                child: Column(
+                  children: [
+                    ValueListenableBuilder(
+                      valueListenable: widget.controller.isLoading,
+                      builder: (context, value, child) => value == true
+                          ? const FinanceTransactionListShimmer(isLoading: true)
+                          : ValueListenableBuilder(
+                              valueListenable:
+                                  widget.controller.transactionMonths,
+                              builder: (context, value, child) =>
+                                  FinanceTransactionList(
+                                transactionsByMonth: value,
+                              ),
                             ),
-                          ),
-                  ),
-                ],
+                    ),
+                  ],
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );
