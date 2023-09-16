@@ -1,3 +1,5 @@
+import 'dart:async'; // <-- Required for Timer
+
 import 'package:finance_control/app/home/domain/usecase/home_usecase.dart';
 import 'package:flutter/foundation.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -7,41 +9,28 @@ class HomeController {
 
   final ValueNotifier<List<Map<String, dynamic>>> transaction =
       ValueNotifier<List<Map<String, dynamic>>>([]);
-
   final ValueNotifier<double> balance = ValueNotifier<double>(0.0);
-
   final ValueNotifier<double> gastos = ValueNotifier<double>(0.0);
-
   final ValueNotifier<double> ganhos = ValueNotifier<double>(0.0);
 
-  HomeController(this._useCase);
+  Timer? _balanceRefreshTimer; // <-- Declare a Timer instance
 
-  Future<void> addTransaction(DateTime data, double valor, String nome,
-      String categoria, bool add) async {
-    final prefs = await SharedPreferences.getInstance();
-    final userId = prefs.getString('user_id');
+  HomeController(this._useCase) {
+    _startBalanceRefreshTimer(); // <-- Initialize the timer in the constructor
+  }
 
-    if (userId != null) {
-      Map<String, dynamic> gastoData = {
-        'data': data,
-        'valor': valor,
-        'nome': nome,
-        'categoria': categoria,
-        'add': add,
-      };
+  // Define the timer function
+  void _startBalanceRefreshTimer() {
+    _balanceRefreshTimer?.cancel(); // Cancel any existing timer just in case
+    _balanceRefreshTimer = Timer.periodic(const Duration(minutes: 5), (timer) {
+      getBalance();
+    });
+  }
 
-      await _useCase.addTransaction(userId, gastoData, add);
-      await _useCase.updateBalance(userId, valor, add);
-
-      await getBalance();
-
-      getTransactions();
-      getGastosEGanhos();
-    } else {
-      if (kDebugMode) {
-        print("Erro: UID do usuário não encontrado.");
-      }
-    }
+  Future<void> refreshData() async {
+    await getBalance();
+    await getTransactions();
+    await getGastosEGanhos();
   }
 
   Future<void> getTransactions() async {
@@ -54,6 +43,7 @@ class HomeController {
       transactions.sort((a, b) => b['data'].compareTo(a['data']));
 
       transaction.value = transactions;
+      await refreshData();
     }
   }
 
@@ -83,5 +73,10 @@ class HomeController {
       gastos.value = gastosDoMesAtual;
       ganhos.value = ganhosDoMesAtual;
     }
+  }
+
+  // Remember to dispose of the timer when it's no longer needed.
+  void dispose() {
+    _balanceRefreshTimer?.cancel();
   }
 }

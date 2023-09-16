@@ -30,101 +30,58 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: const Color(0xFFEEF2F8),
-      body: Column(
-        children: [
-          FinanceHomeTopBar(
-            addRoute: () {
-              Modular.to.pushNamed('/addTransaction/', arguments: {
-                'add': true,
-              });
-            },
-            removeRoute: () {
-              Modular.to.pushNamed('/addTransaction/', arguments: {
-                'add': false,
-              });
-            },
-            transactionRoute: () {
-              Modular.to.pushNamed('/transactions/');
-            },
-            menuRoute: () {},
-          ),
-          SingleChildScrollView(
-            child: Padding(
+      appBar: FinanceHomeTopBar(
+        money: widget.controller.balance,
+        addRoute: () {
+          Modular.to.pushNamed('/addTransaction/', arguments: {
+            'add': true,
+          });
+        },
+        removeRoute: () {
+          Modular.to.pushNamed('/addTransaction/', arguments: {
+            'add': false,
+          });
+        },
+        transactionRoute: () {
+          Modular.to.pushNamed('/transactions/');
+        },
+        menuRoute: () {},
+      ),
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+            Padding(
               padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 18),
               child: Column(
                 children: [
-                  FinanceSpendingTile(spending: 5400, onTap: () {}),
-                  FinanceSpendingTile(spending: 5400, onTap: () {}),
-                  FinanceSpendingTile(spending: 5400, onTap: () {}),
-                  FinanceSpendingTile(spending: 5400, onTap: () {}),
-                  const SizedBox(height: 22),
                   FinanceCredtCardTile(
                     onTap: () {},
                     card: 'card',
                     cardName: 'cardName',
                   ),
+                  const SizedBox(height: 22),
+                  ValueListenableBuilder(
+                    valueListenable: widget.controller.gastos,
+                    builder: (context, value, child) => FinanceSpendingTile(
+                      spending: value,
+                      onTap: () {},
+                    ),
+                  ),
+                  const SizedBox(height: 22),
+                  ValueListenableBuilder(
+                    valueListenable: widget.controller.transaction,
+                    builder: (context, value, child) => FinanceListTile(
+                      transactions: value,
+                      onTap: () {
+                        Modular.to.pushNamed('/transactions/');
+                      },
+                    ),
+                  ),
                 ],
               ),
             ),
-          ),
-        ],
-      ),
-      floatingActionButton: Column(
-        mainAxisAlignment: MainAxisAlignment.end,
-        children: [
-          Visibility(
-            visible: isOpen,
-            child: FloatingActionButton(
-              mini: true,
-              tooltip: 'Histórico',
-              onPressed: () {},
-              backgroundColor: AppColors.navyBlue,
-              child: const Icon(Icons.poll_outlined),
-            ),
-          ),
-          const SizedBox(height: 10),
-          Visibility(
-            visible: isOpen,
-            child: FloatingActionButton(
-              mini: true,
-              tooltip: 'Gasto',
-              onPressed: () {
-                Modular.to.pushNamed('/transactions/');
-                print('Opção 2 clicada');
-              },
-              backgroundColor: AppColors.navyBlue,
-              child: const Icon(Icons.remove),
-            ),
-          ),
-          const SizedBox(height: 10),
-          Visibility(
-            visible: isOpen,
-            child: FloatingActionButton(
-              mini: true,
-              tooltip: 'Adicionar',
-              onPressed: () {
-                widget.controller.addTransaction(
-                    DateTime.now(), 1000, 'nome', 'categoria', true);
-                print('Opção 2 clicada');
-              },
-              backgroundColor: AppColors.navyBlue,
-              child: const Icon(Icons.add),
-            ),
-          ),
-          const SizedBox(height: 10),
-          FloatingActionButton(
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(20),
-            ),
-            onPressed: () {
-              setState(() {
-                isOpen = !isOpen;
-              });
-            },
-            backgroundColor: AppColors.navyBlue,
-            child: Icon(isOpen ? Icons.close : Icons.menu),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

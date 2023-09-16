@@ -196,11 +196,9 @@ packages:
   finance_control_ui:
     dependency: "direct main"
     description:
-      path: "."
-      ref: HEAD
-      resolved-ref: "009e7766b15131352dbeffb6bc43c1a732093414"
-      url: "https://github.com/danielmaques/finance_control_ds.git"
-    source: git
+      path: "../finance_control_ui"
+      relative: true
+    source: path
     version: "0.0.1"
   firebase_auth:
     dependency: "direct main"

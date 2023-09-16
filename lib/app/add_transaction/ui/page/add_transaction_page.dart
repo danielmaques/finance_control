@@ -116,7 +116,7 @@ class _AddTransactionPageState extends State<AddTransactionPage> {
                         );
                         if (pickedDate != null) {
                           setState(() {
-                            selectedDate = pickedDate;
+                            widget.controller.date.value = pickedDate;
                           });
                         }
                       },
@@ -132,7 +132,8 @@ class _AddTransactionPageState extends State<AddTransactionPage> {
                           ),
                         ),
                         child: FinanceText.p16(
-                          DateFormat('dd/MM/yyyy').format(selectedDate),
+                          DateFormat('dd/MM/yyyy')
+                              .format(widget.controller.date.value),
                           color: Colors.grey[500],
                         ),
                       ),
