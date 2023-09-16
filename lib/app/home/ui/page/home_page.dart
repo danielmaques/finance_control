@@ -3,7 +3,6 @@ import 'package:finance_control_ui/finance_control_ui.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 
-
 class HomePage extends StatefulWidget {
   const HomePage({
     super.key,
@@ -131,14 +130,6 @@ class _HomePageState extends State<HomePage> {
                 FinanceText.p16('Mais'),
               ],
             ),
-            ValueListenableBuilder(
-              valueListenable: widget.controller.transaction,
-              builder: (context, value, child) => FinanceTransactionList(
-                transaction: value,
-                itemCount: value.length > 8 ? 8 : value.length,
-                dateTime: DateTime.now(),
-              ),
-            ),
           ],
         ),
       ),
@@ -166,8 +157,7 @@ class _HomePageState extends State<HomePage> {
               mini: true,
               tooltip: 'Gasto',
               onPressed: () {
-                widget.controller.addTransaction(
-                    DateTime.now(), 1000, 'nome', 'categoria', false);
+                Modular.to.pushNamed('/transactions/');
                 print('Opção 2 clicada');
               },
               backgroundColor: AppColors.navyBlue,

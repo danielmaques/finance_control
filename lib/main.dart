@@ -1,5 +1,6 @@
 import 'package:finance_control/app/add_transaction/add_transaction_module.dart';
 import 'package:finance_control/app/login/login_module.dart';
+import 'package:finance_control/app/transactions/transactions_module.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -43,5 +44,6 @@ class AppModule extends Module {
     r.module('/createAccount', module: CreateAccountModule());
     r.module('/home', module: HomeModule());
     r.module('/addTransaction', module: AddTransactionModule());
+    r.module('/transactions', module: TransactionsModule());
   }
 }
