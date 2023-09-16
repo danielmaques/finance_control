@@ -1,4 +1,5 @@
 import 'package:finance_control/app/transactions/ui/controller/transactions_controller.dart';
+import 'package:finance_control/app/transactions/ui/shimmer/transaction_page_shimmer.dart';
 import 'package:finance_control_ui/finance_control_ui.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
@@ -54,10 +55,17 @@ class _TransactionsPageState extends State<TransactionsPage> {
               child: Column(
                 children: [
                   ValueListenableBuilder(
-                    valueListenable: widget.controller.transactionMonths,
-                    builder: (context, value, child) => FinanceTransactionList(
-                      transactionsByMonth: value,
-                    ),
+                    valueListenable: widget.controller.isLoading,
+                    builder: (context, value, child) => value == true
+                        ? const FinanceTransactionListShimmer(isLoading: true)
+                        : ValueListenableBuilder(
+                            valueListenable:
+                                widget.controller.transactionMonths,
+                            builder: (context, value, child) =>
+                                FinanceTransactionList(
+                              transactionsByMonth: value,
+                            ),
+                          ),
                   ),
                 ],
               ),

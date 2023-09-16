@@ -20,6 +20,8 @@ class TransactionsController {
 
   final ValueNotifier<double> balance = ValueNotifier<double>(0.0);
 
+  final ValueNotifier<bool> isLoading = ValueNotifier<bool>(true);
+
   TransactionsController(this.transactionsUseCase);
 
   Future<void> getTransactions() async {
@@ -46,6 +48,8 @@ class TransactionsController {
 
         transaction.value = transactions;
         transactionsByMonth.value = monthMap;
+
+        isLoading.value = false;
       }
     } catch (e) {
       if (kDebugMode) {
