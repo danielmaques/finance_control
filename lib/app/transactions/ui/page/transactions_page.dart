@@ -21,7 +21,6 @@ class _TransactionsPageState extends State<TransactionsPage> {
   void initState() {
     super.initState();
     widget.controller.getTransactions();
-    widget.controller.getTransactionMonths();
     widget.controller.getBalance();
   }
 
@@ -62,7 +61,7 @@ class _TransactionsPageState extends State<TransactionsPage> {
                           ? const FinanceTransactionListShimmer(isLoading: true)
                           : ValueListenableBuilder(
                               valueListenable:
-                                  widget.controller.transactionMonths,
+                                  widget.controller.transactionsByMonth,
                               builder: (context, value, child) =>
                                   FinanceTransactionList(
                                 transactionsByMonth: value,
