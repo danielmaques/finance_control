@@ -9,10 +9,6 @@ class HomeUseCaseImpl implements HomeUseCase {
   HomeUseCaseImpl(this._repository);
 
   @override
-  Future<void> addTransaction(
-          String uid, Map<String, dynamic> transactionData, add) =>
-      _repository.addTransaction(uid, transactionData, add);
-  @override
   Future<List<Map<String, dynamic>>> getTransaction(String uid) =>
       _repository.getTransaction(uid);
   @override

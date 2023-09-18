@@ -9,10 +9,6 @@ class HomeRepositoryImpl implements HomeRepository {
   HomeRepositoryImpl(this._dataSource);
 
   @override
-  Future<void> addTransaction(
-          String uid, Map<String, dynamic> transactionData, bool add) =>
-      _dataSource.addTransaction(uid, transactionData, add);
-  @override
   Future<List<Map<String, dynamic>>> getTransaction(String uid) =>
       _dataSource.getTransaction(uid);
   @override
