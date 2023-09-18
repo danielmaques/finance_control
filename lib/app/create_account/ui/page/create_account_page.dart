@@ -57,6 +57,14 @@ class CreateAccountPage extends StatelessWidget {
                     onChanged: (p0) {
                       controller.updateIsBlocked();
                     },
+                    validator: (p0) {
+                      if (p0 == null) {
+                        return 'Digite uma senha';
+                      } else if (p0.length < 6) {
+                        return 'A senha deve ter no mínimo 6 caracteres';
+                      }
+                      return null;
+                    },
                   ),
                   const SizedBox(height: 24),
                   FinanceTextField(
@@ -66,6 +74,20 @@ class CreateAccountPage extends StatelessWidget {
                     onChanged: (p0) {
                       controller.updateIsBlocked();
                     },
+                    validator: (p0) {
+                      if (controller.confirmPassword.text !=
+                              controller.password.text ||
+                          p0 != null) {
+                        return 'Senhas diferentes';
+                      }
+                      return null;
+                    },
+                  ),
+                  const SizedBox(height: 24),
+                  FinanceTextField(
+                    label: 'Codigo de convite',
+                    hintText: 'fbe2t948-83e4-4098-a185-e811ce254505',
+                    controller: controller.houseId,
                   ),
                   const SizedBox(height: 20),
                   const FinanceCheckBox(
