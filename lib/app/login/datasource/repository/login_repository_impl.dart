@@ -12,6 +12,7 @@ class LoginRepositoryImpl implements LoginRepository {
     final userCredential = await loginData.login(email, password);
     return UserModel(
       id: userCredential.user!.uid,
+      name: '',
       email: userCredential.user!.email!,
     );
   }

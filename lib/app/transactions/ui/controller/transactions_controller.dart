@@ -26,11 +26,11 @@ class TransactionsController {
 
   Future<void> getTransactions() async {
     final prefs = await SharedPreferences.getInstance();
-    final userId = prefs.getString('user_id');
+    final houseId = prefs.getString('house_id');
 
     try {
-      if (userId != null) {
-        final transactions = await transactionsUseCase.getTransaction(userId);
+      if (houseId != null) {
+        final transactions = await transactionsUseCase.getTransaction(houseId);
 
         transactions
             .sort((a, b) => b['data'].toDate().compareTo(a['data'].toDate()));
@@ -65,20 +65,20 @@ class TransactionsController {
 
   Future<void> getTransactionMonths() async {
     final prefs = await SharedPreferences.getInstance();
-    final userId = prefs.getString('user_id');
+    final houseId = prefs.getString('house_id');
 
-    if (userId != null) {
-      final months = await transactionsUseCase.listTransactionMonths(userId);
+    if (houseId != null) {
+      final months = await transactionsUseCase.listTransactionMonths(houseId);
       transactionMonths.value = months;
     }
   }
 
   Future<void> getBalance() async {
     final prefs = await SharedPreferences.getInstance();
-    final userId = prefs.getString('user_id');
+    final houseId = prefs.getString('house_id');
 
-    if (userId != null) {
-      final currentBalance = await transactionsUseCase.getBalance(userId);
+    if (houseId != null) {
+      final currentBalance = await transactionsUseCase.getBalance(houseId);
       balance.value = currentBalance;
     }
   }

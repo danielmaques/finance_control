@@ -10,11 +10,10 @@ class HomeDataImpl implements HomeData {
   final FirebaseStorage _firebaseStorage = FirebaseStorage.instance;
 
   @override
-  @override
   Future<void> addTransaction(
       String uid, Map<String, dynamic> transactionData, bool add) async {
     await _firestore
-        .collection('users')
+        .collection('house')
         .doc(uid)
         .collection('transaction')
         .add(transactionData);
@@ -23,7 +22,7 @@ class HomeDataImpl implements HomeData {
   @override
   Future<void> updateBalance(String uid, double valor, bool add) async {
     DocumentSnapshot userDoc =
-        await _firestore.collection('users').doc(uid).get();
+        await _firestore.collection('house').doc(uid).get();
     double currentBalance = 0.0;
 
     Map<String, dynamic> userData = userDoc.data() as Map<String, dynamic>;
@@ -38,25 +37,23 @@ class HomeDataImpl implements HomeData {
       currentBalance -= valor;
     }
 
-    // Atualiza o saldo
-    await _firestore.collection('users').doc(uid).update({
+    await _firestore.collection('house').doc(uid).update({
       'balance': currentBalance,
     });
 
-    // Atualiza gastos e ganhos
     String currentMonth =
-        DateTime.now().toString().substring(0, 7); // "YYYY-MM"
+        DateTime.now().toString().substring(0, 7); 
 
     if (add == true) {
       double currentGain = (userData['ganhos'] ?? {})[currentMonth] ?? 0.0;
       currentGain += valor;
-      await _firestore.collection('users').doc(uid).update({
+      await _firestore.collection('house').doc(uid).update({
         'ganhos.$currentMonth': currentGain,
       });
     } else if (add == false) {
       double currentExpense = (userData['gastos'] ?? {})[currentMonth] ?? 0.0;
       currentExpense += valor;
-      await _firestore.collection('users').doc(uid).update({
+      await _firestore.collection('house').doc(uid).update({
         'gastos.$currentMonth': currentExpense,
       });
     }
@@ -65,7 +62,7 @@ class HomeDataImpl implements HomeData {
   @override
   Future<List<Map<String, dynamic>>> getTransaction(String uid) async {
     DocumentSnapshot userDoc =
-        await _firestore.collection('users').doc(uid).get();
+        await _firestore.collection('house').doc(uid).get();
     List<String> subcollections =
         List<String>.from(userDoc['subcollections'] ?? []);
 
@@ -73,7 +70,7 @@ class HomeDataImpl implements HomeData {
 
     for (var subcollection in subcollections) {
       QuerySnapshot querySnapshot = await _firestore
-          .collection('users')
+          .collection('house')
           .doc(uid)
           .collection(subcollection)
           .get();
@@ -103,7 +100,7 @@ class HomeDataImpl implements HomeData {
   @override
   Future<double> getBalance(String uid) async {
     DocumentSnapshot userDoc =
-        await _firestore.collection('users').doc(uid).get();
+        await _firestore.collection('house').doc(uid).get();
     if (userDoc.exists &&
         userDoc.data() != null &&
         (userDoc.data() as Map<String, dynamic>)['balance'] != null) {
@@ -116,7 +113,7 @@ class HomeDataImpl implements HomeData {
   @override
   Future<Map<String, double>> getGastos(String uid) async {
     DocumentSnapshot userDoc =
-        await _firestore.collection('users').doc(uid).get();
+        await _firestore.collection('house').doc(uid).get();
     if (userDoc.exists &&
         userDoc.data() != null &&
         (userDoc.data() as Map<String, dynamic>)['gastos'] != null) {
@@ -131,7 +128,7 @@ class HomeDataImpl implements HomeData {
   @override
   Future<Map<String, double>> getGanhos(String uid) async {
     DocumentSnapshot userDoc =
-        await _firestore.collection('users').doc(uid).get();
+        await _firestore.collection('house').doc(uid).get();
     if (userDoc.exists &&
         userDoc.data() != null &&
         (userDoc.data() as Map<String, dynamic>)['ganhos'] != null) {

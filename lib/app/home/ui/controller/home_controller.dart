@@ -12,16 +12,17 @@ class HomeController {
   final ValueNotifier<double> balance = ValueNotifier<double>(0.0);
   final ValueNotifier<double> gastos = ValueNotifier<double>(0.0);
   final ValueNotifier<double> ganhos = ValueNotifier<double>(0.0);
+  final ValueNotifier<Map<String, dynamic>?> house =
+      ValueNotifier<Map<String, dynamic>?>(null);
 
-  Timer? _balanceRefreshTimer; // <-- Declare a Timer instance
+  Timer? _balanceRefreshTimer;
 
   HomeController(this._useCase) {
-    _startBalanceRefreshTimer(); // <-- Initialize the timer in the constructor
+    _startBalanceRefreshTimer();
   }
 
-  // Define the timer function
   void _startBalanceRefreshTimer() {
-    _balanceRefreshTimer?.cancel(); // Cancel any existing timer just in case
+    _balanceRefreshTimer?.cancel();
     _balanceRefreshTimer = Timer.periodic(const Duration(minutes: 5), (timer) {
       getBalance();
     });
@@ -35,10 +36,10 @@ class HomeController {
 
   Future<void> getTransactions() async {
     final prefs = await SharedPreferences.getInstance();
-    final userId = prefs.getString('user_id');
+    final houseId = prefs.getString('house_id');
 
-    if (userId != null) {
-      final transactions = await _useCase.getTransaction(userId);
+    if (houseId != null) {
+      final transactions = await _useCase.getTransaction(houseId);
 
       transactions.sort((a, b) => b['data'].compareTo(a['data']));
 
@@ -49,21 +50,21 @@ class HomeController {
 
   Future<void> getBalance() async {
     final prefs = await SharedPreferences.getInstance();
-    final userId = prefs.getString('user_id');
+    final houseId = prefs.getString('house_id');
 
-    if (userId != null) {
-      final currentBalance = await _useCase.getBalance(userId);
+    if (houseId != null) {
+      final currentBalance = await _useCase.getBalance(houseId);
       balance.value = currentBalance;
     }
   }
 
   Future<void> getGastosEGanhos() async {
     final prefs = await SharedPreferences.getInstance();
-    final userId = prefs.getString('user_id');
+    final houseId = prefs.getString('house_id');
 
-    if (userId != null) {
-      Map<String, double> userGastos = await _useCase.getGastos(userId);
-      Map<String, double> userGanhos = await _useCase.getGanhos(userId);
+    if (houseId != null) {
+      Map<String, double> userGastos = await _useCase.getGastos(houseId);
+      Map<String, double> userGanhos = await _useCase.getGanhos(houseId);
 
       String currentMonth = DateTime.now().toString().substring(0, 7);
 
@@ -75,7 +76,6 @@ class HomeController {
     }
   }
 
-  // Remember to dispose of the timer when it's no longer needed.
   void dispose() {
     _balanceRefreshTimer?.cancel();
   }

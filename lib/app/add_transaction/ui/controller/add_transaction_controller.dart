@@ -45,9 +45,9 @@ class AddTransactionController {
     required bool add,
   }) async {
     final prefs = await SharedPreferences.getInstance();
-    final userId = prefs.getString('user_id');
+    final houseId = prefs.getString('house_id');
 
-    if (userId != null) {
+    if (houseId != null) {
       Map<String, dynamic> gastoData = {
         'data': data,
         'valor': valor,
@@ -57,8 +57,8 @@ class AddTransactionController {
         'add': add,
       };
 
-      await _useCase.addTransaction(userId, gastoData, add);
-      await _useCase.updateBalance(userId, valor, add);
+      await _useCase.addTransaction(houseId, gastoData, add);
+      await _useCase.updateBalance(houseId, valor, add);
     } else {
       if (kDebugMode) {
         print("Erro: UID do usuário não encontrado.");
