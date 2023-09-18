@@ -11,4 +11,9 @@ class LoginUseCaseImpl implements LoginUseCase {
   Future<UserModel> login(String email, String password) async {
     return await loginRepository.login(email, password);
   }
+
+  @override
+  Future<String?> findHouseIdByUserId(String userId) {
+    return loginRepository.findHouseIdByUserId(userId);
+  }
 }

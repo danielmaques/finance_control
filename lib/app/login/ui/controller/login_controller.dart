@@ -11,11 +11,9 @@ class LoginController {
   LoginController(this._loginUseCase);
 
   TextEditingController email = TextEditingController();
-  
   TextEditingController password = TextEditingController();
 
   ValueNotifier<bool> isBlockedNotifier = ValueNotifier(true);
-
   ValueNotifier<bool> isLoggedInNotifier = ValueNotifier(false);
 
   void updateIsBlocked() {
@@ -28,6 +26,12 @@ class LoginController {
       if (user != null && user.id != null && user.email != null) {
         final prefs = await SharedPreferences.getInstance();
         await prefs.setString('user_id', user.id);
+
+        final houseId = await _loginUseCase.findHouseIdByUserId(user.id);
+        if (houseId != null) {
+          await prefs.setString('house_id', houseId);
+        }
+
         isLoggedInNotifier.value = true;
       }
     } catch (e) {

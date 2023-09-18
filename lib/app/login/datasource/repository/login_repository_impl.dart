@@ -16,4 +16,9 @@ class LoginRepositoryImpl implements LoginRepository {
       email: userCredential.user!.email!,
     );
   }
+  
+  @override
+  Future<String?> findHouseIdByUserId(String userId) {
+    return loginData.findHouseIdByUserId(userId);
+  }
 }
