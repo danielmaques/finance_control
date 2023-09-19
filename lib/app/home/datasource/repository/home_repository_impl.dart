@@ -34,4 +34,9 @@ class HomeRepositoryImpl implements HomeRepository {
   Future<Map<String, double>> getGastos(String uid) {
     return _dataSource.getGastos(uid);
   }
+
+  @override
+  Future<Map<String, double>> getTotalSpentByCategory(String uid) {
+    return _dataSource.getTotalSpentByCategory(uid);
+  }
 }

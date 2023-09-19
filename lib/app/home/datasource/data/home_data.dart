@@ -7,4 +7,5 @@ abstract class HomeData {
   Future<double> getBalance(String uid);
   Future<Map<String, double>> getGastos(String uid);
   Future<Map<String, double>> getGanhos(String uid);
+  Future<Map<String, double>> getTotalSpentByCategory(String uid);
 }

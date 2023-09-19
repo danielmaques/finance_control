@@ -14,6 +14,8 @@ class HomeController {
   final ValueNotifier<double> ganhos = ValueNotifier<double>(0.0);
   final ValueNotifier<Map<String, dynamic>?> house =
       ValueNotifier<Map<String, dynamic>?>(null);
+  final ValueNotifier<Map<String, double>> categoryPercentages =
+      ValueNotifier<Map<String, double>>({});
 
   Timer? _balanceRefreshTimer;
 
@@ -32,6 +34,7 @@ class HomeController {
     await getBalance();
     await getTransactions();
     await getGastosEGanhos();
+    await getCategoryPercentages();
   }
 
   Future<void> getTransactions() async {
@@ -73,6 +76,30 @@ class HomeController {
 
       gastos.value = gastosDoMesAtual;
       ganhos.value = ganhosDoMesAtual;
+    }
+  }
+
+  Future<void> getCategoryPercentages() async {
+    final prefs = await SharedPreferences.getInstance();
+    final houseId = prefs.getString('house_id');
+
+    if (houseId != null) {
+      Map<String, double> userGanhos = await _useCase.getGanhos(houseId);
+      Map<String, double> categoryTotals =
+          await _useCase.getTotalSpentByCategory(houseId);
+
+      String currentMonth = DateTime.now().toString().substring(0, 7);
+      double ganhosDoMesAtual = userGanhos[currentMonth] ?? 0.0;
+
+      Map<String, double> percentages = {};
+
+      for (var category in categoryTotals.keys) {
+        double percentage =
+            (categoryTotals[category]! / ganhosDoMesAtual) * 100;
+        percentages[category] = percentage.isNaN ? 0.0 : percentage;
+      }
+
+      categoryPercentages.value = percentages;
     }
   }
 

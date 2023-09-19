@@ -34,4 +34,9 @@ class HomeUseCaseImpl implements HomeUseCase {
   Future<Map<String, double>> getGastos(String uid) {
     return _repository.getGastos(uid);
   }
+  
+  @override
+  Future<Map<String, double>> getTotalSpentByCategory(String uid) {
+    return _repository.getTotalSpentByCategory(uid);
+  }
 }

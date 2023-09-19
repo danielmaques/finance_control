@@ -29,6 +29,7 @@ class _HomePageState extends State<HomePage> {
     widget.controller.getTransactions();
     widget.controller.getBalance();
     widget.controller.getGastosEGanhos();
+    widget.controller.getCategoryPercentages();
   }
 
   @override
@@ -85,7 +86,8 @@ class _HomePageState extends State<HomePage> {
                         sections: [
                           PieChartSectionData(
                             color: Colors.red,
-                            value: 10,
+                            value: widget.controller.categoryPercentages
+                                .value['Alimentação'],
                             radius: 20,
                             title: '',
                           ),

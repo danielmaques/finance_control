@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:intl/intl.dart';
 
 import 'home_data.dart';
 
@@ -127,5 +128,35 @@ class HomeDataImpl implements HomeData {
     } else {
       return {};
     }
+  }
+
+  Future<Map<String, double>> getTotalSpentByCategory(String uid) async {
+    DateTime now = DateTime.now();
+    String monthYear = DateFormat('MMM yyyy').format(now);
+
+    QuerySnapshot snapshot = await _firestore
+        .collection('house')
+        .doc(uid)
+        .collection(monthYear)
+        .get();
+
+    List<Map<String, dynamic>> transactions =
+        snapshot.docs.map((doc) => doc.data() as Map<String, dynamic>).toList();
+
+    Map<String, double> categoryTotals = {};
+
+    for (var transaction in transactions) {
+      String category = transaction['categoria'];
+      double value = transaction['valor'] ?? 0.0;
+
+      if (categoryTotals.containsKey(category)) {
+        categoryTotals[category] = (categoryTotals[category] ?? 0.0) +
+            value; // Adicionado o null check aqui
+      } else {
+        categoryTotals[category] = value;
+      }
+    }
+
+    return categoryTotals;
   }
 }
