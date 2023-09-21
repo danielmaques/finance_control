@@ -23,11 +23,12 @@ class CreateAccountPage extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const FinanceAppBar(
+                  FinanceAppBar(
                     icon: true,
+                    onTap: () => Modular.to.pop(),
                   ),
                   FinanceText.h3(
-                    'Create account',
+                    'Criar conta',
                   ),
                   const SizedBox(height: 32),
                   FinanceTextField(

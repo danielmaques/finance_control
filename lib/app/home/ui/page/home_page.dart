@@ -3,7 +3,6 @@
 import 'package:clipboard/clipboard.dart';
 import 'package:finance_control/app/home/ui/controller/home_controller.dart';
 import 'package:finance_control_ui/finance_control_ui.dart';
-import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -29,7 +28,7 @@ class _HomePageState extends State<HomePage> {
     widget.controller.getTransactions();
     widget.controller.getBalance();
     widget.controller.getGastosEGanhos();
-    widget.controller.getCategoryPercentages();
+    widget.controller.startBalanceRefreshTimer();
   }
 
   @override
@@ -78,74 +77,13 @@ class _HomePageState extends State<HomePage> {
                     cardName: 'cardName',
                   ),
                   const SizedBox(height: 22),
-                  ValueListenableBuilder(
-                    valueListenable: widget.controller.gastos,
+                  ValueListenableBuilder<Map<String, double>>(
+                    valueListenable: widget.controller.categoryPercentages,
                     builder: (context, value, child) => FinanceSpendingTile(
-                        spending: value,
-                        onTap: () {},
-                        sections: [
-                          PieChartSectionData(
-                            color: Colors.red,
-                            value: widget.controller.categoryPercentages
-                                .value['Alimentação'],
-                            radius: 20,
-                            title: '',
-                          ),
-                          PieChartSectionData(
-                            color: Colors.amber,
-                            value: 10,
-                            radius: 20,
-                            title: '',
-                          ),
-                          PieChartSectionData(
-                            color: Colors.green,
-                            value: 10,
-                            radius: 20,
-                            title: '',
-                          ),
-                          PieChartSectionData(
-                            color: Colors.grey,
-                            value: 10,
-                            radius: 20,
-                            title: '',
-                          ),
-                          PieChartSectionData(
-                            color: Colors.pink,
-                            value: 10,
-                            radius: 20,
-                            title: '',
-                          ),
-                          PieChartSectionData(
-                            color: Colors.purple,
-                            value: 10,
-                            radius: 20,
-                            title: '',
-                          ),
-                          PieChartSectionData(
-                            color: Colors.tealAccent,
-                            value: 10,
-                            radius: 20,
-                            title: '',
-                          ),
-                          PieChartSectionData(
-                            color: Colors.amber,
-                            value: 10,
-                            radius: 20,
-                            title: '',
-                          ),
-                          PieChartSectionData(
-                            color: Colors.blue,
-                            value: 10,
-                            radius: 20,
-                            title: '',
-                          ),
-                          PieChartSectionData(
-                            color: Colors.black,
-                            value: 10,
-                            radius: 20,
-                            title: '',
-                          ),
-                        ]),
+                      spending: widget.controller.gastos.value,
+                      onTap: () {},
+                      categoryPercentages: value,
+                    ),
                   ),
                   const SizedBox(height: 22),
                   ValueListenableBuilder(

@@ -2,7 +2,6 @@ import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
-import 'package:intl/intl.dart';
 
 import 'home_data.dart';
 
@@ -130,33 +129,29 @@ class HomeDataImpl implements HomeData {
     }
   }
 
+  @override
   Future<Map<String, double>> getTotalSpentByCategory(String uid) async {
-    DateTime now = DateTime.now();
-    String monthYear = DateFormat('MMM yyyy').format(now);
+    // 1. Pegue os valores de cada categoria.
+    DocumentSnapshot userDoc =
+        await _firestore.collection('house').doc(uid).get();
+    Map<String, dynamic> userData = userDoc.data() as Map<String, dynamic>;
+    Map<String, double> categoryExpenses =
+        (userData['categoryExpenses'] as Map<String, dynamic>?)
+                ?.map((key, value) => MapEntry(key, value.toDouble())) ??
+            {};
 
-    QuerySnapshot snapshot = await _firestore
-        .collection('house')
-        .doc(uid)
-        .collection(monthYear)
-        .get();
+    // 2. Pegue o valor total (neste caso, os ganhos).
+    Map<String, double> monthlyGains = (await getGanhos(uid))
+        .map((key, value) => MapEntry(key, value.toDouble()));
+    double totalGains =
+        monthlyGains.values.fold(0.0, (prev, curr) => prev + curr);
 
-    List<Map<String, dynamic>> transactions =
-        snapshot.docs.map((doc) => doc.data() as Map<String, dynamic>).toList();
+    // 3. Calcule a porcentagem de cada categoria em relação ao valor total.
+    Map<String, double> percentages = {};
+    categoryExpenses.forEach((category, value) {
+      percentages[category] = (value / totalGains) * 100;
+    });
 
-    Map<String, double> categoryTotals = {};
-
-    for (var transaction in transactions) {
-      String category = transaction['categoria'];
-      double value = transaction['valor'] ?? 0.0;
-
-      if (categoryTotals.containsKey(category)) {
-        categoryTotals[category] = (categoryTotals[category] ?? 0.0) +
-            value; // Adicionado o null check aqui
-      } else {
-        categoryTotals[category] = value;
-      }
-    }
-
-    return categoryTotals;
+    return percentages;
   }
 }

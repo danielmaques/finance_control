@@ -1,10 +1,14 @@
+// ignore_for_file: unnecessary_type_check
+
 import 'dart:async'; // <-- Required for Timer
 
 import 'package:finance_control/app/home/domain/usecase/home_usecase.dart';
+import 'package:finance_control/core/states/base_page_state.dart';
 import 'package:flutter/foundation.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-class HomeController {
+class HomeController extends Cubit<BaseState> {
   final HomeUseCase _useCase;
 
   final ValueNotifier<List<Map<String, dynamic>>> transaction =
@@ -19,14 +23,16 @@ class HomeController {
 
   Timer? _balanceRefreshTimer;
 
-  HomeController(this._useCase) {
-    _startBalanceRefreshTimer();
+  HomeController(this._useCase) : super(const EmptyState()) {
+    startBalanceRefreshTimer();
   }
 
-  void _startBalanceRefreshTimer() {
-    _balanceRefreshTimer?.cancel();
-    _balanceRefreshTimer = Timer.periodic(const Duration(minutes: 5), (timer) {
+  void startBalanceRefreshTimer() {
+    // _balanceRefreshTimer?.cancel();
+    _balanceRefreshTimer = Timer.periodic(const Duration(seconds: 1), (timer) {
       getBalance();
+      refreshData();
+      updateCategoryPercentages();
     });
   }
 
@@ -34,7 +40,6 @@ class HomeController {
     await getBalance();
     await getTransactions();
     await getGastosEGanhos();
-    await getCategoryPercentages();
   }
 
   Future<void> getTransactions() async {
@@ -76,29 +81,23 @@ class HomeController {
 
       gastos.value = gastosDoMesAtual;
       ganhos.value = ganhosDoMesAtual;
+
+      updateCategoryPercentages();
     }
   }
 
-  Future<void> getCategoryPercentages() async {
+  double convertToPercentage(double value, double total) {
+    if (total == 0) return 0.0;
+    return (value / total) * 100;
+  }
+
+  Future<void> updateCategoryPercentages() async {
     final prefs = await SharedPreferences.getInstance();
     final houseId = prefs.getString('house_id');
 
     if (houseId != null) {
-      Map<String, double> userGanhos = await _useCase.getGanhos(houseId);
-      Map<String, double> categoryTotals =
+      Map<String, double> percentages =
           await _useCase.getTotalSpentByCategory(houseId);
-
-      String currentMonth = DateTime.now().toString().substring(0, 7);
-      double ganhosDoMesAtual = userGanhos[currentMonth] ?? 0.0;
-
-      Map<String, double> percentages = {};
-
-      for (var category in categoryTotals.keys) {
-        double percentage =
-            (categoryTotals[category]! / ganhosDoMesAtual) * 100;
-        percentages[category] = percentage.isNaN ? 0.0 : percentage;
-      }
-
       categoryPercentages.value = percentages;
     }
   }
