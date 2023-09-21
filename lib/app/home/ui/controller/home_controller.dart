@@ -1,10 +1,14 @@
+// ignore_for_file: unnecessary_type_check
+
 import 'dart:async'; // <-- Required for Timer
 
 import 'package:finance_control/app/home/domain/usecase/home_usecase.dart';
+import 'package:finance_control/core/states/base_page_state.dart';
 import 'package:flutter/foundation.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-class HomeController {
+class HomeController extends Cubit<BaseState> {
   final HomeUseCase _useCase;
 
   final ValueNotifier<List<Map<String, dynamic>>> transaction =
@@ -14,17 +18,21 @@ class HomeController {
   final ValueNotifier<double> ganhos = ValueNotifier<double>(0.0);
   final ValueNotifier<Map<String, dynamic>?> house =
       ValueNotifier<Map<String, dynamic>?>(null);
+  final ValueNotifier<Map<String, double>> categoryPercentages =
+      ValueNotifier<Map<String, double>>({});
 
   Timer? _balanceRefreshTimer;
 
-  HomeController(this._useCase) {
-    _startBalanceRefreshTimer();
+  HomeController(this._useCase) : super(const EmptyState()) {
+    startBalanceRefreshTimer();
   }
 
-  void _startBalanceRefreshTimer() {
-    _balanceRefreshTimer?.cancel();
-    _balanceRefreshTimer = Timer.periodic(const Duration(minutes: 5), (timer) {
+  void startBalanceRefreshTimer() {
+    // _balanceRefreshTimer?.cancel();
+    _balanceRefreshTimer = Timer.periodic(const Duration(seconds: 1), (timer) {
       getBalance();
+      refreshData();
+      updateCategoryPercentages();
     });
   }
 
@@ -73,6 +81,24 @@ class HomeController {
 
       gastos.value = gastosDoMesAtual;
       ganhos.value = ganhosDoMesAtual;
+
+      updateCategoryPercentages();
+    }
+  }
+
+  double convertToPercentage(double value, double total) {
+    if (total == 0) return 0.0;
+    return (value / total) * 100;
+  }
+
+  Future<void> updateCategoryPercentages() async {
+    final prefs = await SharedPreferences.getInstance();
+    final houseId = prefs.getString('house_id');
+
+    if (houseId != null) {
+      Map<String, double> percentages =
+          await _useCase.getTotalSpentByCategory(houseId);
+      categoryPercentages.value = percentages;
     }
   }
 

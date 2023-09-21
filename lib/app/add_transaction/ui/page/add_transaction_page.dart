@@ -371,7 +371,7 @@ class _AddTransactionPageState extends State<AddTransactionPage> {
               descricao: widget.controller.description.value.text,
               valor: widget.controller.pay.value,
             );
-            Modular.to.pushReplacementNamed('/home/');
+            // Modular.to.pushReplacementNamed('/home/');
           },
         ),
       ),

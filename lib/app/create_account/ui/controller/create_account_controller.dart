@@ -20,6 +20,7 @@ class CreateAccountController {
   TextEditingController houseId = TextEditingController();
 
   ValueNotifier<bool> isBlockedNotifier = ValueNotifier(true);
+  ValueNotifier<bool> isCriate = ValueNotifier(true);
 
   void updateIsBlocked() {
     isBlockedNotifier.value = name.text.isEmpty ||
@@ -48,6 +49,8 @@ class CreateAccountController {
         } else {
           await joinExistingHouse();
         }
+
+        isCriate.value = true;
       }
     } catch (e) {
       if (kDebugMode) {

@@ -9,10 +9,6 @@ class HomeRepositoryImpl implements HomeRepository {
   HomeRepositoryImpl(this._dataSource);
 
   @override
-  Future<void> addTransaction(
-          String uid, Map<String, dynamic> transactionData, bool add) =>
-      _dataSource.addTransaction(uid, transactionData, add);
-  @override
   Future<List<Map<String, dynamic>>> getTransaction(String uid) =>
       _dataSource.getTransaction(uid);
   @override
@@ -37,5 +33,10 @@ class HomeRepositoryImpl implements HomeRepository {
   @override
   Future<Map<String, double>> getGastos(String uid) {
     return _dataSource.getGastos(uid);
+  }
+
+  @override
+  Future<Map<String, double>> getTotalSpentByCategory(String uid) {
+    return _dataSource.getTotalSpentByCategory(uid);
   }
 }

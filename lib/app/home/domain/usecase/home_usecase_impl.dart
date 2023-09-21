@@ -9,10 +9,6 @@ class HomeUseCaseImpl implements HomeUseCase {
   HomeUseCaseImpl(this._repository);
 
   @override
-  Future<void> addTransaction(
-          String uid, Map<String, dynamic> transactionData, add) =>
-      _repository.addTransaction(uid, transactionData, add);
-  @override
   Future<List<Map<String, dynamic>>> getTransaction(String uid) =>
       _repository.getTransaction(uid);
   @override
@@ -37,5 +33,10 @@ class HomeUseCaseImpl implements HomeUseCase {
   @override
   Future<Map<String, double>> getGastos(String uid) {
     return _repository.getGastos(uid);
+  }
+  
+  @override
+  Future<Map<String, double>> getTotalSpentByCategory(String uid) {
+    return _repository.getTotalSpentByCategory(uid);
   }
 }

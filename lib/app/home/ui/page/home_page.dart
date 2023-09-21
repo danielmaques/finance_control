@@ -1,7 +1,11 @@
+// ignore_for_file: use_build_context_synchronously
+
+import 'package:clipboard/clipboard.dart';
 import 'package:finance_control/app/home/ui/controller/home_controller.dart';
 import 'package:finance_control_ui/finance_control_ui.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({
@@ -24,6 +28,7 @@ class _HomePageState extends State<HomePage> {
     widget.controller.getTransactions();
     widget.controller.getBalance();
     widget.controller.getGastosEGanhos();
+    widget.controller.startBalanceRefreshTimer();
   }
 
   @override
@@ -45,7 +50,19 @@ class _HomePageState extends State<HomePage> {
         transactionRoute: () {
           Modular.to.pushNamed('/transactions/');
         },
-        menuRoute: () {},
+        menuRoute: () async {
+          final prefs = await SharedPreferences.getInstance();
+          final userId = prefs.getString('house_id');
+          if (userId != null) {
+            await FlutterClipboard.copy(userId);
+            ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(
+                backgroundColor: AppColors.forestGreen,
+                content: Text('Convite copiado!'),
+              ),
+            );
+          }
+        },
       ),
       body: SingleChildScrollView(
         child: Column(
@@ -60,11 +77,12 @@ class _HomePageState extends State<HomePage> {
                     cardName: 'cardName',
                   ),
                   const SizedBox(height: 22),
-                  ValueListenableBuilder(
-                    valueListenable: widget.controller.gastos,
+                  ValueListenableBuilder<Map<String, double>>(
+                    valueListenable: widget.controller.categoryPercentages,
                     builder: (context, value, child) => FinanceSpendingTile(
-                      spending: value,
+                      spending: widget.controller.gastos.value,
                       onTap: () {},
+                      categoryPercentages: value,
                     ),
                   ),
                   const SizedBox(height: 22),

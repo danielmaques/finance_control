@@ -64,7 +64,6 @@ class _LoginPageState extends State<LoginPage> {
                             label: 'Senha',
                             hintText: 'Digite sua senha',
                             controller: widget.controller.password,
-                            obscureText: true,
                             onChanged: (p0) {
                               widget.controller.updateIsBlocked();
                             },
@@ -103,18 +102,21 @@ class _LoginPageState extends State<LoginPage> {
                               onTap: () {
                                 Modular.to.pushNamed('/createAccount');
                               },
-                              child: Row(
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  FinanceText.p16(
-                                    'Não possui uma conta?',
-                                  ),
-                                  const SizedBox(width: 5),
-                                  FinanceText.p16(
-                                    'Criar conta.',
-                                  ),
-                                ],
+                              child: Container(
+                                color: Colors.transparent,
+                                child: Row(
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    FinanceText.p16(
+                                      'Não possui uma conta?',
+                                    ),
+                                    const SizedBox(width: 5),
+                                    FinanceText.p16(
+                                      'Criar conta.',
+                                    ),
+                                  ],
+                                ),
                               ),
                             ),
                           )

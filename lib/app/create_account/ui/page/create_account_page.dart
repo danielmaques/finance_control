@@ -1,6 +1,7 @@
 import 'package:finance_control/app/create_account/ui/controller/create_account_controller.dart';
 import 'package:finance_control_ui/finance_control_ui.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_modular/flutter_modular.dart';
 
 class CreateAccountPage extends StatelessWidget {
   const CreateAccountPage({
@@ -22,11 +23,12 @@ class CreateAccountPage extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const FinanceAppBar(
+                  FinanceAppBar(
                     icon: true,
+                    onTap: () => Modular.to.pop(),
                   ),
                   FinanceText.h3(
-                    'Create account',
+                    'Criar conta',
                   ),
                   const SizedBox(height: 32),
                   FinanceTextField(
@@ -99,10 +101,16 @@ class CreateAccountPage extends StatelessWidget {
                   FinanceButton(
                     title: 'Criar conta',
                     disabled: isBlocked,
-                    onTap: () => controller.signUp(
-                      email: controller.email.text,
-                      password: controller.password.text,
-                    ),
+                    onTap: () async {
+                      controller.signUp(
+                        email: controller.email.text,
+                        password: controller.password.text,
+                      );
+
+                      if (controller.isCriate.value == true) {
+                        Modular.to.pushNamed('/home/');
+                      }
+                    },
                   ),
                 ],
               ),

@@ -10,16 +10,6 @@ class HomeDataImpl implements HomeData {
   final FirebaseStorage _firebaseStorage = FirebaseStorage.instance;
 
   @override
-  Future<void> addTransaction(
-      String uid, Map<String, dynamic> transactionData, bool add) async {
-    await _firestore
-        .collection('house')
-        .doc(uid)
-        .collection('transaction')
-        .add(transactionData);
-  }
-
-  @override
   Future<void> updateBalance(String uid, double valor, bool add) async {
     DocumentSnapshot userDoc =
         await _firestore.collection('house').doc(uid).get();
@@ -31,9 +21,9 @@ class HomeDataImpl implements HomeData {
       currentBalance = userData['balance'].toDouble();
     }
 
-    if (add == true) {
+    if (add) {
       currentBalance += valor;
-    } else if (add == false) {
+    } else {
       currentBalance -= valor;
     }
 
@@ -41,16 +31,15 @@ class HomeDataImpl implements HomeData {
       'balance': currentBalance,
     });
 
-    String currentMonth =
-        DateTime.now().toString().substring(0, 7); 
+    String currentMonth = DateTime.now().toString().substring(0, 7);
 
-    if (add == true) {
+    if (add) {
       double currentGain = (userData['ganhos'] ?? {})[currentMonth] ?? 0.0;
       currentGain += valor;
       await _firestore.collection('house').doc(uid).update({
         'ganhos.$currentMonth': currentGain,
       });
-    } else if (add == false) {
+    } else {
       double currentExpense = (userData['gastos'] ?? {})[currentMonth] ?? 0.0;
       currentExpense += valor;
       await _firestore.collection('house').doc(uid).update({
@@ -138,5 +127,31 @@ class HomeDataImpl implements HomeData {
     } else {
       return {};
     }
+  }
+
+  @override
+  Future<Map<String, double>> getTotalSpentByCategory(String uid) async {
+    // 1. Pegue os valores de cada categoria.
+    DocumentSnapshot userDoc =
+        await _firestore.collection('house').doc(uid).get();
+    Map<String, dynamic> userData = userDoc.data() as Map<String, dynamic>;
+    Map<String, double> categoryExpenses =
+        (userData['categoryExpenses'] as Map<String, dynamic>?)
+                ?.map((key, value) => MapEntry(key, value.toDouble())) ??
+            {};
+
+    // 2. Pegue o valor total (neste caso, os ganhos).
+    Map<String, double> monthlyGains = (await getGanhos(uid))
+        .map((key, value) => MapEntry(key, value.toDouble()));
+    double totalGains =
+        monthlyGains.values.fold(0.0, (prev, curr) => prev + curr);
+
+    // 3. Calcule a porcentagem de cada categoria em relação ao valor total.
+    Map<String, double> percentages = {};
+    categoryExpenses.forEach((category, value) {
+      percentages[category] = (value / totalGains) * 100;
+    });
+
+    return percentages;
   }
 }

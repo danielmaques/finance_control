@@ -4,4 +4,5 @@ abstract class AddTransactionData {
   Future<List<dynamic>> getCategories();
   Future<List<dynamic>> getPayments();
   Future<void> updateBalance(String uid, double valor, bool add);
+  Future<void> updateCategoryExpense(String uid, String category, double value);
 }

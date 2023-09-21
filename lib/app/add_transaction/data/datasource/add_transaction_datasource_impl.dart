@@ -10,7 +10,6 @@ class AddTransactionDataImpl implements AddTransactionData {
   @override
   Future<void> addTransaction(
       String uid, Map<String, dynamic> transactionData, bool add) async {
-    // Determinar o mês e o ano atual
     DateTime now = DateTime.now();
     String monthYear = DateFormat('MMM yyyy').format(now);
 
@@ -23,6 +22,27 @@ class AddTransactionDataImpl implements AddTransactionData {
     await _firestore.collection('house').doc(uid).set({
       'subcollections': FieldValue.arrayUnion([monthYear])
     }, SetOptions(merge: true));
+
+    if (!add) {
+      await updateCategoryExpense(
+          uid, transactionData['categoria'], transactionData['valor']);
+    }
+  }
+
+  @override
+  Future<void> updateCategoryExpense(
+      String uid, String category, double value) async {
+    DocumentSnapshot userDoc =
+        await _firestore.collection('house').doc(uid).get();
+    Map<String, dynamic> userData = userDoc.data() as Map<String, dynamic>;
+
+    double currentExpense =
+        (userData['categoryExpenses'] ?? {})[category] ?? 0.0;
+    currentExpense += value;
+
+    await _firestore.collection('house').doc(uid).update({
+      'categoryExpenses.$category': currentExpense,
+    });
   }
 
   @override
@@ -43,14 +63,11 @@ class AddTransactionDataImpl implements AddTransactionData {
       currentBalance -= valor;
     }
 
-    // Atualiza o saldo
     await _firestore.collection('house').doc(uid).update({
       'balance': currentBalance,
     });
 
-    // Atualiza gastos e ganhos
-    String currentMonth =
-        DateTime.now().toString().substring(0, 7); // "YYYY-MM"
+    String currentMonth = DateTime.now().toString().substring(0, 7);
 
     if (add == true) {
       double currentGain = (userData['ganhos'] ?? {})[currentMonth] ?? 0.0;
