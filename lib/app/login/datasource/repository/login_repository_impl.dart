@@ -21,4 +21,9 @@ class LoginRepositoryImpl implements LoginRepository {
   Future<String?> findHouseIdByUserId(String userId) {
     return loginData.findHouseIdByUserId(userId);
   }
+  
+  @override
+  Future<void> resetPassword(String email) {
+    return loginData.resetPassword(email);
+  }
 }

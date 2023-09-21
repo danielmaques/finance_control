@@ -40,60 +40,108 @@ class _LoginPageState extends State<LoginPage> {
                       const EdgeInsets.symmetric(horizontal: 20, vertical: 40),
                   child: ValueListenableBuilder<bool>(
                     valueListenable: widget.controller.isBlockedNotifier,
-                    builder: (context, value, child) {
+                    builder: (context, button, child) {
                       return Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           const FinanceAppBar(
                             icon: false,
                           ),
-                          FinanceText.h3(
-                            'Entrar',
-                          ),
-                          const SizedBox(height: 31),
-                          FinanceTextField(
-                            label: 'Email',
-                            hintText: 'Digite seu email',
-                            controller: widget.controller.email,
-                            onChanged: (p0) {
-                              widget.controller.updateIsBlocked();
-                            },
-                          ),
-                          const SizedBox(height: 24),
-                          FinanceTextField(
-                            label: 'Senha',
-                            hintText: 'Digite sua senha',
-                            controller: widget.controller.password,
-                            onChanged: (p0) {
-                              widget.controller.updateIsBlocked();
-                            },
-                          ),
-                          const SizedBox(height: 24),
-                          FinanceButton(
-                            title: 'Entrar',
-                            disabled: value,
-                            onTap: () {
-                              widget.controller.login(
-                                email: widget.controller.email.text,
-                                password: widget.controller.password.text,
-                              );
-                            },
-                          ),
-                          const SizedBox(height: 20),
-                          Center(
-                            child: GestureDetector(
-                              onTap: () {
-                                Modular.to.pushNamed('');
-                                // TODO: Implementar modulo de esqueceu a senha
-                              },
-                              child: Row(
-                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    FinanceText.p16(
-                                      'Esqueceu a senha?',
+                          ValueListenableBuilder(
+                            valueListenable: widget.controller.reset,
+                            builder: (context, value, child) => Center(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                children: [
+                                  FinanceText.h3(
+                                    'Entrar',
+                                  ),
+                                  const SizedBox(height: 31),
+                                  FinanceTextField(
+                                    label: 'Email',
+                                    hintText: 'Digite seu email',
+                                    controller: widget.controller.email,
+                                    onChanged: (p0) {
+                                      widget.controller.updateIsBlocked();
+                                    },
+                                  ),
+                                  Visibility(
+                                    visible: value,
+                                    child: Column(
+                                      children: [
+                                        const SizedBox(height: 24),
+                                        FinanceTextField(
+                                          label: 'Senha',
+                                          hintText: 'Digite sua senha',
+                                          controller:
+                                              widget.controller.password,
+                                          onChanged: (p0) {
+                                            widget.controller.updateIsBlocked();
+                                          },
+                                        ),
+                                      ],
                                     ),
-                                  ]),
+                                  ),
+                                  Visibility(
+                                    visible: !value,
+                                    child: Column(
+                                      children: [
+                                        const SizedBox(height: 24),
+                                        FinanceButton(
+                                          title: 'Recuperar senha',
+                                          disabled: false,
+                                          onTap: () {
+                                            widget.controller.resetPassword(
+                                              email:
+                                                  widget.controller.email.text,
+                                            );
+                                          },
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                  Visibility(
+                                    visible: value,
+                                    child: Column(
+                                      children: [
+                                        const SizedBox(height: 24),
+                                        FinanceButton(
+                                          title: 'Entrar',
+                                          disabled: button,
+                                          onTap: () {
+                                            widget.controller.login(
+                                              email:
+                                                  widget.controller.email.text,
+                                              password: widget
+                                                  .controller.password.text,
+                                            );
+                                          },
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                  const SizedBox(height: 20),
+                                  GestureDetector(
+                                    onTap: () {
+                                      widget.controller.reset.value = !value;
+                                    },
+                                    child: Row(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.center,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: [
+                                        FinanceText.p16(
+                                          value == false
+                                              ? 'Lembrei da senha'
+                                              : 'Esqueceu a senha?',
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ],
+                              ),
                             ),
                           ),
                           const Spacer(flex: 2),

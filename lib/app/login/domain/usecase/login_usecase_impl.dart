@@ -16,4 +16,9 @@ class LoginUseCaseImpl implements LoginUseCase {
   Future<String?> findHouseIdByUserId(String userId) {
     return loginRepository.findHouseIdByUserId(userId);
   }
+  
+  @override
+  Future<void> resetPassword(String email) {
+    return loginRepository.resetPassword(email);
+  }
 }

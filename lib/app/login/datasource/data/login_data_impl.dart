@@ -26,4 +26,12 @@ class LoginDataImpl implements LoginData {
 
     return null;
   }
+
+  Future<void> resetPassword(String email) async {
+    try {
+      await _firebaseAuth.sendPasswordResetEmail(email: email);
+    } catch (error) {
+      rethrow;
+    }
+  }
 }

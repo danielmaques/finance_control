@@ -24,9 +24,6 @@ class CreateAccountModule extends Module {
       '/',
       child: (context) =>
           CreateAccountPage(controller: Modular.get<CreateAccountController>()),
-
-      
     );
-    
   }
 }

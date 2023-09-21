@@ -22,6 +22,9 @@ class CreateAccountController {
   ValueNotifier<bool> isBlockedNotifier = ValueNotifier(true);
   ValueNotifier<bool> isCriate = ValueNotifier(true);
 
+  ValueNotifier<bool> invitation = ValueNotifier(false);
+  ValueNotifier<bool> terms = ValueNotifier(false);
+
   void updateIsBlocked() {
     isBlockedNotifier.value = name.text.isEmpty ||
         email.text.isEmpty ||

@@ -16,6 +16,8 @@ class LoginController {
   ValueNotifier<bool> isBlockedNotifier = ValueNotifier(true);
   ValueNotifier<bool> isLoggedInNotifier = ValueNotifier(false);
 
+  ValueNotifier<bool> reset = ValueNotifier(true);
+
   void updateIsBlocked() {
     isBlockedNotifier.value = email.text.isEmpty || password.text.isEmpty;
   }
@@ -48,5 +50,9 @@ class LoginController {
     if (userId != null && userId.isNotEmpty) {
       isLoggedInNotifier.value = true;
     }
+  }
+
+  Future<void> resetPassword({required String email}) async {
+    await _loginUseCase.resetPassword(email);
   }
 }

@@ -3,7 +3,7 @@ import 'package:finance_control_ui/finance_control_ui.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 
-class CreateAccountPage extends StatelessWidget {
+class CreateAccountPage extends StatefulWidget {
   const CreateAccountPage({
     Key? key,
     required this.controller,
@@ -12,10 +12,15 @@ class CreateAccountPage extends StatelessWidget {
   final CreateAccountController controller;
 
   @override
+  State<CreateAccountPage> createState() => _CreateAccountPageState();
+}
+
+class _CreateAccountPageState extends State<CreateAccountPage> {
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: ValueListenableBuilder<bool>(
-        valueListenable: controller.isBlockedNotifier,
+        valueListenable: widget.controller.isBlockedNotifier,
         builder: (context, isBlocked, child) {
           return SingleChildScrollView(
             child: Padding(
@@ -34,30 +39,57 @@ class CreateAccountPage extends StatelessWidget {
                   FinanceTextField(
                     label: 'Nome',
                     hintText: 'Digite seu nome',
-                    controller: controller.name,
-                    onChanged: (p0) {
-                      controller.name.text = p0;
-                      controller.updateIsBlocked();
-                    },
+                    controller: widget.controller.name,
                     textCapitalization: TextCapitalization.words,
+                    onChanged: (p0) {
+                      widget.controller.name.text = p0;
+                      widget.controller.updateIsBlocked();
+                    },
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Por favor, insira o nome e sobrenome';
+                      }
+
+                      final regex = RegExp(r'^\w+\s+\w+$');
+
+                      if (!regex.hasMatch(value)) {
+                        return 'Por favor, insira um nome e sobrenome válidos';
+                      }
+
+                      return null;
+                    },
                   ),
                   const SizedBox(height: 24),
                   FinanceTextField(
                     label: 'Email',
                     hintText: 'Digite seu email',
-                    controller: controller.email,
+                    controller: widget.controller.email,
                     keyboardType: TextInputType.emailAddress,
                     onChanged: (p0) {
-                      controller.updateIsBlocked();
+                      widget.controller.updateIsBlocked();
+                    },
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Por favor, insira um endereço de e-mail';
+                      }
+
+                      final emailRegex =
+                          RegExp(r'^[\w-]+(\.[\w-]+)*@[\w-]+(\.[\w-]+)+$');
+
+                      if (!emailRegex.hasMatch(value)) {
+                        return 'Por favor, insira um e-mail válido';
+                      }
+
+                      return null;
                     },
                   ),
                   const SizedBox(height: 24),
                   FinanceTextField(
                     label: 'Senha',
                     hintText: 'Digite sua senha',
-                    controller: controller.password,
+                    controller: widget.controller.password,
                     onChanged: (p0) {
-                      controller.updateIsBlocked();
+                      widget.controller.updateIsBlocked();
                     },
                     validator: (p0) {
                       if (p0 == null) {
@@ -72,13 +104,13 @@ class CreateAccountPage extends StatelessWidget {
                   FinanceTextField(
                     label: 'Confirme sua senha',
                     hintText: 'Digite sua senha',
-                    controller: controller.confirmPassword,
+                    controller: widget.controller.confirmPassword,
                     onChanged: (p0) {
-                      controller.updateIsBlocked();
+                      widget.controller.updateIsBlocked();
                     },
                     validator: (p0) {
-                      if (controller.confirmPassword.text !=
-                              controller.password.text ||
+                      if (widget.controller.confirmPassword.text !=
+                              widget.controller.password.text ||
                           p0 != null) {
                         return 'Senhas diferentes';
                       }
@@ -86,28 +118,61 @@ class CreateAccountPage extends StatelessWidget {
                     },
                   ),
                   const SizedBox(height: 24),
-                  FinanceTextField(
-                    label: 'Codigo de convite',
-                    hintText: 'fbe2t948-83e4-4098-a185-e811ce254505',
-                    controller: controller.houseId,
+                  ValueListenableBuilder(
+                    valueListenable: widget.controller.invitation,
+                    builder: (context, value, child) {
+                      return Column(
+                        children: [
+                          FinanceCheckBox(
+                            label: 'Tenho convite de conta compartilhada!',
+                            isChecked: value,
+                            onChanged: (newValue) {
+                              widget.controller.invitation.value = newValue;
+                            },
+                          ),
+                          Visibility(
+                            visible: value,
+                            child: Column(
+                              children: [
+                                const SizedBox(height: 24),
+                                FinanceTextField(
+                                  label: 'Codigo de convite',
+                                  hintText:
+                                      'fbe2t948-83e4-4098-a185-e811ce254505',
+                                  controller: widget.controller.houseId,
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
+                      );
+                    },
                   ),
                   const SizedBox(height: 20),
-                  const FinanceCheckBox(
-                    label:
-                        'Ao criar uma conta, você concorda com nossos Termos e Condições.',
-                    isChecked: false,
+                  ValueListenableBuilder(
+                    valueListenable: widget.controller.terms,
+                    builder: (context, value, child) {
+                      return FinanceCheckBox(
+                        label:
+                            'Ao criar uma conta, você concorda com nossos Termos e Condições.',
+                        isChecked: value,
+                        onChanged: (newValue) {
+                          widget.controller.terms.value = newValue;
+                        },
+                      );
+                    },
                   ),
                   const SizedBox(height: 28),
                   FinanceButton(
                     title: 'Criar conta',
                     disabled: isBlocked,
                     onTap: () async {
-                      controller.signUp(
-                        email: controller.email.text,
-                        password: controller.password.text,
+                      widget.controller.signUp(
+                        email: widget.controller.email.text,
+                        password: widget.controller.password.text,
                       );
 
-                      if (controller.isCriate.value == true) {
+                      if (widget.controller.isCriate.value == true) {
                         Modular.to.pushNamed('/home/');
                       }
                     },
@@ -118,20 +183,24 @@ class CreateAccountPage extends StatelessWidget {
           );
         },
       ),
-      bottomNavigationBar: Padding(
-        padding: const EdgeInsets.only(bottom: 40),
-        child: Row(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            FinanceText.p16(
-              'Já possui uma conta?',
-            ),
-            const SizedBox(width: 5),
-            FinanceText.p16(
-              'Entrar',
-            ),
-          ],
+      bottomNavigationBar: GestureDetector(
+        onTap: () => Modular.to.pop(),
+        child: Container(
+          color: Colors.transparent,
+          padding: const EdgeInsets.only(bottom: 40),
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              FinanceText.p16(
+                'Já possui uma conta?',
+              ),
+              const SizedBox(width: 5),
+              FinanceText.p16(
+                'Entrar',
+              ),
+            ],
+          ),
         ),
       ),
     );
