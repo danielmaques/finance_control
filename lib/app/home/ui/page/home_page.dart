@@ -71,11 +71,11 @@ class _HomePageState extends State<HomePage> {
               padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 18),
               child: Column(
                 children: [
-                  FinanceCredtCardTile(
-                    onTap: () {},
-                    card: 'card',
-                    cardName: 'cardName',
-                  ),
+                  // FinanceCredtCardTile(
+                  //   onTap: () {},
+                  //   card: 'card',
+                  //   cardName: 'cardName',
+                  // ),
                   const SizedBox(height: 22),
                   ValueListenableBuilder<Map<String, double>>(
                     valueListenable: widget.controller.categoryPercentages,

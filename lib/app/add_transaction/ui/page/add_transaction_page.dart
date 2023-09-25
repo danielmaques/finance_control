@@ -76,34 +76,28 @@ class _AddTransactionPageState extends State<AddTransactionPage> {
                         return null;
                       },
                     ),
-                    const SizedBox(height: 16),
-                    FinanceDropDown(
-                      hint: "Selecione uma categoria",
-                      categoriesList: widget.controller.categoriesList,
-                      onItemSelected: (p0) {
-                        widget.controller.categoriesValue.value = p0;
-                      },
-                      itemColors: const [
-                        Color(0xFFE57373),
-                        Color(0xFF81C784),
-                        Color(0xFF64B5F6),
-                        Color(0xFFFFD54F),
-                        Color(0xFFBA68C8),
-                        Color(0xFF4DB6AC),
-                        Color(0xFFFF8A65),
-                        Color(0xFFA1887F),
-                        Color(0xFF90A4AE),
-                        Color(0xFF7986CB),
-                        Color(0xFFD32F2F),
-                      ],
+                    Visibility(
+                      visible: !widget.add,
+                      child: Column(
+                        children: [
+                          const SizedBox(height: 16),
+                          FinanceDropDown(
+                            hint: "Selecione uma categoria",
+                            categoriesList: widget.controller.categoriesList,
+                            onItemSelected: (p0) {
+                              widget.controller.categoriesValue.value = p0;
+                            },
+                          ),
+                          const SizedBox(height: 16),
+                          FinanceDropDown(
+                              hint: 'Forma de pagamento',
+                              categoriesList: widget.controller.paymentsList,
+                              onItemSelected: (p0) {
+                                widget.controller.paymentsValue.value = p0;
+                              }),
+                        ],
+                      ),
                     ),
-                    const SizedBox(height: 16),
-                    FinanceDropDown(
-                        hint: 'Forma de pagamento',
-                        categoriesList: widget.controller.paymentsList,
-                        onItemSelected: (p0) {
-                          widget.controller.paymentsValue.value = p0;
-                        }),
                     const SizedBox(height: 16),
                     GestureDetector(
                       onTap: () async {
@@ -370,6 +364,18 @@ class _AddTransactionPageState extends State<AddTransactionPage> {
               data: widget.controller.date.value,
               descricao: widget.controller.description.value.text,
               valor: widget.controller.pay.value,
+            );
+            ScaffoldMessenger.of(context).showMaterialBanner(
+              const MaterialBanner(
+                backgroundColor: AppColors.forestGreen,
+                content: Text('Convite copiado!'),
+                actions: [
+                  TextButton(
+                    onPressed: null,
+                    child: Text('DISMISS'),
+                  ),
+                ],
+              ),
             );
             // Modular.to.pushReplacementNamed('/home/');
           },

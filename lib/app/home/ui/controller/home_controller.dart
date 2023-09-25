@@ -1,6 +1,4 @@
-// ignore_for_file: unnecessary_type_check
-
-import 'dart:async'; // <-- Required for Timer
+import 'dart:async';
 
 import 'package:finance_control/app/home/domain/usecase/home_usecase.dart';
 import 'package:finance_control/core/states/base_page_state.dart';
@@ -28,7 +26,7 @@ class HomeController extends Cubit<BaseState> {
   }
 
   void startBalanceRefreshTimer() {
-    // _balanceRefreshTimer?.cancel();
+    _balanceRefreshTimer?.cancel();
     _balanceRefreshTimer = Timer.periodic(const Duration(seconds: 1), (timer) {
       getBalance();
       refreshData();
