@@ -1,5 +1,3 @@
-// ignore_for_file: use_build_context_synchronously
-
 import 'package:clipboard/clipboard.dart';
 import 'package:finance_control/app/home/ui/controller/home_controller.dart';
 import 'package:finance_control_ui/finance_control_ui.dart';
@@ -35,42 +33,42 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: const Color(0xFFEEF2F8),
-      appBar: FinanceHomeTopBar(
-        money: widget.controller.balance,
-        addRoute: () {
-          Modular.to.pushNamed('/addTransaction/', arguments: {
-            'add': true,
-          });
-        },
-        removeRoute: () {
-          Modular.to.pushNamed('/addTransaction/', arguments: {
-            'add': false,
-          });
-        },
-        transactionRoute: () {
-          Modular.to.pushNamed('/transactions/');
-        },
-        menuRoute: () async {
-          final prefs = await SharedPreferences.getInstance();
-          final userId = prefs.getString('house_id');
-          if (userId != null) {
-            await FlutterClipboard.copy(userId);
-            ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(
-                backgroundColor: AppColors.forestGreen,
-                content: Text('Convite copiado!'),
-              ),
-            );
-          }
-        },
-      ),
-      body: SingleChildScrollView(
-        child: Column(
-          children: [
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 18),
-              child: Column(
-                children: [
+      body: CustomScrollView(
+        slivers: [
+          FinanceHomeTopBarSliver(
+            money: widget.controller.balance,
+            addRoute: () {
+              Modular.to.pushNamed('/addTransaction/', arguments: {
+                'add': true,
+              });
+            },
+            removeRoute: () {
+              Modular.to.pushNamed('/addTransaction/', arguments: {
+                'add': false,
+              });
+            },
+            transactionRoute: () {
+              Modular.to.pushNamed('/transactions/');
+            },
+            menuRoute: () async {
+              final prefs = await SharedPreferences.getInstance();
+              final userId = prefs.getString('house_id');
+              if (userId != null) {
+                await FlutterClipboard.copy(userId);
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(
+                    backgroundColor: AppColors.forestGreen,
+                    content: Text('Convite copiado!'),
+                  ),
+                );
+              }
+            },
+          ),
+          SliverPadding(
+            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 18),
+            sliver: SliverList(
+              delegate: SliverChildListDelegate(
+                [
                   // FinanceCredtCardTile(
                   //   onTap: () {},
                   //   card: 'card',
@@ -98,8 +96,8 @@ class _HomePageState extends State<HomePage> {
                 ],
               ),
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }
