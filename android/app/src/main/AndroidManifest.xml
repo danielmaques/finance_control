@@ -10,7 +10,7 @@
         android:label="House Finance"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher"
-        android:requestLegacyExternalStorage="true"> <!-- Adicionado para compatibilidade -->
+        android:requestLegacyExternalStorage="true">
         <meta-data
             android:name="com.google.android.gms.ads.APPLICATION_ID"
             android:value="ca-app-pub-6625580398265467~9003211952"/>

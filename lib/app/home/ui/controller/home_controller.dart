@@ -27,7 +27,7 @@ class HomeController extends Cubit<BaseState> {
 
   void startBalanceRefreshTimer() {
     _balanceRefreshTimer?.cancel();
-    _balanceRefreshTimer = Timer.periodic(const Duration(seconds: 1), (timer) {
+    _balanceRefreshTimer = Timer.periodic(const Duration(seconds: 30), (timer) {
       getBalance();
       refreshData();
       updateCategoryPercentages();

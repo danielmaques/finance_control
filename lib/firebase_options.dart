@@ -17,7 +17,10 @@ import 'package:flutter/foundation.dart'
 class DefaultFirebaseOptions {
   static FirebaseOptions get currentPlatform {
     if (kIsWeb) {
-      return web;
+      throw UnsupportedError(
+        'DefaultFirebaseOptions have not been configured for web - '
+        'you can reconfigure this by running the FlutterFire CLI again.',
+      );
     }
     switch (defaultTargetPlatform) {
       case TargetPlatform.android:
@@ -46,20 +49,9 @@ class DefaultFirebaseOptions {
     }
   }
 
-  static const FirebaseOptions web = FirebaseOptions(
-    apiKey: 'AIzaSyDF5yw8cQTn3QIKdsodsN2VCsUAYmhAO9o',
-    appId: '1:513199116842:web:a1a8280d1ebe9586f5a953',
-    messagingSenderId: '513199116842',
-    projectId: 'finance-control-77d24',
-    authDomain: 'finance-control-77d24.firebaseapp.com',
-    databaseURL: 'https://finance-control-77d24-default-rtdb.firebaseio.com',
-    storageBucket: 'finance-control-77d24.appspot.com',
-    measurementId: 'G-G7T0G1SB3H',
-  );
-
   static const FirebaseOptions android = FirebaseOptions(
     apiKey: 'AIzaSyDOwJcMbrBuATYpYAYhbcKpWVmy0vGX3pE',
-    appId: '1:513199116842:android:1d2a9da21d992b0cf5a953',
+    appId: '1:513199116842:android:f8673016868f40b5f5a953',
     messagingSenderId: '513199116842',
     projectId: 'finance-control-77d24',
     databaseURL: 'https://finance-control-77d24-default-rtdb.firebaseio.com',
@@ -68,7 +60,7 @@ class DefaultFirebaseOptions {
 
   static const FirebaseOptions ios = FirebaseOptions(
     apiKey: 'AIzaSyDL6wa22GESRq1NyZg_Tejyactc8ZQ6lWU',
-    appId: '1:513199116842:ios:cd8fea16c97eda73f5a953',
+    appId: '1:513199116842:ios:d24160f982f10942f5a953',
     messagingSenderId: '513199116842',
     projectId: 'finance-control-77d24',
     databaseURL: 'https://finance-control-77d24-default-rtdb.firebaseio.com',
