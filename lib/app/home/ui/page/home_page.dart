@@ -1,8 +1,11 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:clipboard/clipboard.dart';
 import 'package:finance_control/app/home/ui/controller/home_controller.dart';
 import 'package:finance_control_ui/finance_control_ui.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class HomePage extends StatefulWidget {
@@ -19,6 +22,8 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   bool isOpen = false;
+  BannerAd? bottomBannerAd;
+  bool isBannerAdReady = false;
 
   @override
   void initState() {
@@ -27,6 +32,7 @@ class _HomePageState extends State<HomePage> {
     widget.controller.getBalance();
     widget.controller.getGastosEGanhos();
     widget.controller.startBalanceRefreshTimer();
+    createBottomBannerAd();
   }
 
   @override
@@ -99,6 +105,38 @@ class _HomePageState extends State<HomePage> {
           ),
         ],
       ),
+      bottomNavigationBar: isBannerAdReady && bottomBannerAd != null
+          ? SizedBox(
+              height: bottomBannerAd!.size.height.toDouble(),
+              width: bottomBannerAd!.size.width.toDouble(),
+              child: AdWidget(
+                ad: bottomBannerAd!,
+              ),
+            )
+          : null,
     );
+  }
+
+  createBottomBannerAd() {
+    try {
+      bottomBannerAd = BannerAd(
+        adUnitId: 'ca-app-pub-3940256099942544/6300978111',
+        size: AdSize.banner,
+        request: const AdRequest(),
+        listener: BannerAdListener(
+          onAdLoaded: (_) {
+            setState(() {
+              isBannerAdReady = true;
+            });
+          },
+          onAdFailedToLoad: (ad, error) {
+            ad.dispose();
+          },
+        ),
+      );
+      bottomBannerAd!.load();
+    } catch (e) {
+      bottomBannerAd = null;
+    }
   }
 }
