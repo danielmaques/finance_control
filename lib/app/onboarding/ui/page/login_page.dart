@@ -1,4 +1,4 @@
-import 'package:finance_control/app/login/ui/controller/login_controller.dart';
+import 'package:finance_control/app/onboarding/ui/controller/login_controller.dart';
 import 'package:finance_control_ui/finance_control_ui.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';

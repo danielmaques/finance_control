@@ -1,5 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:finance_control/app/create_account/datasource/data/create_account_data.dart';
+import 'package:finance_control/app/onboarding/datasource/data/create_account_data.dart';
 import 'package:finance_control/core/model/user_model.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:uuid/uuid.dart';

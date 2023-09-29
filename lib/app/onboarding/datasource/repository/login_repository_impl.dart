@@ -1,5 +1,5 @@
-import 'package:finance_control/app/login/datasource/data/login_data.dart';
-import 'package:finance_control/app/login/datasource/repository/login_repository.dart';
+import 'package:finance_control/app/onboarding/datasource/data/login_data.dart';
+import 'package:finance_control/app/onboarding/datasource/repository/login_repository.dart';
 import 'package:finance_control/core/model/user_model.dart';
 
 class LoginRepositoryImpl implements LoginRepository {

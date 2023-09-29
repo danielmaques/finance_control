@@ -1,6 +1,6 @@
 // ignore_for_file: unnecessary_null_comparison
 
-import 'package:finance_control/app/login/domain/usecase/login_usecase.dart';
+import 'package:finance_control/app/onboarding/domain/usecase/login_usecase.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
