@@ -6,4 +6,5 @@ abstract class CreateAccountData {
   Future<UserCredential> signUp(String email, String password);
   Future<DocumentReference> createHouse(List<UserModel> users);
   Future<void> joinHouse(String houseId, UserModel user);
+  Future<UserCredential?> loginWithGoogle();
 }

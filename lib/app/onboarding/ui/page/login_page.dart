@@ -104,12 +104,13 @@ class _LoginPageState extends State<LoginPage> {
                           Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              Container(
-                                height: 1,
-                                width: 100,
-                                decoration: BoxDecoration(
-                                  color: const Color(0xFFE8E8E8),
-                                  borderRadius: BorderRadius.circular(5),
+                              Expanded(
+                                child: Container(
+                                  height: 1,
+                                  decoration: BoxDecoration(
+                                    color: const Color(0xFFE8E8E8),
+                                    borderRadius: BorderRadius.circular(5),
+                                  ),
                                 ),
                               ),
                               Padding(
@@ -119,12 +120,13 @@ class _LoginPageState extends State<LoginPage> {
                                   'Ou acesse com',
                                 ),
                               ),
-                              Container(
-                                height: 1,
-                                width: 100,
-                                decoration: BoxDecoration(
-                                  color: const Color(0xFFE8E8E8),
-                                  borderRadius: BorderRadius.circular(5),
+                              Expanded(
+                                child: Container(
+                                  height: 1,
+                                  decoration: BoxDecoration(
+                                    color: const Color(0xFFE8E8E8),
+                                    borderRadius: BorderRadius.circular(5),
+                                  ),
                                 ),
                               ),
                             ],

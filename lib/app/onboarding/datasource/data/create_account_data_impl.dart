@@ -2,10 +2,13 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:finance_control/app/onboarding/datasource/data/create_account_data.dart';
 import 'package:finance_control/core/model/user_model.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:uuid/uuid.dart';
 
 class CreateAccountDataImpl implements CreateAccountData {
   final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
+  final GoogleSignIn _googleSignIn = GoogleSignIn();
+  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
   @override
   Future<UserCredential> signUp(String email, String password) async {
@@ -69,5 +72,43 @@ class CreateAccountDataImpl implements CreateAccountData {
         });
       }
     });
+  }
+
+  @override
+  Future<UserCredential?> loginWithGoogle() async {
+    try {
+      final googleSignInAccount = await _googleSignIn.signIn();
+      if (googleSignInAccount != null) {
+        final googleSignInAuthentication =
+            await googleSignInAccount.authentication;
+        final googleAuthCredential = GoogleAuthProvider.credential(
+          accessToken: googleSignInAuthentication.accessToken,
+          idToken: googleSignInAuthentication.idToken,
+        );
+
+        final userCredential =
+            await _firebaseAuth.signInWithCredential(googleAuthCredential);
+
+        final user = userCredential.user;
+
+        // Verifique se o usuário já existe no Firestore
+        final userDoc =
+            await _firestore.collection('users').doc(user!.uid).get();
+
+        if (!userDoc.exists) {
+          // Se o usuário não existe, crie um novo documento com seus dados
+          await _firestore.collection('users').doc(user.uid).set({
+            'uid': user.uid,
+            'displayName': user.displayName,
+            'email': user.email,
+          });
+        }
+
+        return userCredential;
+      }
+    } catch (error) {
+      rethrow;
+    }
+    return null;
   }
 }

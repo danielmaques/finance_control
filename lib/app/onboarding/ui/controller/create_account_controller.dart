@@ -1,9 +1,11 @@
-// ignore_for_file: unnecessary_null_comparison
+// ignore_for_file: unnecessary_null_comparison, use_build_context_synchronously
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:finance_control/core/model/user_model.dart';
+import 'package:finance_control_ui/finance_control_ui.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_modular/flutter_modular.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../domain/usecase/create_account_usecase.dart';
@@ -20,7 +22,7 @@ class CreateAccountController {
   TextEditingController houseId = TextEditingController();
 
   ValueNotifier<bool> isBlockedNotifier = ValueNotifier(true);
-  ValueNotifier<bool> isCriate = ValueNotifier(true);
+  ValueNotifier<bool> isCriate = ValueNotifier(false); // Inicialize com false
 
   ValueNotifier<bool> invitation = ValueNotifier(false);
   ValueNotifier<bool> terms = ValueNotifier(false);
@@ -70,12 +72,24 @@ class CreateAccountController {
       throw Exception('User ID not found in SharedPreferences');
     }
 
-    final List<UserModel> userModel = [
-      UserModel(id: userId, name: name.text, email: email.text),
-    ];
+    List<UserModel> userModelList = [];
+
+    final userCredential = await _createAccountUseCase.loginWithGoogle();
+    if (userCredential != null) {
+      final user = userCredential.user;
+      if (user != null) {
+        userModelList = [
+          UserModel(id: user.uid, name: user.displayName!, email: user.email!),
+        ];
+      }
+    } else {
+      userModelList = [
+        UserModel(id: userId, name: name.text, email: email.text),
+      ];
+    }
 
     final DocumentReference houseRef =
-        await _createAccountUseCase.createHouse(userModel);
+        await _createAccountUseCase.createHouse(userModelList);
 
     await prefs.setString('house_id', houseRef.id);
 
@@ -96,5 +110,41 @@ class CreateAccountController {
     await _createAccountUseCase.joinHouse(houseId.text, user);
 
     await prefs.setString('house_id', houseId.text);
+  }
+
+  Future<void> createAccountWithGoogleAndJoinHouse({
+    required BuildContext context,
+  }) async {
+    try {
+      final userCredential = await _createAccountUseCase.loginWithGoogle();
+      if (userCredential != null) {
+        final user = userCredential.user;
+        if (user != null) {
+          final prefs = await SharedPreferences.getInstance();
+          await prefs.setString('user_id', user.uid);
+
+          if (houseId.text.length < 10) {
+            await createHouse();
+          } else {
+            await joinExistingHouse();
+          }
+
+          isCriate.value = true;
+          if (isCriate.value == true) {
+            Modular.to.pushNamed('/home/');
+          }
+        }
+      }
+    } catch (e) {
+      if (kDebugMode) {
+        print(e);
+      }
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          backgroundColor: AppColors.cherryRed,
+          content: Text('Erro ao criar a conta com o Google: $e'),
+        ),
+      );
+    }
   }
 }

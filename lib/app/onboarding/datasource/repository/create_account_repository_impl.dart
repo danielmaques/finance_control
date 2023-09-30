@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 import '../../../../core/model/user_model.dart';
 import '../data/create_account_data.dart';
@@ -27,5 +28,10 @@ class CreateAccountRepositoryImpl implements CreateAccountRepository {
   @override
   Future<void> joinHouse(String houseId, UserModel user) {
     return createAccountData.joinHouse(houseId, user);
+  }
+
+  @override
+  Future<UserCredential?> loginWithGoogle() {
+    return createAccountData.loginWithGoogle();
   }
 }
