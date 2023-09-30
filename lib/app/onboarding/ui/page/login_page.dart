@@ -1,4 +1,5 @@
 import 'package:finance_control/app/onboarding/ui/controller/login_controller.dart';
+import 'package:finance_control_ui/0_core/helper/validator.dart';
 import 'package:finance_control_ui/finance_control_ui.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
@@ -35,142 +36,130 @@ class _LoginPageState extends State<LoginPage> {
                 return Container();
               }
               return Scaffold(
-                body: Padding(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 20, vertical: 40),
-                  child: ValueListenableBuilder<bool>(
-                    valueListenable: widget.controller.isBlockedNotifier,
-                    builder: (context, button, child) {
-                      return Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          const FinanceAppBar(
-                            icon: false,
-                          ),
-                          ValueListenableBuilder(
-                            valueListenable: widget.controller.reset,
-                            builder: (context, value, child) => Center(
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                mainAxisAlignment: MainAxisAlignment.start,
+                body: SingleChildScrollView(
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 24, vertical: 40),
+                    child: ValueListenableBuilder<bool>(
+                      valueListenable: widget.controller.isBlockedNotifier,
+                      builder: (context, button, child) {
+                        return Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: [
+                            const Spacer(),
+                            Row(
+                              children: [
+                                FinanceText.h3(
+                                  'Olá,',
+                                  fontWeight: FontWeight.bold,
+                                ),
+                                FinanceText.h3(
+                                  ' faça seu login!',
+                                  fontWeight: FontWeight.normal,
+                                ),
+                              ],
+                            ),
+                            const SizedBox(height: 32),
+                            FinanceTextField(
+                              label: 'Email',
+                              controller: widget.controller.email,
+                              autocorrect: true,
+                              onChanged: (p0) {
+                                widget.controller.updateIsBlocked();
+                              },
+                              validator: (email) {
+                                if (email!.isEmpty) {
+                                  return 'Campo de email não pode estar vazio';
+                                } else if (!isEmailValid(email)) {
+                                  return 'Email inválido';
+                                }
+                                return null;
+                              },
+                            ),
+                            const SizedBox(height: 18),
+                            FinanceTextField(
+                              label: 'Senha',
+                              controller: widget.controller.password,
+                              onChanged: (p0) {
+                                widget.controller.updateIsBlocked();
+                              },
+                            ),
+                            const SizedBox(height: 6),
+                            Align(
+                              alignment: Alignment.centerRight,
+                              child: FinanceText.p14('Esqueci minha senha'),
+                            ),
+                            const SizedBox(height: 40),
+                            FinanceButton(
+                              title: 'Entrar',
+                              disabled: button,
+                              onTap: () {
+                                widget.controller.login(
+                                  email: widget.controller.email.text,
+                                  password: widget.controller.password.text,
+                                );
+                              },
+                            ),
+                            const SizedBox(height: 32),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Container(
+                                  height: 1,
+                                  width: 100,
+                                  decoration: BoxDecoration(
+                                    color: const Color(0xFFE8E8E8),
+                                    borderRadius: BorderRadius.circular(5),
+                                  ),
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 32),
+                                  child: FinanceText.p16(
+                                    'Ou acesse com',
+                                  ),
+                                ),
+                                Container(
+                                  height: 1,
+                                  width: 100,
+                                  decoration: BoxDecoration(
+                                    color: const Color(0xFFE8E8E8),
+                                    borderRadius: BorderRadius.circular(5),
+                                  ),
+                                ),
+                              ],
+                            ),
+                            const SizedBox(height: 16),
+                            FinanceButton(
+                              onTap: () {},
+                              google: true,
+                              color: Colors.transparent,
+                            ),
+                            const SizedBox(height: 38),
+                            GestureDetector(
+                              onTap: () {
+                                Modular.to.pushNamed('/createAccount');
+                              },
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
-                                  FinanceText.h3(
-                                    'Entrar',
+                                  FinanceText.p16(
+                                    'Não possui uma conta?',
                                   ),
-                                  const SizedBox(height: 31),
-                                  FinanceTextField(
-                                    label: 'Email',
-                                    hintText: 'Digite seu email',
-                                    controller: widget.controller.email,
-                                    onChanged: (p0) {
-                                      widget.controller.updateIsBlocked();
-                                    },
-                                  ),
-                                  Visibility(
-                                    visible: value,
-                                    child: Column(
-                                      children: [
-                                        const SizedBox(height: 24),
-                                        FinanceTextField(
-                                          label: 'Senha',
-                                          hintText: 'Digite sua senha',
-                                          controller:
-                                              widget.controller.password,
-                                          onChanged: (p0) {
-                                            widget.controller.updateIsBlocked();
-                                          },
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                  Visibility(
-                                    visible: !value,
-                                    child: Column(
-                                      children: [
-                                        const SizedBox(height: 24),
-                                        FinanceButton(
-                                          title: 'Recuperar senha',
-                                          disabled: false,
-                                          onTap: () {
-                                            widget.controller.resetPassword(
-                                              email:
-                                                  widget.controller.email.text,
-                                            );
-                                          },
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                  Visibility(
-                                    visible: value,
-                                    child: Column(
-                                      children: [
-                                        const SizedBox(height: 24),
-                                        FinanceButton(
-                                          title: 'Entrar',
-                                          disabled: button,
-                                          onTap: () {
-                                            widget.controller.login(
-                                              email:
-                                                  widget.controller.email.text,
-                                              password: widget
-                                                  .controller.password.text,
-                                            );
-                                          },
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                  const SizedBox(height: 20),
-                                  GestureDetector(
-                                    onTap: () {
-                                      widget.controller.reset.value = !value;
-                                    },
-                                    child: Row(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.center,
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      children: [
-                                        FinanceText.p16(
-                                          value == false
-                                              ? 'Lembrei da senha'
-                                              : 'Esqueceu a senha?',
-                                        ),
-                                      ],
-                                    ),
+                                  FinanceText.p16(
+                                    ' Criar grátis',
+                                    color: AppColors.deepBlue,
+                                    fontWeight: FontWeight.bold,
                                   ),
                                 ],
                               ),
                             ),
-                          ),
-                          const Spacer(flex: 2),
-                          Center(
-                            child: GestureDetector(
-                              onTap: () {
-                                Modular.to.pushNamed('/createAccount');
-                              },
-                              child: Container(
-                                color: Colors.transparent,
-                                child: Row(
-                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    FinanceText.p16(
-                                      'Não possui uma conta?',
-                                    ),
-                                    const SizedBox(width: 5),
-                                    FinanceText.p16(
-                                      'Criar conta.',
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ),
-                          )
-                        ],
-                      );
-                    },
+                            const Spacer(),
+                          ],
+                        );
+                      },
+                    ),
                   ),
                 ),
               );

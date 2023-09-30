@@ -20,11 +20,13 @@ import 'ui/page/login_page.dart';
 class OnboardingModule extends Module {
   @override
   void binds(i) {
+    // Login
     i.addLazySingleton<LoginData>(LoginDataImpl.new);
     i.addLazySingleton<LoginRepository>(LoginRepositoryImpl.new);
     i.addLazySingleton<LoginUseCase>(LoginUseCaseImpl.new);
     i.addLazySingleton(LoginController.new);
 
+    // CreateAccount
     i.addSingleton<CreateAccountData>(CreateAccountDataImpl.new);
     i.addSingleton<CreateAccountRepository>(CreateAccountRepositoryImpl.new);
     i.addSingleton<CreateAccountUseCase>(CreateAccountUseCaseImpl.new);

@@ -1,12 +1,10 @@
 import 'dart:async';
 
 import 'package:finance_control/app/home/domain/usecase/home_usecase.dart';
-import 'package:finance_control/core/states/base_page_state.dart';
 import 'package:flutter/foundation.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-class HomeController extends Cubit<BaseState> {
+class HomeController {
   final HomeUseCase _useCase;
 
   final ValueNotifier<List<Map<String, dynamic>>> transaction =
@@ -21,7 +19,7 @@ class HomeController extends Cubit<BaseState> {
 
   Timer? _balanceRefreshTimer;
 
-  HomeController(this._useCase) : super(const EmptyState()) {
+  HomeController(this._useCase) {
     startBalanceRefreshTimer();
   }
 
