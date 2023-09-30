@@ -129,9 +129,11 @@ class _LoginPageState extends State<LoginPage> {
                               ),
                             ],
                           ),
-                          const SizedBox(height: 20),
+                          const SizedBox(height: 32),
                           FinanceButton(
-                            onTap: () {},
+                            onTap: () {
+                              widget.controller.loginWithGoogle(context);
+                            },
                             google: true,
                             color: Colors.transparent,
                           ),

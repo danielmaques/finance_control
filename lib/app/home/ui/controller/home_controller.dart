@@ -25,7 +25,7 @@ class HomeController {
 
   void startBalanceRefreshTimer() {
     _balanceRefreshTimer?.cancel();
-    _balanceRefreshTimer = Timer.periodic(const Duration(seconds: 30), (timer) {
+    _balanceRefreshTimer = Timer.periodic(const Duration(seconds: 1), (timer) {
       getBalance();
       refreshData();
       updateCategoryPercentages();

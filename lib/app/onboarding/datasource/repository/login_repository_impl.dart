@@ -1,6 +1,7 @@
 import 'package:finance_control/app/onboarding/datasource/data/login_data.dart';
 import 'package:finance_control/app/onboarding/datasource/repository/login_repository.dart';
 import 'package:finance_control/core/model/user_model.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 class LoginRepositoryImpl implements LoginRepository {
   final LoginData loginData;
@@ -25,5 +26,10 @@ class LoginRepositoryImpl implements LoginRepository {
   @override
   Future<void> resetPassword(String email) {
     return loginData.resetPassword(email);
+  }
+
+  @override
+  Future<UserCredential?> loginWithGoogle() {
+    return loginData.loginWithGoogle();
   }
 }

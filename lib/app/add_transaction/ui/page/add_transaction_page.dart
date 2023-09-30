@@ -365,16 +365,10 @@ class _AddTransactionPageState extends State<AddTransactionPage> {
               descricao: widget.controller.description.value.text,
               valor: widget.controller.pay.value,
             );
-            ScaffoldMessenger.of(context).showMaterialBanner(
-              const MaterialBanner(
+            ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(
                 backgroundColor: AppColors.forestGreen,
-                content: Text('Convite copiado!'),
-                actions: [
-                  TextButton(
-                    onPressed: null,
-                    child: Text('DISMISS'),
-                  ),
-                ],
+                content: Text('Lançamento adicionado'),
               ),
             );
             // Modular.to.pushReplacementNamed('/home/');

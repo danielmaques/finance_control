@@ -38,6 +38,7 @@ class LoginDataImpl implements LoginData {
     }
   }
 
+  @override
   Future<UserCredential?> loginWithGoogle() async {
     try {
       final googleSignInAccount = await _googleSignIn.signIn();
@@ -48,7 +49,20 @@ class LoginDataImpl implements LoginData {
           accessToken: googleSignInAuthentication.accessToken,
           idToken: googleSignInAuthentication.idToken,
         );
-        return await _firebaseAuth.signInWithCredential(googleAuthCredential);
+
+        final userCredential =
+            await _firebaseAuth.signInWithCredential(googleAuthCredential);
+
+        final user = userCredential.user;
+
+        final userDoc =
+            await _firestore.collection('users').doc(user!.uid).get();
+
+        if (!userDoc.exists) {
+          throw Exception('Usuário não registrado.');
+        }
+
+        return userCredential;
       }
     } catch (error) {
       rethrow;

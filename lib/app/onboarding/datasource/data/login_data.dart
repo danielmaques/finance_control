@@ -4,4 +4,5 @@ abstract class LoginData {
   Future<UserCredential> login(String email, String password);
   Future<String?> findHouseIdByUserId(String userId);
   Future<void> resetPassword(String email);
+  Future<UserCredential?> loginWithGoogle();
 }
