@@ -36,130 +36,128 @@ class _LoginPageState extends State<LoginPage> {
                 return Container();
               }
               return Scaffold(
-                body: SingleChildScrollView(
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 24, vertical: 40),
-                    child: ValueListenableBuilder<bool>(
-                      valueListenable: widget.controller.isBlockedNotifier,
-                      builder: (context, button, child) {
-                        return Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: [
-                            const Spacer(),
-                            Row(
-                              children: [
-                                FinanceText.h3(
-                                  'Olá,',
-                                  fontWeight: FontWeight.bold,
+                body: Padding(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 24, vertical: 40),
+                  child: ValueListenableBuilder<bool>(
+                    valueListenable: widget.controller.isBlockedNotifier,
+                    builder: (context, button, child) {
+                      return Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          const Spacer(),
+                          Row(
+                            children: [
+                              FinanceText.h3(
+                                'Olá,',
+                                fontWeight: FontWeight.bold,
+                              ),
+                              FinanceText.h3(
+                                ' faça seu login!',
+                                fontWeight: FontWeight.normal,
+                              ),
+                            ],
+                          ),
+                          const SizedBox(height: 32),
+                          FinanceTextField(
+                            label: 'Email',
+                            controller: widget.controller.email,
+                            autocorrect: true,
+                            onChanged: (p0) {
+                              widget.controller.updateIsBlocked();
+                            },
+                            validator: (email) {
+                              if (email!.isEmpty) {
+                                return 'Campo de email não pode estar vazio';
+                              } else if (!isEmailValid(email)) {
+                                return 'Email inválido';
+                              }
+                              return null;
+                            },
+                          ),
+                          const SizedBox(height: 18),
+                          FinanceTextField(
+                            label: 'Senha',
+                            controller: widget.controller.password,
+                            onChanged: (p0) {
+                              widget.controller.updateIsBlocked();
+                            },
+                          ),
+                          const SizedBox(height: 6),
+                          Align(
+                            alignment: Alignment.centerRight,
+                            child: FinanceText.p14('Esqueci minha senha'),
+                          ),
+                          const SizedBox(height: 40),
+                          FinanceButton(
+                            title: 'Entrar',
+                            disabled: button,
+                            onTap: () {
+                              widget.controller.login(
+                                email: widget.controller.email.text,
+                                password: widget.controller.password.text,
+                              );
+                            },
+                          ),
+                          const SizedBox(height: 32),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Container(
+                                height: 1,
+                                width: 100,
+                                decoration: BoxDecoration(
+                                  color: const Color(0xFFE8E8E8),
+                                  borderRadius: BorderRadius.circular(5),
                                 ),
-                                FinanceText.h3(
-                                  ' faça seu login!',
-                                  fontWeight: FontWeight.normal,
+                              ),
+                              Padding(
+                                padding:
+                                    const EdgeInsets.symmetric(horizontal: 32),
+                                child: FinanceText.p16(
+                                  'Ou acesse com',
                                 ),
-                              ],
-                            ),
-                            const SizedBox(height: 32),
-                            FinanceTextField(
-                              label: 'Email',
-                              controller: widget.controller.email,
-                              autocorrect: true,
-                              onChanged: (p0) {
-                                widget.controller.updateIsBlocked();
-                              },
-                              validator: (email) {
-                                if (email!.isEmpty) {
-                                  return 'Campo de email não pode estar vazio';
-                                } else if (!isEmailValid(email)) {
-                                  return 'Email inválido';
-                                }
-                                return null;
-                              },
-                            ),
-                            const SizedBox(height: 18),
-                            FinanceTextField(
-                              label: 'Senha',
-                              controller: widget.controller.password,
-                              onChanged: (p0) {
-                                widget.controller.updateIsBlocked();
-                              },
-                            ),
-                            const SizedBox(height: 6),
-                            Align(
-                              alignment: Alignment.centerRight,
-                              child: FinanceText.p14('Esqueci minha senha'),
-                            ),
-                            const SizedBox(height: 40),
-                            FinanceButton(
-                              title: 'Entrar',
-                              disabled: button,
-                              onTap: () {
-                                widget.controller.login(
-                                  email: widget.controller.email.text,
-                                  password: widget.controller.password.text,
-                                );
-                              },
-                            ),
-                            const SizedBox(height: 32),
-                            Row(
+                              ),
+                              Container(
+                                height: 1,
+                                width: 100,
+                                decoration: BoxDecoration(
+                                  color: const Color(0xFFE8E8E8),
+                                  borderRadius: BorderRadius.circular(5),
+                                ),
+                              ),
+                            ],
+                          ),
+                          const SizedBox(height: 20),
+                          FinanceButton(
+                            onTap: () {},
+                            google: true,
+                            color: Colors.transparent,
+                          ),
+                          const SizedBox(height: 38),
+                          GestureDetector(
+                            onTap: () {
+                              Modular.to.pushNamed('/createAccount');
+                            },
+                            child: Row(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
-                                Container(
-                                  height: 1,
-                                  width: 100,
-                                  decoration: BoxDecoration(
-                                    color: const Color(0xFFE8E8E8),
-                                    borderRadius: BorderRadius.circular(5),
-                                  ),
+                                FinanceText.p16(
+                                  'Não possui uma conta?',
                                 ),
-                                Padding(
-                                  padding: const EdgeInsets.symmetric(
-                                      horizontal: 32),
-                                  child: FinanceText.p16(
-                                    'Ou acesse com',
-                                  ),
-                                ),
-                                Container(
-                                  height: 1,
-                                  width: 100,
-                                  decoration: BoxDecoration(
-                                    color: const Color(0xFFE8E8E8),
-                                    borderRadius: BorderRadius.circular(5),
-                                  ),
+                                FinanceText.p16(
+                                  ' Criar grátis',
+                                  color: AppColors.deepBlue,
+                                  fontWeight: FontWeight.bold,
                                 ),
                               ],
                             ),
-                            const SizedBox(height: 16),
-                            FinanceButton(
-                              onTap: () {},
-                              google: true,
-                              color: Colors.transparent,
-                            ),
-                            const SizedBox(height: 38),
-                            GestureDetector(
-                              onTap: () {
-                                Modular.to.pushNamed('/createAccount');
-                              },
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  FinanceText.p16(
-                                    'Não possui uma conta?',
-                                  ),
-                                  FinanceText.p16(
-                                    ' Criar grátis',
-                                    color: AppColors.deepBlue,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ],
-                              ),
-                            ),
-                            const Spacer(),
-                          ],
-                        );
-                      },
-                    ),
+                          ),
+                          const Spacer(),
+                        ],
+                      );
+                    },
                   ),
                 ),
               );
