@@ -85,143 +85,153 @@ class _AccountCardsPageState extends State<AccountCardsPage> {
             ),
           ),
           const SizedBox(height: 40),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 20),
-            child: ValueListenableBuilder(
-              valueListenable: widget.controller.accountList,
-              builder: (context, accountList, child) => GridView.builder(
-                shrinkWrap: true,
-                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 2,
-                  mainAxisSpacing: 35,
-                  crossAxisSpacing: 35,
-                  childAspectRatio: 1.0,
-                ),
-                itemCount: accountList.length + 1,
-                itemBuilder: (BuildContext context, int index) {
-                  if (index == 0) {
-                    return Material(
-                      elevation: 1,
-                      borderRadius: BorderRadius.circular(25),
-                      child: InkWell(
-                        onTap: () {
-                          showDialog(
-                            context: context,
-                            builder: (context) => AlertDialog(
-                              scrollable: true,
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(20),
-                              ),
-                              title: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                children: [
-                                  FinanceText.h4(
-                                    'Nova conta',
-                                    fontWeight: FontWeight.w500,
-                                  ),
-                                  IconButton(
-                                    onPressed: () => Modular.to.pop(),
-                                    icon: Icon(
-                                      Icons.close_rounded,
-                                      size: 20,
-                                      color: Colors.grey[400],
+          selectedTabIndex == 0
+              ? Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 20),
+                  child: ValueListenableBuilder(
+                    valueListenable: widget.controller.accountList,
+                    builder: (context, accountList, child) => GridView.builder(
+                      shrinkWrap: true,
+                      gridDelegate:
+                          const SliverGridDelegateWithFixedCrossAxisCount(
+                        crossAxisCount: 2,
+                        mainAxisSpacing: 35,
+                        crossAxisSpacing: 35,
+                        childAspectRatio: 1.0,
+                      ),
+                      itemCount: accountList.length + 1,
+                      itemBuilder: (BuildContext context, int index) {
+                        if (index == 0) {
+                          return Material(
+                            elevation: 1,
+                            borderRadius: BorderRadius.circular(25),
+                            child: InkWell(
+                              onTap: () {
+                                showDialog(
+                                  context: context,
+                                  builder: (context) => AlertDialog(
+                                    scrollable: true,
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(20),
+                                    ),
+                                    title: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.center,
+                                      children: [
+                                        FinanceText.h4(
+                                          'Nova conta',
+                                          fontWeight: FontWeight.w500,
+                                        ),
+                                        IconButton(
+                                          onPressed: () => Modular.to.pop(),
+                                          icon: Icon(
+                                            Icons.close_rounded,
+                                            size: 20,
+                                            color: Colors.grey[400],
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                    content: Column(
+                                      children: [
+                                        FinanceTextField(
+                                          hintText: 'Instituição financeira',
+                                          textCapitalization:
+                                              TextCapitalization.sentences,
+                                          onChanged: (p0) {
+                                            widget.controller.bank.value = p0;
+                                          },
+                                          validator: (p0) {
+                                            if (widget.controller.bank.value
+                                                .isEmpty) {
+                                              return 'Insira uma instituição financeira';
+                                            }
+                                            return null;
+                                          },
+                                        ),
+                                        const SizedBox(height: 24),
+                                        FinanceDropDown(
+                                          hint: "Tipo de conta",
+                                          categoriesList: categoriesList,
+                                          onItemSelected: (p0) {
+                                            widget.controller.account.value =
+                                                p0;
+                                          },
+                                        ),
+                                        const SizedBox(height: 24),
+                                        FinanceDropDown(
+                                          hint: "Selecione o proprietário",
+                                          categoriesList:
+                                              widget.controller.users,
+                                          onItemSelected: (p0) {
+                                            widget.controller.userSelect.value =
+                                                p0;
+                                          },
+                                        ),
+                                        const SizedBox(height: 24),
+                                        FinanceButton(
+                                          title: 'Salvar',
+                                          onTap: () {
+                                            if (widget.controller.bank.value
+                                                .isNotEmpty) {
+                                              widget.controller.addBank();
+                                              ScaffoldMessenger.of(context)
+                                                  .showSnackBar(
+                                                const SnackBar(
+                                                  backgroundColor:
+                                                      AppColors.forestGreen,
+                                                  content:
+                                                      Text('Conta adicionada'),
+                                                ),
+                                              );
+                                              Modular.to.pop();
+                                            }
+                                          },
+                                        ),
+                                      ],
                                     ),
                                   ),
-                                ],
-                              ),
-                              content: Column(
+                                );
+                              },
+                              borderRadius: BorderRadius.circular(25),
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                crossAxisAlignment: CrossAxisAlignment.center,
                                 children: [
-                                  FinanceTextField(
-                                    hintText: 'Instituição financeira',
-                                    textCapitalization:
-                                        TextCapitalization.sentences,
-                                    onChanged: (p0) {
-                                      widget.controller.bank.value = p0;
-                                    },
-                                    validator: (p0) {
-                                      if (widget
-                                          .controller.bank.value.isEmpty) {
-                                        return 'Insira uma instituição financeira';
-                                      }
-                                      return null;
-                                    },
+                                  const Icon(
+                                    Icons.add_circle_outline_rounded,
+                                    size: 40,
+                                    color: AppColors.deepBlue,
                                   ),
-                                  const SizedBox(height: 24),
-                                  FinanceDropDown(
-                                    hint: "Tipo de conta",
-                                    categoriesList: categoriesList,
-                                    onItemSelected: (p0) {
-                                      widget.controller.account.value = p0;
-                                    },
-                                  ),
-                                  const SizedBox(height: 24),
-                                  FinanceDropDown(
-                                    hint: "Selecione o proprietário",
-                                    categoriesList: widget.controller.users,
-                                    onItemSelected: (p0) {
-                                      widget.controller.userSelect.value = p0;
-                                    },
-                                  ),
-                                  const SizedBox(height: 24),
-                                  FinanceButton(
-                                    title: 'Salvar',
-                                    onTap: () {
-                                      if (widget
-                                          .controller.bank.value.isNotEmpty) {
-                                        widget.controller.addBank();
-                                        ScaffoldMessenger.of(context)
-                                            .showSnackBar(
-                                          const SnackBar(
-                                            backgroundColor:
-                                                AppColors.forestGreen,
-                                            content: Text('Conta adicionada'),
-                                          ),
-                                        );
-                                        Modular.to.pop();
-                                      }
-                                    },
+                                  const SizedBox(height: 16),
+                                  FinanceText.p18(
+                                    selectedTabIndex == 0
+                                        ? 'Add Conta'
+                                        : 'Add Cartão',
+                                    color: AppColors.deepBlue,
+                                    fontWeight: FontWeight.w500,
                                   ),
                                 ],
                               ),
                             ),
                           );
-                        },
-                        borderRadius: BorderRadius.circular(25),
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            const Icon(
-                              Icons.add_circle_outline_rounded,
-                              size: 40,
-                              color: AppColors.deepBlue,
-                            ),
-                            const SizedBox(height: 16),
-                            FinanceText.p18(
-                              selectedTabIndex == 0
-                                  ? 'Add Conta'
-                                  : 'Add Cartão',
-                              color: AppColors.deepBlue,
-                              fontWeight: FontWeight.w500,
-                            ),
-                          ],
-                        ),
-                      ),
-                    );
-                  } else {
-                    return FinanceAccountCardItem(
-                      selectedTabIndex: selectedTabIndex,
-                      gasto: accountList[index - 1].balance!,
-                      name: accountList[index - 1].bank!,
-                      saldo: accountList[index - 1].balance!,
-                    );
-                  }
-                },
-              ),
-            ),
-          ),
+                        } else {
+                          return FinanceAccountCardItem(
+                            selectedTabIndex: selectedTabIndex,
+                            gasto: accountList[index - 1].balance!,
+                            name: accountList[index - 1].bank!,
+                            saldo: accountList[index - 1].balance!,
+                          );
+                        }
+                      },
+                    ),
+                  ),
+                )
+              : const Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 20),
+                ),
         ],
       ),
     );
