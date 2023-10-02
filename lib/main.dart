@@ -1,3 +1,4 @@
+import 'package:finance_control/app/accounts_cards/accounts_cards_module.dart';
 import 'package:finance_control/app/add_transaction/add_transaction_module.dart';
 import 'package:finance_control/app/transactions/transactions_module.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -44,5 +45,6 @@ class AppModule extends Module {
     r.module('/home', module: HomeModule());
     r.module('/addTransaction', module: AddTransactionModule());
     r.module('/transactions', module: TransactionsModule());
+    r.module('/accountsCards', module: AccountsCardsModule());
   }
 }

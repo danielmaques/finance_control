@@ -164,7 +164,7 @@ class _CreateAccountPageState extends State<CreateAccountPage> {
                     );
 
                     if (widget.controller.isCriate.value == true) {
-                      Modular.to.pushNamed('/home/');
+                      Modular.to.pushReplacementNamed('/home/');
                     }
                   },
                 ),

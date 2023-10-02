@@ -131,7 +131,7 @@ class CreateAccountController {
 
           isCriate.value = true;
           if (isCriate.value == true) {
-            Modular.to.pushNamed('/home/');
+            Modular.to.pushReplacementNamed('/home/');
           }
         }
       }

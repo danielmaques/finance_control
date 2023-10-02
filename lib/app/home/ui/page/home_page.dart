@@ -3,6 +3,7 @@
 import 'package:clipboard/clipboard.dart';
 import 'package:finance_control/app/home/ui/controller/home_controller.dart';
 import 'package:finance_control_ui/finance_control_ui.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
@@ -39,47 +40,50 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: const Color(0xFFEEF2F8),
-      body: CustomScrollView(
-        slivers: [
-          FinanceHomeTopBarSliver(
-            money: widget.controller.balance,
-            addRoute: () {
-              Modular.to.pushNamed('/addTransaction/', arguments: {
-                'add': true,
-              });
-            },
-            removeRoute: () {
-              Modular.to.pushNamed('/addTransaction/', arguments: {
-                'add': false,
-              });
-            },
-            transactionRoute: () {
-              Modular.to.pushNamed('/transactions/');
-            },
-            menuRoute: () async {
-              final prefs = await SharedPreferences.getInstance();
-              final userId = prefs.getString('house_id');
-              if (userId != null) {
-                await FlutterClipboard.copy(userId);
-                ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(
-                    backgroundColor: AppColors.forestGreen,
-                    content: Text('Convite copiado!'),
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+            FinanceHomeTopBarSliver(
+              money: widget.controller.balance,
+              addRoute: () {
+                Modular.to.pushNamed('/addTransaction/', arguments: {
+                  'add': true,
+                });
+              },
+              removeRoute: () {
+                Modular.to.pushNamed('/addTransaction/', arguments: {
+                  'add': false,
+                });
+              },
+              transactionRoute: () {
+                Modular.to.pushNamed('/transactions/');
+              },
+              menuRoute: () async {
+                final prefs = await SharedPreferences.getInstance();
+                final userId = prefs.getString('house_id');
+                if (userId != null) {
+                  await FlutterClipboard.copy(userId);
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(
+                      backgroundColor: AppColors.forestGreen,
+                      content: Text('Convite copiado!'),
+                    ),
+                  );
+                }
+              },
+            ),
+            const SizedBox(height: 20),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 22),
+              child: Column(
+                children: [
+                  FinanceCredtCardTile(
+                    onTap: () {
+                      Modular.to.pushNamed('/accountsCards/');
+                    },
+                    card: 'card',
+                    cardName: 'cardName',
                   ),
-                );
-              }
-            },
-          ),
-          SliverPadding(
-            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 18),
-            sliver: SliverList(
-              delegate: SliverChildListDelegate(
-                [
-                  // FinanceCredtCardTile(
-                  //   onTap: () {},
-                  //   card: 'card',
-                  //   cardName: 'cardName',
-                  // ),
                   const SizedBox(height: 22),
                   ValueListenableBuilder<Map<String, double>>(
                     valueListenable: widget.controller.categoryPercentages,
@@ -102,8 +106,8 @@ class _HomePageState extends State<HomePage> {
                 ],
               ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
       bottomNavigationBar: isBannerAdReady && bottomBannerAd != null
           ? SizedBox(
@@ -120,7 +124,9 @@ class _HomePageState extends State<HomePage> {
   createBottomBannerAd() {
     try {
       bottomBannerAd = BannerAd(
-        adUnitId: 'ca-app-pub-3940256099942544/6300978111',
+        adUnitId: kReleaseMode
+            ? 'ca-app-pub-6625580398265467/1218136997'
+            : 'ca-app-pub-3940256099942544/6300978111',
         size: AdSize.banner,
         request: const AdRequest(),
         listener: BannerAdListener(
