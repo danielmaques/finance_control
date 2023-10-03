@@ -33,4 +33,9 @@ class AccountCardsUseCaseImpl implements AccountCardsUseCase {
     Future<String> addCard(String houseId, CardModel card) {
     return _accountCardsRepository.addCard(houseId, card);
   }
+  
+  @override
+  Future<List<CardModel>> getCards(String houseId) {
+    return _accountCardsRepository.getCards(houseId);
+  }
 }

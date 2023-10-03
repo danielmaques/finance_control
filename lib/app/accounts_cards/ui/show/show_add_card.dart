@@ -170,6 +170,8 @@ class _ShowAddCardState extends State<ShowAddCard> {
             title: 'Salvar',
             onTap: () {
               widget.controller.addCard();
+              widget.controller.getCards();
+              Modular.to.pop();
             },
           ),
         ],

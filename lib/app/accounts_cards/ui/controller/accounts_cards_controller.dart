@@ -18,8 +18,7 @@ class AccountCardsController {
   ValueNotifier<List<AccountModel>> accountList =
       ValueNotifier<List<AccountModel>>([]);
 
-  ValueNotifier<List<AccountModel>> cardList =
-      ValueNotifier<List<AccountModel>>([]);
+  ValueNotifier<List<CardModel>> cardList = ValueNotifier<List<CardModel>>([]);
   ValueNotifier<double> limit = ValueNotifier<double>(0);
   ValueNotifier<double> availableLimit = ValueNotifier<double>(0);
   ValueNotifier<String> cardName = ValueNotifier<String>('');
@@ -80,10 +79,20 @@ class AccountCardsController {
       cardName: cardName.value,
       flag: flag.value,
       close: close.value,
+      availableLimit: 0,
     );
 
     final cardId = await _accountCardsUseCase.addCard(houseId!, cardModel);
 
     cardModel.id = cardId;
+  }
+
+  Future<void> getCards() async {
+    final prefs = await SharedPreferences.getInstance();
+    final houseId = prefs.getString('house_id');
+
+    final cards = await _accountCardsUseCase.getCards(houseId!);
+
+    cardList.value = cards;
   }
 }

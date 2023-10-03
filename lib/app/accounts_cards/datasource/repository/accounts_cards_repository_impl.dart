@@ -33,4 +33,9 @@ class AccountCardsRepositoryImpl implements AccountCardsRepository {
     Future<String> addCard(String houseId, CardModel card) {
     return _accountCardsData.addCard(houseId, card);
   }
+  
+  @override
+  Future<List<CardModel>> getCards(String houseId) {
+    return _accountCardsData.getCards(houseId);
+  }
 }

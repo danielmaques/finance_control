@@ -7,4 +7,5 @@ abstract class AccountCardsData {
   Future<List<AccountModel>> getAccountBanks(String houseId);
   Future<void> deleteBank(String houseId, String accountId);
   Future<String> addCard(String houseId, CardModel card);
+  Future<List<CardModel>> getCards(String houseId);
 }

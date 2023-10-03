@@ -27,6 +27,7 @@ class _AccountCardsPageState extends State<AccountCardsPage> {
     super.initState();
     widget.controller.getUsersInHouse();
     widget.controller.getAccountBanks();
+    widget.controller.getCards();
   }
 
   @override
@@ -134,7 +135,7 @@ class _AccountCardsPageState extends State<AccountCardsPage> {
                     child: ValueListenableBuilder(
                       valueListenable: widget.controller.cardList,
                       builder: (context, cardList, child) => ListView.separated(
-                        itemCount: 3,
+                        itemCount: cardList.length + 1,
                         shrinkWrap: true,
                         physics: const NeverScrollableScrollPhysics(),
                         separatorBuilder: (context, index) =>
@@ -179,6 +180,8 @@ class _AccountCardsPageState extends State<AccountCardsPage> {
                               ),
                             );
                           } else {
+                            double disponivel = cardList[index - 1].limit! -
+                                cardList[index - 1].availableLimit!;
                             return Material(
                               elevation: 1,
                               borderRadius: BorderRadius.circular(25),
@@ -193,15 +196,32 @@ class _AccountCardsPageState extends State<AccountCardsPage> {
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     children: [
                                       Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.center,
                                         children: [
                                           Image.asset(
-                                            'assets/images/visa.png',
+                                            cardList[index - 1].flag == 'Visa'
+                                                ? 'assets/images/visa.png'
+                                                : cardList[index - 1].flag ==
+                                                        "MasterCard"
+                                                    ? 'assets/images/master.png'
+                                                    : cardList[index - 1]
+                                                                .flag ==
+                                                            "Elo"
+                                                        ? 'assets/images/elo.png'
+                                                        : cardList[index - 1]
+                                                                    .flag ==
+                                                                "American Express"
+                                                            ? 'assets/images/amex.png'
+                                                            : 'assets/images/credit-card.png',
                                             width: 40,
                                             height: 40,
                                           ),
                                           const SizedBox(width: 16),
-                                          FinanceText.p18(
-                                            'text',
+                                          FinanceText.h3(
+                                            cardList[index - 1].cardName!,
                                             color: Colors.grey[600],
                                             fontWeight: FontWeight.w700,
                                           ),
@@ -226,7 +246,9 @@ class _AccountCardsPageState extends State<AccountCardsPage> {
                                             fontWeight: FontWeight.w500,
                                           ),
                                           FinanceText.p16(
-                                            formatMoney(0),
+                                            formatMoney(cardList[index - 1]
+                                                    .availableLimit ??
+                                                0),
                                             color: Colors.grey[500],
                                             fontWeight: FontWeight.w500,
                                           ),
@@ -243,7 +265,8 @@ class _AccountCardsPageState extends State<AccountCardsPage> {
                                             fontWeight: FontWeight.w500,
                                           ),
                                           FinanceText.p16(
-                                            formatMoney(0),
+                                            formatDate(
+                                                cardList[index - 1].close!),
                                             color: Colors.grey[500],
                                             fontWeight: FontWeight.w500,
                                           ),
@@ -253,7 +276,7 @@ class _AccountCardsPageState extends State<AccountCardsPage> {
                                       Row(
                                         children: [
                                           FinanceText.p16(
-                                            '${formatMoney(0)} de ${formatMoney(0)}',
+                                            '${formatMoney(cardList[index - 1].availableLimit!)} de ${formatMoney(cardList[index - 1].limit!)}',
                                             color: Colors.grey[500],
                                             fontWeight: FontWeight.w500,
                                           ),
@@ -261,7 +284,11 @@ class _AccountCardsPageState extends State<AccountCardsPage> {
                                       ),
                                       const SizedBox(height: 8),
                                       LinearProgressIndicator(
-                                        value: 0.2,
+                                        value: formatValueProgress(
+                                            cardList[index - 1].limit!,
+                                            cardList[index - 1]
+                                                    .availableLimit ??
+                                                0),
                                         minHeight: 20,
                                         borderRadius: BorderRadius.circular(15),
                                         backgroundColor: Colors.grey[200],
@@ -272,7 +299,7 @@ class _AccountCardsPageState extends State<AccountCardsPage> {
                                       ),
                                       const SizedBox(height: 8),
                                       FinanceText.p16(
-                                        'Limite Disponível ${formatMoney(0)}',
+                                        'Limite Disponível ${formatMoney(disponivel)}',
                                         color: Colors.grey[500],
                                         fontWeight: FontWeight.w500,
                                       ),

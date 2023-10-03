@@ -104,11 +104,8 @@ class AccountCardsDataImpl implements AccountCardsData {
   @override
   Future<String> addCard(String houseId, CardModel card) async {
     try {
-      final transactionRef = _firestore
-          .collection('house')
-          .doc(houseId)
-          .collection('cards')
-          .doc();
+      final transactionRef =
+          _firestore.collection('house').doc(houseId).collection('cards').doc();
 
       final cardId = transactionRef.id;
 
@@ -124,6 +121,32 @@ class AccountCardsDataImpl implements AccountCardsData {
         print('Erro ao adicionar conta bancária: $e');
       }
       rethrow;
+    }
+  }
+
+  @override
+  Future<List<CardModel>> getCards(String houseId) async {
+    try {
+      QuerySnapshot querySnapshot = await _firestore
+          .collection('house')
+          .doc(houseId)
+          .collection('cards')
+          .get();
+
+      List<CardModel> cards = [];
+
+      for (var doc in querySnapshot.docs) {
+        CardModel cardsList =
+            CardModel.fromJson(doc.data() as Map<String, dynamic>);
+        cards.add(cardsList);
+      }
+
+      return cards;
+    } catch (e) {
+      if (kDebugMode) {
+        print("Erro ao buscar os bancos: $e");
+      }
+      return [];
     }
   }
 }
