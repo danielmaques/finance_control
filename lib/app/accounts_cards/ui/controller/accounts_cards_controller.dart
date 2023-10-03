@@ -1,3 +1,4 @@
+import 'package:finance_control/app/accounts_cards/datasource/model/card_model.dart';
 import 'package:flutter/foundation.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -16,6 +17,14 @@ class AccountCardsController {
   ValueNotifier<double> balanceAccount = ValueNotifier<double>(0);
   ValueNotifier<List<AccountModel>> accountList =
       ValueNotifier<List<AccountModel>>([]);
+
+  ValueNotifier<List<AccountModel>> cardList =
+      ValueNotifier<List<AccountModel>>([]);
+  ValueNotifier<double> limit = ValueNotifier<double>(0);
+  ValueNotifier<double> availableLimit = ValueNotifier<double>(0);
+  ValueNotifier<String> cardName = ValueNotifier<String>('');
+  ValueNotifier<String> flag = ValueNotifier<String>('');
+  ValueNotifier<DateTime> close = ValueNotifier<DateTime>(DateTime.now());
 
   Future<void> getUsersInHouse() async {
     final prefs = await SharedPreferences.getInstance();
@@ -60,5 +69,21 @@ class AccountCardsController {
     final banks = await _accountCardsUseCase.getAccountBanks(houseId!);
 
     accountList.value = banks;
+  }
+
+  Future<void> addCard() async {
+    final prefs = await SharedPreferences.getInstance();
+    final houseId = prefs.getString('house_id');
+
+    CardModel cardModel = CardModel(
+      limit: limit.value,
+      cardName: cardName.value,
+      flag: flag.value,
+      close: close.value,
+    );
+
+    final cardId = await _accountCardsUseCase.addCard(houseId!, cardModel);
+
+    cardModel.id = cardId;
   }
 }

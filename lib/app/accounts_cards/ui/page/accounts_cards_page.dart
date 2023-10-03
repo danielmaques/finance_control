@@ -4,6 +4,8 @@ import 'package:finance_control_ui/finance_control_ui.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 
+import '../show/show_add_card.dart';
+
 class AccountCardsPage extends StatefulWidget {
   const AccountCardsPage({
     super.key,
@@ -13,7 +15,7 @@ class AccountCardsPage extends StatefulWidget {
   final AccountCardsController controller;
 
   @override
-  _AccountCardsPageState createState() => _AccountCardsPageState();
+  State<AccountCardsPage> createState() => _AccountCardsPageState();
 }
 
 class _AccountCardsPageState extends State<AccountCardsPage> {
@@ -39,52 +41,26 @@ class _AccountCardsPageState extends State<AccountCardsPage> {
         },
         color: AppColors.white,
       ),
-      body: Column(
-        children: [
-          Container(
-            padding: const EdgeInsets.only(bottom: 16, left: 16, right: 16),
-            decoration: const BoxDecoration(
-              color: AppColors.white,
-              borderRadius: BorderRadius.only(
-                bottomLeft: Radius.circular(20),
-                bottomRight: Radius.circular(20),
-              ),
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+            FinanceToolBar(
+              selectBank: selectedTabIndex == 0,
+              selectCard: selectedTabIndex == 1,
+              onTapBank: () {
+                setState(() {
+                  selectedTabIndex = 0;
+                });
+              },
+              onTapCard: () {
+                setState(() {
+                  selectedTabIndex = 1;
+                });
+              },
             ),
-            child: SingleChildScrollView(
-              scrollDirection: Axis.horizontal,
-              child: Row(
-                children: [
-                  FinanceToolBarItem(
-                    title: 'Bancos',
-                    label: 'Contas Bancárias',
-                    icon: Icons.account_balance_outlined,
-                    select: selectedTabIndex == 0,
-                    onTap: () {
-                      setState(() {
-                        selectedTabIndex = 0;
-                      });
-                    },
-                  ),
-                  const SizedBox(width: 20),
-                  FinanceToolBarItem(
-                    title: 'Cartões',
-                    label: 'Cartões de Crédito',
-                    icon: Icons.credit_card,
-                    select: selectedTabIndex == 1,
-                    onTap: () {
-                      setState(() {
-                        selectedTabIndex = 1;
-                      });
-                    },
-                  ),
-                ],
-              ),
-            ),
-          ),
-          const SizedBox(height: 40),
-          selectedTabIndex == 0
-              ? SingleChildScrollView(
-                  child: Padding(
+            const SizedBox(height: 40),
+            selectedTabIndex == 0
+                ? Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 20),
                     child: ValueListenableBuilder(
                       valueListenable: widget.controller.accountList,
@@ -126,9 +102,7 @@ class _AccountCardsPageState extends State<AccountCardsPage> {
                                     ),
                                     const SizedBox(height: 16),
                                     FinanceText.p18(
-                                      selectedTabIndex == 0
-                                          ? 'Add Conta'
-                                          : 'Add Cartão',
+                                      'Add Conta',
                                       color: AppColors.deepBlue,
                                       fontWeight: FontWeight.w500,
                                     ),
@@ -154,12 +128,167 @@ class _AccountCardsPageState extends State<AccountCardsPage> {
                         },
                       ),
                     ),
+                  )
+                : Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 20),
+                    child: ValueListenableBuilder(
+                      valueListenable: widget.controller.cardList,
+                      builder: (context, cardList, child) => ListView.separated(
+                        itemCount: 3,
+                        shrinkWrap: true,
+                        physics: const NeverScrollableScrollPhysics(),
+                        separatorBuilder: (context, index) =>
+                            const SizedBox(height: 35),
+                        itemBuilder: (context, index) {
+                          if (index == 0) {
+                            return Material(
+                              elevation: 1,
+                              borderRadius: BorderRadius.circular(25),
+                              child: InkWell(
+                                onTap: () {
+                                  showDialog(
+                                    context: context,
+                                    builder: (context) => ShowAddCard(
+                                      controller: widget.controller,
+                                    ),
+                                  );
+                                },
+                                borderRadius: BorderRadius.circular(25),
+                                child: Container(
+                                  height: 200,
+                                  padding: const EdgeInsets.all(16),
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.center,
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      const Icon(
+                                        Icons.add_circle_outline_rounded,
+                                        size: 40,
+                                        color: AppColors.deepBlue,
+                                      ),
+                                      const SizedBox(height: 16),
+                                      FinanceText.p18(
+                                        'Add Cartão',
+                                        color: AppColors.deepBlue,
+                                        fontWeight: FontWeight.w500,
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            );
+                          } else {
+                            return Material(
+                              elevation: 1,
+                              borderRadius: BorderRadius.circular(25),
+                              child: InkWell(
+                                onTap: () {},
+                                borderRadius: BorderRadius.circular(25),
+                                child: Padding(
+                                  padding: const EdgeInsets.all(16),
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Row(
+                                        children: [
+                                          Image.asset(
+                                            'assets/images/visa.png',
+                                            width: 40,
+                                            height: 40,
+                                          ),
+                                          const SizedBox(width: 16),
+                                          FinanceText.p18(
+                                            'text',
+                                            color: Colors.grey[600],
+                                            fontWeight: FontWeight.w700,
+                                          ),
+                                          const Spacer(),
+                                          IconButton(
+                                            onPressed: () {},
+                                            icon: Icon(
+                                              Icons.more_vert_rounded,
+                                              color: Colors.grey[600],
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                      const SizedBox(height: 16),
+                                      Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          FinanceText.p16(
+                                            'Parcela do mês',
+                                            color: Colors.grey[500],
+                                            fontWeight: FontWeight.w500,
+                                          ),
+                                          FinanceText.p16(
+                                            formatMoney(0),
+                                            color: Colors.grey[500],
+                                            fontWeight: FontWeight.w500,
+                                          ),
+                                        ],
+                                      ),
+                                      const SizedBox(height: 8),
+                                      Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          FinanceText.p16(
+                                            'Fecha em',
+                                            color: Colors.grey[500],
+                                            fontWeight: FontWeight.w500,
+                                          ),
+                                          FinanceText.p16(
+                                            formatMoney(0),
+                                            color: Colors.grey[500],
+                                            fontWeight: FontWeight.w500,
+                                          ),
+                                        ],
+                                      ),
+                                      const SizedBox(height: 16),
+                                      Row(
+                                        children: [
+                                          FinanceText.p16(
+                                            '${formatMoney(0)} de ${formatMoney(0)}',
+                                            color: Colors.grey[500],
+                                            fontWeight: FontWeight.w500,
+                                          ),
+                                        ],
+                                      ),
+                                      const SizedBox(height: 8),
+                                      LinearProgressIndicator(
+                                        value: 0.2,
+                                        minHeight: 20,
+                                        borderRadius: BorderRadius.circular(15),
+                                        backgroundColor: Colors.grey[200],
+                                        valueColor:
+                                            const AlwaysStoppedAnimation<Color>(
+                                          AppColors.cherryRed,
+                                        ),
+                                      ),
+                                      const SizedBox(height: 8),
+                                      FinanceText.p16(
+                                        'Limite Disponível ${formatMoney(0)}',
+                                        color: Colors.grey[500],
+                                        fontWeight: FontWeight.w500,
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            );
+                          }
+                        },
+                      ),
+                    ),
                   ),
-                )
-              : const Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 20),
-                ),
-        ],
+            const SizedBox(height: 30),
+          ],
+        ),
       ),
     );
   }

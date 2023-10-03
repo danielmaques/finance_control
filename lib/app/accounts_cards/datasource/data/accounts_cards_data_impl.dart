@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:finance_control/app/accounts_cards/datasource/model/account_model.dart';
+import 'package:finance_control/app/accounts_cards/datasource/model/card_model.dart';
 import 'package:flutter/foundation.dart';
 
 import 'accounts_cards_data.dart';
@@ -97,6 +98,32 @@ class AccountCardsDataImpl implements AccountCardsData {
         print("Erro ao buscar os bancos: $e");
       }
       return [];
+    }
+  }
+
+  @override
+  Future<String> addCard(String houseId, CardModel card) async {
+    try {
+      final transactionRef = _firestore
+          .collection('house')
+          .doc(houseId)
+          .collection('cards')
+          .doc();
+
+      final cardId = transactionRef.id;
+
+      Map<String, dynamic> cardData = card.toJson();
+
+      cardData['id'] = cardId;
+
+      await transactionRef.set(cardData);
+
+      return cardId;
+    } catch (e) {
+      if (kDebugMode) {
+        print('Erro ao adicionar conta bancária: $e');
+      }
+      rethrow;
     }
   }
 }

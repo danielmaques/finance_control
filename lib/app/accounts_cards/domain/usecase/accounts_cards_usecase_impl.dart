@@ -1,4 +1,5 @@
 import 'package:finance_control/app/accounts_cards/datasource/model/account_model.dart';
+import 'package:finance_control/app/accounts_cards/datasource/model/card_model.dart';
 
 import '../../datasource/repository/accounts_cards_repository.dart';
 import 'accounts_cards_usecase.dart';
@@ -26,5 +27,10 @@ class AccountCardsUseCaseImpl implements AccountCardsUseCase {
   @override
   Future<void> deleteBank(String houseId, String accountId) {
     return _accountCardsRepository.deleteBank(houseId, accountId);
+  }
+  
+  @override
+    Future<String> addCard(String houseId, CardModel card) {
+    return _accountCardsRepository.addCard(houseId, card);
   }
 }
