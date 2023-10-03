@@ -38,7 +38,19 @@ class AccountCardsController {
       balance: balanceAccount.value,
     );
 
-    await _accountCardsUseCase.addBank(houseId!, accountModel);
+    final accountId =
+        await _accountCardsUseCase.addBank(houseId!, accountModel);
+
+    accountModel.id = accountId;
+  }
+
+  Future<void> deleteBank(String accountId) async {
+    final prefs = await SharedPreferences.getInstance();
+    final houseId = prefs.getString('house_id');
+
+    await _accountCardsUseCase.deleteBank(houseId!, accountId);
+
+    await getAccountBanks();
   }
 
   Future<void> getAccountBanks() async {

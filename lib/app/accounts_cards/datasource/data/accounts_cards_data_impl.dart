@@ -33,7 +33,7 @@ class AccountCardsDataImpl implements AccountCardsData {
   }
 
   @override
-  Future<void> addBank(String houseId, AccountModel account) async {
+  Future<String> addBank(String houseId, AccountModel account) async {
     try {
       final transactionRef = _firestore
           .collection('house')
@@ -41,12 +41,35 @@ class AccountCardsDataImpl implements AccountCardsData {
           .collection('accountBanks')
           .doc();
 
+      final accountId = transactionRef.id;
+
       Map<String, dynamic> accountData = account.toJson();
 
+      accountData['id'] = accountId;
+
       await transactionRef.set(accountData);
+
+      return accountId;
     } catch (e) {
       if (kDebugMode) {
         print('Erro ao adicionar conta bancária: $e');
+      }
+      rethrow;
+    }
+  }
+
+  @override
+  Future<void> deleteBank(String houseId, String accountId) async {
+    try {
+      await _firestore
+          .collection('house')
+          .doc(houseId)
+          .collection('accountBanks')
+          .doc(accountId)
+          .delete();
+    } catch (e) {
+      if (kDebugMode) {
+        print('Erro ao excluir conta bancária: $e');
       }
     }
   }

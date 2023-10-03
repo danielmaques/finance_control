@@ -14,12 +14,17 @@ class AccountCardsUseCaseImpl implements AccountCardsUseCase {
   }
 
   @override
-  Future<void> addBank(String houseId, AccountModel account) {
+  Future<String> addBank(String houseId, AccountModel account) {
     return _accountCardsRepository.addBank(houseId, account);
   }
   
   @override
   Future<List<AccountModel>> getAccountBanks(String houseId) {
     return _accountCardsRepository.getAccountBanks(houseId);
+  }
+  
+  @override
+  Future<void> deleteBank(String houseId, String accountId) {
+    return _accountCardsRepository.deleteBank(houseId, accountId);
   }
 }

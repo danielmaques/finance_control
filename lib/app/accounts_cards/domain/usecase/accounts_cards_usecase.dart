@@ -2,6 +2,7 @@ import 'package:finance_control/app/accounts_cards/datasource/model/account_mode
 
 abstract class AccountCardsUseCase {
   Future<List<dynamic>> getUsersInHouse(String houseId);
-  Future<void> addBank(String houseId, AccountModel account);
+  Future<String> addBank(String houseId, AccountModel account);
   Future<List<AccountModel>> getAccountBanks(String houseId);
+  Future<void> deleteBank(String houseId, String accountId);
 }

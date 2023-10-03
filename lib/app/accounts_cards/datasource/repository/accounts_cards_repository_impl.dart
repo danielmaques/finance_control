@@ -14,12 +14,17 @@ class AccountCardsRepositoryImpl implements AccountCardsRepository {
   }
 
   @override
-  Future<void> addBank(String houseId, AccountModel account) {
+  Future<String> addBank(String houseId, AccountModel account) {
     return _accountCardsData.addBank(houseId, account);
   }
   
   @override
   Future<List<AccountModel>> getAccountBanks(String houseId) {
     return _accountCardsData.getAccountBanks(houseId);
+  }
+  
+  @override
+  Future<void> deleteBank(String houseId, String accountId) {
+    return _accountCardsData.deleteBank(houseId, accountId);
   }
 }

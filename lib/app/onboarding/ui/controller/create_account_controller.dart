@@ -22,7 +22,7 @@ class CreateAccountController {
   TextEditingController houseId = TextEditingController();
 
   ValueNotifier<bool> isBlockedNotifier = ValueNotifier(true);
-  ValueNotifier<bool> isCriate = ValueNotifier(false); // Inicialize com false
+  ValueNotifier<bool> isCriate = ValueNotifier(false);
 
   ValueNotifier<bool> invitation = ValueNotifier(false);
   ValueNotifier<bool> terms = ValueNotifier(false);
@@ -72,24 +72,12 @@ class CreateAccountController {
       throw Exception('User ID not found in SharedPreferences');
     }
 
-    List<UserModel> userModelList = [];
-
-    final userCredential = await _createAccountUseCase.loginWithGoogle();
-    if (userCredential != null) {
-      final user = userCredential.user;
-      if (user != null) {
-        userModelList = [
-          UserModel(id: user.uid, name: user.displayName!, email: user.email!),
-        ];
-      }
-    } else {
-      userModelList = [
-        UserModel(id: userId, name: name.text, email: email.text),
-      ];
-    }
+    final List<UserModel> userModel = [
+      UserModel(id: userId, name: name.text, email: email.text),
+    ];
 
     final DocumentReference houseRef =
-        await _createAccountUseCase.createHouse(userModelList);
+        await _createAccountUseCase.createHouse(userModel);
 
     await prefs.setString('house_id', houseRef.id);
 
@@ -119,6 +107,10 @@ class CreateAccountController {
       final userCredential = await _createAccountUseCase.loginWithGoogle();
       if (userCredential != null) {
         final user = userCredential.user;
+
+        name.text = user!.displayName!;
+        email.text = user.email!;
+
         if (user != null) {
           final prefs = await SharedPreferences.getInstance();
           await prefs.setString('user_id', user.uid);
