@@ -91,12 +91,10 @@ class CreateAccountDataImpl implements CreateAccountData {
 
         final user = userCredential.user;
 
-        // Verifique se o usuário já existe no Firestore
         final userDoc =
             await _firestore.collection('users').doc(user!.uid).get();
 
         if (!userDoc.exists) {
-          // Se o usuário não existe, crie um novo documento com seus dados
           await _firestore.collection('users').doc(user.uid).set({
             'uid': user.uid,
             'displayName': user.displayName,

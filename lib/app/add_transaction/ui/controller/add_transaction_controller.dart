@@ -10,27 +10,20 @@ class AddTransactionController {
 
   final ValueNotifier<TextEditingController> value =
       ValueNotifier(TextEditingController());
-
   final ValueNotifier<double> pay = ValueNotifier(0);
-
   ValueNotifier<DateTime> date = ValueNotifier(DateTime.now());
-
   final ValueNotifier<TextEditingController> description =
       ValueNotifier(TextEditingController());
-
   final ValueNotifier<List<dynamic>> categoriesList = ValueNotifier([]);
-
   final ValueNotifier<String> categoriesValue = ValueNotifier('');
-
   final ValueNotifier<List<dynamic>> paymentsList = ValueNotifier([]);
-
   final ValueNotifier<String> paymentsValue = ValueNotifier('');
-
   final ValueNotifier<XFile?> selectedImageNotifier =
       ValueNotifier<XFile?>(null);
-
   final ValueNotifier<List<XFile?>> imagesNotifier =
       ValueNotifier<List<XFile?>>([]);
+  ValueNotifier<List<String>> accountList = ValueNotifier<List<String>>([]);
+  ValueNotifier<String> bank = ValueNotifier('');
 
   AddTransactionController(
     this._useCase,
@@ -59,6 +52,7 @@ class AddTransactionController {
 
       await _useCase.addTransaction(houseId, gastoData, add);
       await _useCase.updateBalance(houseId, valor, add);
+      await _useCase.updateAccountBalance(houseId, bank.value, pay.value, add);
     } else {
       if (kDebugMode) {
         print("Erro: UID do usuário não encontrado.");
@@ -119,5 +113,14 @@ class AddTransactionController {
     }
 
     return status.isGranted;
+  }
+
+  Future<void> getAccountBanks() async {
+    final prefs = await SharedPreferences.getInstance();
+    final houseId = prefs.getString('house_id');
+
+    final banks = await _useCase.getAccountBanks(houseId!);
+
+    accountList.value = banks;
   }
 }

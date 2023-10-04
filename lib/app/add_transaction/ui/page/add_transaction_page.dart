@@ -31,6 +31,7 @@ class _AddTransactionPageState extends State<AddTransactionPage> {
     super.initState();
     widget.controller.fetchCategories();
     widget.controller.fetchPayments();
+    widget.controller.getAccountBanks();
     price = '';
   }
 
@@ -74,6 +75,14 @@ class _AddTransactionPageState extends State<AddTransactionPage> {
                           return 'Por favor, insira uma descrição';
                         }
                         return null;
+                      },
+                    ),
+                    const SizedBox(height: 16),
+                    FinanceDropDown(
+                      hint: 'Conta',
+                      categoriesList: widget.controller.accountList,
+                      onItemSelected: (p0) {
+                        widget.controller.bank.value = p0;
                       },
                     ),
                     Visibility(

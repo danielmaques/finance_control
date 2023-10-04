@@ -16,7 +16,6 @@ void main() async {
   MobileAds.instance.initialize();
   SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
     statusBarColor: Colors.transparent,
-    statusBarIconBrightness: Brightness.light,
   ));
   return runApp(ModularApp(module: AppModule(), child: const AppWidget()));
 }
@@ -29,7 +28,10 @@ class AppWidget extends StatelessWidget {
     return MaterialApp.router(
       title: 'My Smart App',
       debugShowCheckedModeBanner: false,
-      theme: ThemeData(primarySwatch: Colors.blue),
+      theme: ThemeData(
+        primarySwatch: Colors.blue,
+        scaffoldBackgroundColor: const Color(0xFFEEF2F8),
+      ),
       routerConfig: Modular.routerConfig,
     );
   }

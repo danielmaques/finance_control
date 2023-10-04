@@ -65,6 +65,7 @@ class _ShowAddCardState extends State<ShowAddCard> {
       content: Column(
         children: [
           TextFormField(
+            autofocus: true,
             textAlign: TextAlign.center,
             initialValue: 'R\$ 0,00',
             style: const TextStyle(
@@ -115,13 +116,19 @@ class _ShowAddCardState extends State<ShowAddCard> {
             'Limite',
             color: AppColors.midnightBlack,
           ),
+          const SizedBox(height: 24),
           FinanceTextField(
-            hintText: 'Nome do Cartão',
+            label: 'Nome do Cartão',
             onChanged: (p0) {
               widget.controller.cardName.value = p0;
             },
           ),
           const SizedBox(height: 24),
+          Align(
+            alignment: Alignment.centerLeft,
+            child: FinanceText.p14('Data de Vencimento'),
+          ),
+          const SizedBox(height: 8),
           GestureDetector(
             onTap: () async {
               DateTime? pickedDate = await showDatePicker(
