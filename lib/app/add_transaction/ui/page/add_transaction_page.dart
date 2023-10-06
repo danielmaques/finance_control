@@ -81,11 +81,11 @@ class _AddTransactionPageState extends State<AddTransactionPage> {
                     FinanceDropDown(
                       hint: 'Conta',
                       categoriesList: widget.controller.accountList,
+                      border: true,
+                      elevation: 0,
                       onItemSelected: (p0) {
                         widget.controller.bank.value = p0;
                       },
-                      border: true,
-                      elevation: 0,
                     ),
                     Visibility(
                       visible: !widget.add,
@@ -95,21 +95,22 @@ class _AddTransactionPageState extends State<AddTransactionPage> {
                           FinanceDropDown(
                             hint: "Selecione uma categoria",
                             categoriesList: widget.controller.categoriesList,
+                            border: true,
+                            elevation: 0,
                             onItemSelected: (p0) {
                               widget.controller.categoriesValue.value = p0;
                             },
-                            border: true,
-                            elevation: 0,
                           ),
                           const SizedBox(height: 16),
                           FinanceDropDown(
-                              hint: 'Forma de pagamento',
-                              border: true,
-                              elevation: 0,
-                              categoriesList: widget.controller.paymentsList,
-                              onItemSelected: (p0) {
-                                widget.controller.paymentsValue.value = p0;
-                              }),
+                            hint: 'Forma de pagamento',
+                            border: true,
+                            elevation: 0,
+                            categoriesList: widget.controller.paymentsList,
+                            onItemSelected: (p0) {
+                              widget.controller.paymentsValue.value = p0;
+                            },
+                          ),
                         ],
                       ),
                     ),
