@@ -1,5 +1,7 @@
 import 'dart:io';
 
+import '../../../accounts_cards/datasource/model/account_model.dart';
+
 abstract class HomeData {
   Future<void> updateBalance(String uid, double valor, bool add);
   Future<List<Map<String, dynamic>>> getTransaction(String uid);
@@ -8,4 +10,5 @@ abstract class HomeData {
   Future<Map<String, double>> getGastos(String uid);
   Future<Map<String, double>> getGanhos(String uid);
   Future<Map<String, double>> getTotalSpentByCategory(String uid);
+  Future<List<AccountModel>> getAccountBanks(String houseId);
 }

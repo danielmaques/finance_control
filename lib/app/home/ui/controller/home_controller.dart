@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:finance_control/app/accounts_cards/datasource/model/account_model.dart';
 import 'package:finance_control/app/home/domain/usecase/home_usecase.dart';
 import 'package:flutter/foundation.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -16,6 +17,8 @@ class HomeController {
       ValueNotifier<Map<String, dynamic>?>(null);
   final ValueNotifier<Map<String, double>> categoryPercentages =
       ValueNotifier<Map<String, double>>({});
+  ValueNotifier<List<AccountModel>> accountList =
+      ValueNotifier<List<AccountModel>>([]);
 
   Timer? _balanceRefreshTimer;
 
@@ -100,5 +103,14 @@ class HomeController {
 
   void dispose() {
     _balanceRefreshTimer?.cancel();
+  }
+
+  Future<void> getAccountBanks() async {
+    final prefs = await SharedPreferences.getInstance();
+    final houseId = prefs.getString('house_id');
+
+    final banks = await _useCase.getAccountBanks(houseId!);
+
+    accountList.value = banks;
   }
 }

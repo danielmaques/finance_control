@@ -74,7 +74,9 @@ class _AccountCardsPageState extends State<AccountCardsPage> {
                           crossAxisSpacing: 35,
                           childAspectRatio: 1.0,
                         ),
-                        itemCount: accountList.length + 1,
+                        itemCount: accountList.length >= 2
+                            ? 3
+                            : accountList.length + 1,
                         itemBuilder: (BuildContext context, int index) {
                           if (index == 0) {
                             return Material(

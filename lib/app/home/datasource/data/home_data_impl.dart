@@ -1,7 +1,9 @@
 import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:finance_control/app/accounts_cards/datasource/model/account_model.dart';
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:flutter/foundation.dart';
 
 import 'home_data.dart';
 
@@ -153,5 +155,31 @@ class HomeDataImpl implements HomeData {
     });
 
     return percentages;
+  }
+
+  @override
+  Future<List<AccountModel>> getAccountBanks(String houseId) async {
+    try {
+      QuerySnapshot querySnapshot = await _firestore
+          .collection('house')
+          .doc(houseId)
+          .collection('accountBanks')
+          .get();
+
+      List<AccountModel> accountBanks = [];
+
+      for (var doc in querySnapshot.docs) {
+        AccountModel account =
+            AccountModel.fromJson(doc.data() as Map<String, dynamic>);
+        accountBanks.add(account);
+      }
+
+      return accountBanks;
+    } catch (e) {
+      if (kDebugMode) {
+        print("Erro ao buscar os bancos: $e");
+      }
+      return [];
+    }
   }
 }

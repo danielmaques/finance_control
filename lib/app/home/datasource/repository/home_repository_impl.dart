@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:finance_control/app/accounts_cards/datasource/model/account_model.dart';
 import 'package:finance_control/app/home/datasource/data/home_data.dart';
 import 'package:finance_control/app/home/datasource/repository/home_repository.dart';
 
@@ -38,5 +39,10 @@ class HomeRepositoryImpl implements HomeRepository {
   @override
   Future<Map<String, double>> getTotalSpentByCategory(String uid) {
     return _dataSource.getTotalSpentByCategory(uid);
+  }
+
+  @override
+  Future<List<AccountModel>> getAccountBanks(String houseId) {
+    return _dataSource.getAccountBanks(houseId);
   }
 }

@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:finance_control/app/accounts_cards/datasource/model/account_model.dart';
 import 'package:finance_control/app/home/datasource/repository/home_repository.dart';
 import 'package:finance_control/app/home/domain/usecase/home_usecase.dart';
 
@@ -34,9 +35,14 @@ class HomeUseCaseImpl implements HomeUseCase {
   Future<Map<String, double>> getGastos(String uid) {
     return _repository.getGastos(uid);
   }
-  
+
   @override
   Future<Map<String, double>> getTotalSpentByCategory(String uid) {
     return _repository.getTotalSpentByCategory(uid);
+  }
+
+  @override
+  Future<List<AccountModel>> getAccountBanks(String houseId) {
+    return _repository.getAccountBanks(houseId);
   }
 }

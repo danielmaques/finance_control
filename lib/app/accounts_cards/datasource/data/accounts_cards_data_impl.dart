@@ -8,8 +8,6 @@ import 'accounts_cards_data.dart';
 class AccountCardsDataImpl implements AccountCardsData {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
-  
-
   @override
   Future<void> deleteBank(String houseId, String accountId) async {
     try {

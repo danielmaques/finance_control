@@ -30,6 +30,7 @@ class _TransactionsPageState extends State<TransactionsPage> {
       appBar: FinanceAppBar(
         title: 'Transactions',
         icon: true,
+        color: const Color(0xFFEEF2F8),
         onTap: () => Modular.to.pop(),
       ),
       body: SingleChildScrollView(

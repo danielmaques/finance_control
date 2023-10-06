@@ -24,6 +24,7 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   bool isOpen = false;
   BannerAd? bottomBannerAd;
+  InterstitialAd? interstitialAd;
   bool isBannerAdReady = false;
 
   @override
@@ -33,7 +34,9 @@ class _HomePageState extends State<HomePage> {
     widget.controller.getBalance();
     widget.controller.getGastosEGanhos();
     widget.controller.startBalanceRefreshTimer();
+    widget.controller.getAccountBanks();
     createBottomBannerAd();
+    loadInterstitialAd();
   }
 
   @override
@@ -46,16 +49,19 @@ class _HomePageState extends State<HomePage> {
             FinanceHomeTopBarSliver(
               money: widget.controller.balance,
               addRoute: () {
+                showInterstitialAd();
                 Modular.to.pushNamed('/addTransaction/', arguments: {
                   'add': true,
                 });
               },
               removeRoute: () {
+                showInterstitialAd();
                 Modular.to.pushNamed('/addTransaction/', arguments: {
                   'add': false,
                 });
               },
               transactionRoute: () {
+                showInterstitialAd();
                 Modular.to.pushNamed('/transactions/');
               },
               menuRoute: () async {
@@ -77,19 +83,79 @@ class _HomePageState extends State<HomePage> {
               padding: const EdgeInsets.symmetric(horizontal: 22),
               child: Column(
                 children: [
-                  FinanceCredtCardTile(
-                    onTap: () {
-                      Modular.to.pushNamed('/accountsCards/');
-                    },
-                    card: 'card',
-                    cardName: 'cardName',
+                  ValueListenableBuilder(
+                    valueListenable: widget.controller.accountList,
+                    builder: (context, accountList, child) =>
+                        FinanceCredtCardTile(
+                      onTap: () {
+                        showInterstitialAd();
+                        Modular.to.pushNamed('/accountsCards/');
+                      },
+                      list: ListView.separated(
+                        itemCount:
+                            accountList.length >= 2 ? 2 : accountList.length,
+                        shrinkWrap: true,
+                        physics: const NeverScrollableScrollPhysics(),
+                        separatorBuilder: (context, index) => SizedBox(
+                          height: 20,
+                          child: Divider(
+                            height: 1,
+                            color: Colors.blueGrey[100],
+                          ),
+                        ),
+                        itemBuilder: (context, index) {
+                          return Row(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              Container(
+                                padding: const EdgeInsets.all(12),
+                                decoration: BoxDecoration(
+                                  color: const Color(0xFFEEF2F8),
+                                  borderRadius: BorderRadius.circular(8),
+                                ),
+                                child: const Icon(
+                                  Icons.account_balance_outlined,
+                                  color: AppColors.deepBlue,
+                                  size: 20,
+                                ),
+                              ),
+                              const SizedBox(width: 8),
+                              Expanded(
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    FinanceText.p16(
+                                      accountList[index].bank ?? '',
+                                      color: Colors.black,
+                                    ),
+                                    const SizedBox(height: 4),
+                                    FinanceText.p16(
+                                      'Titular: ${accountList[index].use}',
+                                      color: AppColors.slateGray,
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              FinanceText.p16(
+                                formatMoney(accountList[index].balance!),
+                                color: Colors.black,
+                              ),
+                            ],
+                          );
+                        },
+                      ),
+                    ),
                   ),
                   const SizedBox(height: 22),
                   ValueListenableBuilder<Map<String, double>>(
                     valueListenable: widget.controller.categoryPercentages,
                     builder: (context, value, child) => FinanceSpendingTile(
                       spending: widget.controller.gastos.value,
-                      onTap: () {},
+                      onTap: () {
+                        showInterstitialAd();
+                      },
                       categoryPercentages: value,
                     ),
                   ),
@@ -99,6 +165,7 @@ class _HomePageState extends State<HomePage> {
                     builder: (context, value, child) => FinanceListTile(
                       transactions: value,
                       onTap: () {
+                        showInterstitialAd();
                         Modular.to.pushNamed('/transactions/');
                       },
                     ),
@@ -143,6 +210,37 @@ class _HomePageState extends State<HomePage> {
       bottomBannerAd!.load();
     } catch (e) {
       bottomBannerAd = null;
+    }
+  }
+
+  loadInterstitialAd() {
+    InterstitialAd.load(
+      adUnitId: kReleaseMode
+          ? 'ca-app-pub-6625580398265467/2550318392'
+          : 'ca-app-pub-3940256099942544/1033173712',
+      request: const AdRequest(),
+      adLoadCallback: InterstitialAdLoadCallback(
+        onAdLoaded: (ad) {
+          setState(() {
+            interstitialAd = ad;
+          });
+        },
+        onAdFailedToLoad: (error) {
+          if (kDebugMode) {
+            print('Erro ao carregar o anúncio intersticial: $error');
+          }
+        },
+      ),
+    );
+  }
+
+  void showInterstitialAd() {
+    if (interstitialAd != null) {
+      interstitialAd!.show();
+    } else {
+      if (kDebugMode) {
+        print('O anúncio intersticial ainda não foi carregado.');
+      }
     }
   }
 }
