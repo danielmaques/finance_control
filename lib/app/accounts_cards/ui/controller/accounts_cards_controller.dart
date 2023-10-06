@@ -10,11 +10,6 @@ class AccountCardsController {
 
   AccountCardsController(this._accountCardsUseCase);
 
-  ValueNotifier<List<dynamic>> users = ValueNotifier<List<dynamic>>([]);
-  ValueNotifier<String> userSelect = ValueNotifier<String>('');
-  ValueNotifier<String> bank = ValueNotifier<String>('');
-  ValueNotifier<String> account = ValueNotifier<String>('');
-  ValueNotifier<double> balanceAccount = ValueNotifier<double>(0);
   ValueNotifier<List<AccountModel>> accountList =
       ValueNotifier<List<AccountModel>>([]);
 
@@ -25,32 +20,7 @@ class AccountCardsController {
   ValueNotifier<String> flag = ValueNotifier<String>('');
   ValueNotifier<DateTime> close = ValueNotifier<DateTime>(DateTime.now());
 
-  Future<void> getUsersInHouse() async {
-    final prefs = await SharedPreferences.getInstance();
-    final houseId = prefs.getString('house_id');
-
-    if (houseId != null) {
-      final userList = await _accountCardsUseCase.getUsersInHouse(houseId);
-      users.value = userList;
-    }
-  }
-
-  Future<void> addBank() async {
-    final prefs = await SharedPreferences.getInstance();
-    final houseId = prefs.getString('house_id');
-
-    AccountModel accountModel = AccountModel(
-      bank: bank.value,
-      accountType: account.value,
-      use: userSelect.value,
-      balance: balanceAccount.value,
-    );
-
-    final accountId =
-        await _accountCardsUseCase.addBank(houseId!, accountModel);
-
-    accountModel.id = accountId;
-  }
+  
 
   Future<void> deleteBank(String accountId) async {
     final prefs = await SharedPreferences.getInstance();

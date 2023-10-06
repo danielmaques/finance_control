@@ -8,7 +8,6 @@ import 'package:finance_control/app/onboarding/domain/usecase/create_account_use
 import 'package:finance_control/app/onboarding/domain/usecase/login_usecase.dart';
 import 'package:finance_control/app/onboarding/ui/controller/create_account_controller.dart';
 import 'package:finance_control/app/onboarding/ui/controller/login_controller.dart';
-import 'package:finance_control/app/onboarding/ui/page/add_account_bank/add_account_bank_page.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 
 import 'datasource/data/create_account_data.dart';
@@ -39,14 +38,9 @@ class OnboardingModule extends Module {
     r.child('/',
         child: (context) =>
             LoginPage(controller: Modular.get<LoginController>()));
-            
+
     r.child('/createAccount',
         child: (context) => EmailAndPasswordPage(
             controller: Modular.get<CreateAccountController>()));
-
-    r.child(
-      '/addAccount',
-      child: (context) => const AddAccountBankPage(),
-    );
   }
 }

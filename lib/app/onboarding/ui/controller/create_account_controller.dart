@@ -56,6 +56,12 @@ class CreateAccountController {
         }
 
         isCriate.value = true;
+
+        if (isCriate.value == true) {
+          Modular.to.pushReplacementNamed('/addBank/', arguments: {
+            'isCriate': isCriate.value,
+          });
+        }
       }
     } catch (e) {
       if (kDebugMode) {

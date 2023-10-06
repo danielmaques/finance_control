@@ -1,7 +1,6 @@
 import 'package:finance_control/app/onboarding/ui/controller/create_account_controller.dart';
 import 'package:finance_control_ui/finance_control_ui.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_modular/flutter_modular.dart';
 
 class EmailAndPasswordPage extends StatefulWidget {
   const EmailAndPasswordPage({
@@ -164,16 +163,10 @@ class _EmailAndPasswordPageState extends State<EmailAndPasswordPage> {
                   disabled: isBlocked,
                   icon: Icons.arrow_forward_rounded,
                   onTap: () async {
-                    Modular.to.pushNamed('/addAccount');
-
-                    // widget.controller.signUp(
-                    //   email: widget.controller.email.text,
-                    //   password: widget.controller.password.text,
-                    // );
-
-                    // if (widget.controller.isCriate.value == true) {
-                    //   Modular.to.pushReplacementNamed('/home/');
-                    // }
+                    widget.controller.signUp(
+                      email: widget.controller.email.text,
+                      password: widget.controller.password.text,
+                    );
                   },
                 ),
                 const Spacer(),

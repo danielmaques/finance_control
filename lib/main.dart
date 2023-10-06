@@ -7,6 +7,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 
+import 'app/add_bank/add_bank_module.dart';
 import 'app/home/home_modular.dart';
 import 'app/onboarding/onboarding_module.dart';
 
@@ -48,5 +49,6 @@ class AppModule extends Module {
     r.module('/addTransaction', module: AddTransactionModule());
     r.module('/transactions', module: TransactionsModule());
     r.module('/accountsCards', module: AccountsCardsModule());
+    r.module('/addBank', module: AddBankModule());
   }
 }

@@ -10,30 +10,20 @@ class AccountCardsUseCaseImpl implements AccountCardsUseCase {
   AccountCardsUseCaseImpl(this._accountCardsRepository);
 
   @override
-  Future<List<dynamic>> getUsersInHouse(String houseId) async {
-    return await _accountCardsRepository.getUsersInHouse(houseId);
-  }
-
-  @override
-  Future<String> addBank(String houseId, AccountModel account) {
-    return _accountCardsRepository.addBank(houseId, account);
-  }
-  
-  @override
   Future<List<AccountModel>> getAccountBanks(String houseId) {
     return _accountCardsRepository.getAccountBanks(houseId);
   }
-  
+
   @override
   Future<void> deleteBank(String houseId, String accountId) {
     return _accountCardsRepository.deleteBank(houseId, accountId);
   }
-  
+
   @override
-    Future<String> addCard(String houseId, CardModel card) {
+  Future<String> addCard(String houseId, CardModel card) {
     return _accountCardsRepository.addCard(houseId, card);
   }
-  
+
   @override
   Future<List<CardModel>> getCards(String houseId) {
     return _accountCardsRepository.getCards(houseId);
