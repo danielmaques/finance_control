@@ -84,6 +84,8 @@ class _AddTransactionPageState extends State<AddTransactionPage> {
                       onItemSelected: (p0) {
                         widget.controller.bank.value = p0;
                       },
+                      border: true,
+                      elevation: 0,
                     ),
                     Visibility(
                       visible: !widget.add,
@@ -96,10 +98,14 @@ class _AddTransactionPageState extends State<AddTransactionPage> {
                             onItemSelected: (p0) {
                               widget.controller.categoriesValue.value = p0;
                             },
+                            border: true,
+                            elevation: 0,
                           ),
                           const SizedBox(height: 16),
                           FinanceDropDown(
                               hint: 'Forma de pagamento',
+                              border: true,
+                              elevation: 0,
                               categoriesList: widget.controller.paymentsList,
                               onItemSelected: (p0) {
                                 widget.controller.paymentsValue.value = p0;

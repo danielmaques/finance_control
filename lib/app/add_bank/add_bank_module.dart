@@ -25,6 +25,7 @@ class AddBankModule extends Module {
       child: (context) => AddBankPage(
         controller: Modular.get<AddBankController>(),
         isCriate: r.args.data?['isCriate'] ?? false,
+        update: r.args.data?['update'],
       ),
     );
   }

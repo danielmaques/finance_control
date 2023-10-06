@@ -9,10 +9,12 @@ class AddBankPage extends StatefulWidget {
     super.key,
     required this.controller,
     required this.isCriate,
+    this.update,
   });
 
   final AddBankController controller;
   final bool isCriate;
+  final dynamic update;
 
   @override
   State<AddBankPage> createState() => _AddBankPageState();
@@ -433,7 +435,11 @@ class _AddBankPageState extends State<AddBankPage> {
                             actions: <Widget>[
                               FinanceButton(
                                 onTap: () {
-                                  setState(() => currentColor = pickerColor);
+                                  setState(() {
+                                    currentColor = pickerColor;
+                                    widget.controller.color.value =
+                                        pickerColor.value.toRadixString(16);
+                                  });
                                   Modular.to.pop();
                                 },
                                 small: true,
@@ -474,6 +480,9 @@ class _AddBankPageState extends State<AddBankPage> {
                   if (widget.isCriate == true) {
                     Modular.to.pushReplacementNamed('/home/');
                   } else {
+                    setState(() {
+                      widget.update();
+                    });
                     Modular.to.pop();
                   }
                 }

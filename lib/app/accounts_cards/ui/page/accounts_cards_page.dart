@@ -1,5 +1,4 @@
 import 'package:finance_control/app/accounts_cards/ui/controller/accounts_cards_controller.dart';
-import 'package:finance_control/app/accounts_cards/ui/show/show_add_accoount.dart';
 import 'package:finance_control_ui/finance_control_ui.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
@@ -83,12 +82,11 @@ class _AccountCardsPageState extends State<AccountCardsPage> {
                               borderRadius: BorderRadius.circular(25),
                               child: InkWell(
                                 onTap: () {
-                                  showDialog(
-                                    context: context,
-                                    builder: (context) => ShowAddAccount(
-                                      controller: widget.controller,
-                                    ),
-                                  );
+                                  Modular.to.pushNamed('/addBank', arguments: {
+                                    'isCriate': false,
+                                    'update':
+                                        widget.controller.getAccountBanks(),
+                                  });
                                 },
                                 borderRadius: BorderRadius.circular(25),
                                 child: Column(
@@ -116,6 +114,11 @@ class _AccountCardsPageState extends State<AccountCardsPage> {
                               name: accountList[index - 1].bank!,
                               saldo: accountList[index - 1].balance!,
                               accountType: accountList[index - 1].accountType!,
+                              colorCircle: Color(int.parse(
+                                      accountList[index - 1].color.substring(2),
+                                      radix: 16) +
+                                  0xFF000000),
+                              edit: true,
                               delete: () {
                                 widget.controller.deleteBank(
                                   accountList[index - 1].id!,

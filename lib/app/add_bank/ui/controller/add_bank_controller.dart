@@ -13,6 +13,7 @@ class AddBankController {
   ValueNotifier<String> bank = ValueNotifier<String>('');
   ValueNotifier<String> account = ValueNotifier<String>('');
   ValueNotifier<double> balanceAccount = ValueNotifier<double>(0);
+  ValueNotifier<dynamic> color = ValueNotifier<dynamic>(const Color(0xFFEEF2F8));
 
   Future<void> getUsersInHouse() async {
     final prefs = await SharedPreferences.getInstance();
@@ -33,6 +34,7 @@ class AddBankController {
       accountType: account.value,
       use: userSelect.value,
       balance: balanceAccount.value,
+      color: color.value
     );
 
     final accountId = await _addBankUseCase.addBank(houseId!, accountModel);

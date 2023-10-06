@@ -4,8 +4,16 @@ class AccountModel {
   String? use;
   double? balance;
   dynamic id;
+  dynamic color;
 
-  AccountModel({this.bank, this.accountType, this.use, this.balance, this.id});
+  AccountModel({
+    this.bank,
+    this.accountType,
+    this.use,
+    this.balance,
+    this.id,
+    this.color,
+  });
 
   AccountModel.fromJson(Map<String, dynamic> json) {
     bank = json['bank'];
@@ -13,6 +21,7 @@ class AccountModel {
     use = json['use'];
     balance = json['balance'];
     id = json['id'];
+    color = json['color'];
   }
 
   Map<String, dynamic> toJson() {
@@ -22,6 +31,7 @@ class AccountModel {
     data['use'] = use;
     data['balance'] = balance;
     data['id'] = id;
+    data['color'] = color;
     return data;
   }
 }
