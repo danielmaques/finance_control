@@ -216,7 +216,7 @@ class _HomePageState extends State<HomePage> {
   loadInterstitialAd() {
     InterstitialAd.load(
       adUnitId: kReleaseMode
-          ? 'ca-app-pub-6625580398265467/2550318392'
+          ? 'ca-app-pub-6625580398265467/6547703884'
           : 'ca-app-pub-3940256099942544/1033173712',
       request: const AdRequest(),
       adLoadCallback: InterstitialAdLoadCallback(

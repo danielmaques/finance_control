@@ -1,7 +1,9 @@
 import 'package:finance_control/app/accounts_cards/ui/controller/accounts_cards_controller.dart';
 import 'package:finance_control_ui/finance_control_ui.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
 
 import '../show/show_add_card.dart';
 
@@ -20,12 +22,15 @@ class AccountCardsPage extends StatefulWidget {
 class _AccountCardsPageState extends State<AccountCardsPage> {
   int selectedTabIndex = 0;
   bool isValid = false;
+  BannerAd? bottomBannerAd;
+  bool isBannerAdReady = false;
 
   @override
   void initState() {
     super.initState();
     widget.controller.getAccountBanks();
     widget.controller.getCards();
+    createBottomBannerAd();
   }
 
   @override
@@ -199,6 +204,40 @@ class _AccountCardsPageState extends State<AccountCardsPage> {
           ],
         ),
       ),
+      bottomNavigationBar: isBannerAdReady && bottomBannerAd != null
+          ? SizedBox(
+              height: bottomBannerAd!.size.height.toDouble(),
+              width: bottomBannerAd!.size.width.toDouble(),
+              child: AdWidget(
+                ad: bottomBannerAd!,
+              ),
+            )
+          : null,
     );
+  }
+
+  createBottomBannerAd() {
+    try {
+      bottomBannerAd = BannerAd(
+        adUnitId: kReleaseMode
+            ? 'ca-app-pub-6625580398265467/1218136997'
+            : 'ca-app-pub-3940256099942544/6300978111',
+        size: AdSize.banner,
+        request: const AdRequest(),
+        listener: BannerAdListener(
+          onAdLoaded: (_) {
+            setState(() {
+              isBannerAdReady = true;
+            });
+          },
+          onAdFailedToLoad: (ad, error) {
+            ad.dispose();
+          },
+        ),
+      );
+      bottomBannerAd!.load();
+    } catch (e) {
+      bottomBannerAd = null;
+    }
   }
 }
