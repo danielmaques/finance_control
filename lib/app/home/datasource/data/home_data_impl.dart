@@ -5,6 +5,8 @@ import 'package:finance_control/app/accounts_cards/datasource/model/account_mode
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/foundation.dart';
 
+import '../../../../core/core.dart';
+import '../model/balance_model.dart';
 import 'home_data.dart';
 
 class HomeDataImpl implements HomeData {
@@ -89,15 +91,21 @@ class HomeDataImpl implements HomeData {
   }
 
   @override
-  Future<double> getBalance(String uid) async {
+  Future<Result<double>> getBalance(
+      String uid, BalanceModel balanceModel) async {
     DocumentSnapshot userDoc =
         await _firestore.collection('house').doc(uid).get();
-    if (userDoc.exists &&
-        userDoc.data() != null &&
-        (userDoc.data() as Map<String, dynamic>)['balance'] != null) {
-      return (userDoc.data() as Map<String, dynamic>)['balance'].toDouble();
-    } else {
-      return 0.0;
+
+    try {
+      final Map<String, dynamic> userData =
+          userDoc.data() as Map<String, dynamic>;
+
+      if (userData.containsKey('balance')) {
+        balanceModel.balance = (userData['balance'] as num?)?.toDouble() ?? 0.0;
+      }
+      return ResultSuccess(balanceModel.balance ?? 0.0);
+    } catch (e) {
+      return ResultError(BaseError('Error: $e'));
     }
   }
 
@@ -133,7 +141,6 @@ class HomeDataImpl implements HomeData {
 
   @override
   Future<Map<String, double>> getTotalSpentByCategory(String uid) async {
-    // 1. Pegue os valores de cada categoria.
     DocumentSnapshot userDoc =
         await _firestore.collection('house').doc(uid).get();
     Map<String, dynamic> userData = userDoc.data() as Map<String, dynamic>;
