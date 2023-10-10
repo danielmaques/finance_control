@@ -60,6 +60,10 @@ class _HomePageState extends State<HomePage> {
                 var balance = state.data;
                 return FinanceHomeTopBarSliver(
                   money: balance.balance ?? 0.0,
+                  onVisibilityGained: () {
+                    state.data.balance;
+                    balanceBloc.getBalance();
+                  },
                   addRoute: () {
                     Modular.to.pushNamed('/addTransaction/',
                         arguments: {'add': true});
@@ -88,6 +92,7 @@ class _HomePageState extends State<HomePage> {
               } else {
                 return FinanceHomeTopBarSliver(
                   money: 0.0,
+                  onVisibilityGained: () {},
                   addRoute: () {
                     Modular.to.pushNamed('/addTransaction/',
                         arguments: {'add': true});
