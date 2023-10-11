@@ -1,8 +1,9 @@
 // ignore_for_file: use_build_context_synchronously
 
-import 'package:clipboard/clipboard.dart';
+import 'package:finance_control/app/accounts_cards/datasource/model/account_model.dart';
 import 'package:finance_control/app/home/datasource/model/balance_model.dart';
 import 'package:finance_control/app/home/datasource/model/transactions_model.dart';
+import 'package:finance_control/app/home/ui/controller/accounts_bloc.dart';
 import 'package:finance_control/app/home/ui/controller/balance_bloc.dart';
 import 'package:finance_control/app/home/ui/controller/transactions_bloc.dart';
 import 'package:finance_control_ui/finance_control_ui.dart';
@@ -10,8 +11,9 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_modular/flutter_modular.dart';
+import 'package:flutter_svg/svg.dart';
+import 'package:focus_detector_v2/focus_detector_v2.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../../core/core.dart';
 
@@ -27,6 +29,7 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   late IBalanceBloc balanceBloc;
   late ITransactionsBloc transactionsBloc;
+  late IAccountsBloc accountsBloc;
 
   bool isOpen = false;
   BannerAd? bottomBannerAd;
@@ -41,8 +44,10 @@ class _HomePageState extends State<HomePage> {
     super.initState();
     balanceBloc = Modular.get();
     transactionsBloc = Modular.get();
+    accountsBloc = Modular.get();
     balanceBloc.getBalance();
     transactionsBloc.getTransactions();
+    accountsBloc.getAccounts();
     createBottomBannerAd();
     loadInterstitialAd();
   }
@@ -51,266 +56,233 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: const Color(0xFFEEF2F8),
-      body: CustomScrollView(
-        slivers: [
-          BlocBuilder(
-            bloc: balanceBloc,
-            builder: (context, state) {
-              if (state is SuccessState<BalanceModel>) {
-                var balance = state.data;
-                return FinanceHomeTopBarSliver(
-                  money: balance.balance ?? 0.0,
-                  onVisibilityGained: () {
-                    state.data.balance;
-                    balanceBloc.getBalance();
-                  },
-                  addRoute: () {
-                    Modular.to.pushNamed('/addTransaction/',
-                        arguments: {'add': true});
-                  },
-                  removeRoute: () {
-                    Modular.to.pushNamed('/addTransaction/',
-                        arguments: {'add': false});
-                  },
-                  transactionRoute: () {
-                    Modular.to.pushNamed('/transactions/');
-                  },
-                  menuRoute: () async {
-                    final prefs = await SharedPreferences.getInstance();
-                    final userId = prefs.getString('house_id');
-                    if (userId != null) {
-                      await FlutterClipboard.copy(userId);
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(
-                          backgroundColor: AppColors.forestGreen,
-                          content: Text('Convite copiado!'),
-                        ),
-                      );
-                    }
-                  },
-                );
-              } else {
-                return FinanceHomeTopBarSliver(
-                  money: 0.0,
-                  onVisibilityGained: () {},
-                  addRoute: () {
-                    Modular.to.pushNamed('/addTransaction/',
-                        arguments: {'add': true});
-                  },
-                  removeRoute: () {
-                    Modular.to.pushNamed('/addTransaction/',
-                        arguments: {'add': false});
-                  },
-                  transactionRoute: () {
-                    Modular.to.pushNamed('/transactions/');
-                  },
-                  menuRoute: () async {
-                    final prefs = await SharedPreferences.getInstance();
-                    final userId = prefs.getString('house_id');
-                    if (userId != null) {
-                      await FlutterClipboard.copy(userId);
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(
-                          backgroundColor: AppColors.forestGreen,
-                          content: Text('Convite copiado!'),
-                        ),
-                      );
-                    }
-                  },
-                );
-              }
-            },
-          ),
-          const SliverToBoxAdapter(
-            child: SizedBox(height: 20),
-          ),
-          SliverPadding(
-            padding: const EdgeInsets.symmetric(horizontal: 22),
-            sliver: SliverList(
-              delegate: SliverChildListDelegate(
-                [
-                  // ValueListenableBuilder(
-                  //   valueListenable: widget.controller.accountList,
-                  //   builder: (context, accountList, child) =>
-                  //       FinanceCredtCardTile(
-                  //     onTap: () {
-                  //       Modular.to.pushNamed('/accountsCards/');
-                  //     },
-                  //     list: ListView.separated(
-                  //       itemCount: accountList.length >= 2
-                  //           ? 2
-                  //           : accountList.length,
-                  //       shrinkWrap: true,
-                  //       physics: const NeverScrollableScrollPhysics(),
-                  //       separatorBuilder: (context, index) => SizedBox(
-                  //         height: 20,
-                  //         child: Divider(
-                  //           height: 1,
-                  //           color: Colors.blueGrey[100],
-                  //         ),
-                  //       ),
-                  //       itemBuilder: (context, index) {
-                  //         return Row(
-                  //           mainAxisAlignment: MainAxisAlignment.start,
-                  //           crossAxisAlignment: CrossAxisAlignment.center,
-                  //           children: [
-                  //             Container(
-                  //               padding: const EdgeInsets.all(12),
-                  //               decoration: BoxDecoration(
-                  //                 color: const Color(0xFFEEF2F8),
-                  //                 borderRadius: BorderRadius.circular(8),
-                  //               ),
-                  //               child: const Icon(
-                  //                 Icons.account_balance_outlined,
-                  //                 color: AppColors.deepBlue,
-                  //                 size: 20,
-                  //               ),
-                  //             ),
-                  //             const SizedBox(width: 8),
-                  //             Expanded(
-                  //               child: Column(
-                  //                 mainAxisAlignment:
-                  //                     MainAxisAlignment.start,
-                  //                 crossAxisAlignment:
-                  //                     CrossAxisAlignment.start,
-                  //                 children: [
-                  //                   FinanceText.p16(
-                  //                     accountList[index].bank ?? '',
-                  //                     color: Colors.black,
-                  //                   ),
-                  //                   const SizedBox(height: 4),
-                  //                   FinanceText.p16(
-                  //                     'Titular: ${accountList[index].use}',
-                  //                     color: AppColors.slateGray,
-                  //                   ),
-                  //                 ],
-                  //               ),
-                  //             ),
-                  //             FinanceText.p16(
-                  //               formatMoney(accountList[index].balance!),
-                  //               color: Colors.black,
-                  //             ),
-                  //           ],
-                  //         );
-                  //       },
-                  //     ),
-                  //   ),
-                  // ),
-                  // const SizedBox(height: 22),
-                  // ValueListenableBuilder<Map<String, double>>(
-                  //   valueListenable:
-                  //       widget.controller.categoryPercentages,
-                  //   builder: (context, value, child) =>
-                  //       FinanceSpendingTile(
-                  //     spending: widget.controller.gastos.value,
-                  //     onTap: () {
-                  //       showInterstitialAd();
-                  //     },
-                  //     categoryPercentages: value,
-                  //   ),
-                  // ),
-                  const SizedBox(height: 22),
-                  BlocBuilder(
-                    bloc: transactionsBloc,
-                    builder: (context, state) {
-                      if (state is SuccessState<List<TransactionsModel>>) {
-                        var transactions = state.data;
-                        return FinanceListTile(
-                          transactions: transactions.toList(),
-                          onTap: () {
-                            Modular.to.pushNamed('/transactions/');
-                          },
-                          lits: ListView.separated(
-                            itemCount: transactions.length >= 5
-                                ? 5
-                                : transactions.length,
-                            shrinkWrap: true,
-                            physics: const NeverScrollableScrollPhysics(),
-                            separatorBuilder: (context, index) => const Padding(
-                              padding: EdgeInsets.symmetric(vertical: 14),
-                              child: Divider(color: Colors.black26),
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 20),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              const SizedBox(height: 80),
+              BlocBuilder(
+                bloc: balanceBloc,
+                builder: (context, state) {
+                  if (state is SuccessState<BalanceModel>) {
+                    var balance = state.data;
+                    return FinanceBalance(
+                      onVisibilityGained: () {
+                        balanceBloc.getBalance();
+                      },
+                      route: () {
+                        showInterstitialAd();
+                        Modular.to.pushNamed('/transactions/');
+                      },
+                      money: balance.balance!,
+                    );
+                  } else {
+                    return const Center(
+                      child: CircularProgressIndicator(
+                        color: AppColors.deepBlue,
+                      ),
+                    );
+                  }
+                },
+              ),
+              const SizedBox(height: 40),
+              BlocBuilder(
+                bloc: accountsBloc,
+                builder: (context, state) {
+                  if (state is SuccessState<List<AccountModel>>) {
+                    var accounts = state.data;
+                    return FinanceCredtCardTile(
+                      onTap: () {
+                        showInterstitialAd();
+                        Modular.to.pushNamed('/accountsCards/');
+                      },
+                      list: FocusDetector(
+                        onForegroundGained: () {
+                          accountsBloc.getAccounts();
+                        },
+                        child: ListView.separated(
+                          itemCount: accounts.length >= 2 ? 2 : accounts.length,
+                          shrinkWrap: true,
+                          physics: const NeverScrollableScrollPhysics(),
+                          separatorBuilder: (context, index) => SizedBox(
+                            height: 20,
+                            child: Divider(
+                              height: 1,
+                              color: Colors.blueGrey[100],
                             ),
-                            itemBuilder: (context, index) {
-                              var transaction = transactions[index];
-                              DateTime? date = transaction.time;
-
-                              return Container(
-                                color: Colors.transparent,
-                                child: Row(
-                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                  mainAxisAlignment: MainAxisAlignment.start,
-                                  children: [
-                                    Container(
-                                      height: 48,
-                                      width: 48,
-                                      decoration: BoxDecoration(
-                                        color: const Color(0xFFEEF2F8),
-                                        borderRadius: BorderRadius.circular(12),
-                                      ),
-                                      child: Center(
-                                        child: FinanceText.p18(
-                                          getInitial(transaction.descricao),
-                                          color: AppColors.deepBlue,
+                          ),
+                          itemBuilder: (context, index) {
+                            return Container(
+                              padding: const EdgeInsets.all(16),
+                              decoration: BoxDecoration(
+                                color: const Color(0xFFF8F9FA),
+                                borderRadius: BorderRadius.circular(8),
+                              ),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  Container(
+                                    padding: const EdgeInsets.all(12),
+                                    decoration: BoxDecoration(
+                                      color: AppColors.lightSkyBlue,
+                                      borderRadius: BorderRadius.circular(8),
+                                    ),
+                                    child: SvgPicture.asset(
+                                      'assets/icons/bank.svg',
+                                      height: 22,
+                                      width: 22,
+                                      // ignore: deprecated_member_use
+                                      color: AppColors.deepBlue,
+                                    ),
+                                  ),
+                                  const SizedBox(width: 8),
+                                  Expanded(
+                                    child: Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.start,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        FinanceText.p14(
+                                          accounts[index].bank ?? '',
+                                          color: const Color(0xFF495057),
                                         ),
-                                      ),
+                                        FinanceText.p12(
+                                          accounts[index].use!,
+                                          color: const Color(0xFF848C93),
+                                        ),
+                                      ],
                                     ),
-                                    const SizedBox(width: 15),
-                                    Expanded(
-                                      child: Column(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          FinanceText.p16(
-                                            transaction.descricao,
-                                            color: Colors.black,
-                                          ),
-                                          FinanceText.p16(
-                                            date != null
-                                                ? formatDate(date)
-                                                : '',
-                                            color: const Color(0xFF717E95),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                    FinanceText.p18(
-                                      formatMoney(transaction.valor),
-                                      color: transaction.add == true
-                                          ? AppColors.forestGreen
-                                          : AppColors.cherryRed,
-                                    ),
-                                  ],
-                                ),
-                              );
-                            },
-                          ),
-                        );
-                      } else {
-                        return const Center(
-                          child: Text(
-                            'Erro ao buscar as transações!',
-                          ),
-                        );
-                      }
-                    },
-                  ),
-                ],
+                                  ),
+                                  FinanceText.p16(
+                                    formatMoney(accounts[index].balance!),
+                                    color: AppColors.deepBlue,
+                                    fontWeight: FontWeight.w400,
+                                  ),
+                                ],
+                              ),
+                            );
+                          },
+                        ),
+                      ),
+                    );
+                  } else {
+                    return const Center(
+                      child: Text(
+                        'Nenhuma conta encontrada',
+                      ),
+                    );
+                  }
+                },
               ),
-            ),
+              isBannerAdReady && bottomBannerAd != null
+                  ? SizedBox(
+                      height: bottomBannerAd!.size.height.toDouble() + 20,
+                      width: bottomBannerAd!.size.width.toDouble(),
+                      child: AdWidget(
+                        ad: bottomBannerAd!,
+                      ),
+                    )
+                  : const SizedBox(height: 40),
+              BlocBuilder(
+                bloc: transactionsBloc,
+                builder: (context, state) {
+                  if (state is SuccessState<List<TransactionsModel>>) {
+                    var transactions = state.data;
+                    return FinanceListTile(
+                      transactions: transactions.toList(),
+                      onTap: () {
+                        showInterstitialAd();
+                        Modular.to.pushNamed('/transactions/');
+                      },
+                      lits: FocusDetector(
+                        onVisibilityLost: () {
+                          transactionsBloc.getTransactions();
+                        },
+                        child: ListView.separated(
+                          itemCount: transactions.length >= 6
+                              ? 6
+                              : transactions.length,
+                          shrinkWrap: true,
+                          physics: const NeverScrollableScrollPhysics(),
+                          separatorBuilder: (context, index) => const Padding(
+                            padding: EdgeInsets.symmetric(vertical: 14),
+                            child: Divider(color: Colors.black26),
+                          ),
+                          itemBuilder: (context, index) {
+                            var transaction = transactions[index];
+                            DateTime? date = transaction.time;
+
+                            return Container(
+                              color: Colors.transparent,
+                              child: Row(
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                children: [
+                                  Container(
+                                    height: 48,
+                                    width: 48,
+                                    decoration: BoxDecoration(
+                                      color: const Color(0xFFEEF2F8),
+                                      borderRadius: BorderRadius.circular(12),
+                                    ),
+                                    child: Center(
+                                      child: FinanceText.h4(
+                                        getInitial(transaction.descricao),
+                                        color: AppColors.deepBlue,
+                                        fontWeight: FontWeight.w500,
+                                      ),
+                                    ),
+                                  ),
+                                  const SizedBox(width: 15),
+                                  Expanded(
+                                    child: Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        FinanceText.p16(
+                                          transaction.descricao,
+                                          color: Colors.black,
+                                        ),
+                                        FinanceText.p16(
+                                          date != null ? formatDate(date) : '',
+                                          color: const Color(0xFF717E95),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                  FinanceText.p18(
+                                    formatMoney(transaction.valor),
+                                    color: transaction.add == true
+                                        ? AppColors.forestGreen
+                                        : AppColors.cherryRed,
+                                  ),
+                                ],
+                              ),
+                            );
+                          },
+                        ),
+                      ),
+                    );
+                  } else {
+                    return const Center(
+                      child: Text(
+                        'Erro ao buscar as transações!',
+                      ),
+                    );
+                  }
+                },
+              ),
+            ],
           ),
-        ],
+        ),
       ),
-      bottomNavigationBar: isBannerAdReady && bottomBannerAd != null
-          ? SizedBox(
-              height: bottomBannerAd!.size.height.toDouble(),
-              width: bottomBannerAd!.size.width.toDouble(),
-              child: AdWidget(
-                ad: bottomBannerAd!,
-              ),
-            )
-          : null,
     );
   }
 

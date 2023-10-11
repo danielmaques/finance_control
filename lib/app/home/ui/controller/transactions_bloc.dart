@@ -24,7 +24,11 @@ class TransactionsBloc extends ITransactionsBloc {
 
     emit(const LoadingState());
 
-    final result = await getTransactionsUseCase(houseId!);
-    emit(SuccessState(result.getSuccessData));
+    try {
+      final result = await getTransactionsUseCase(houseId!);
+      emit(SuccessState(result.getSuccessData));
+    } catch (e) {
+      emit(ErrorState(e.toString()));
+    }
   }
 }
