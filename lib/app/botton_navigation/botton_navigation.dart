@@ -1,6 +1,5 @@
 // ignore_for_file: deprecated_member_use
 
-import 'package:finance_control/app/home/ui/page/home_page.dart';
 import 'package:finance_control_ui/finance_control_ui.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
@@ -19,17 +18,11 @@ class _BottomNavigationState extends State<BottomNavigation> {
   bool _isExpanded = false;
   RewardedAd? rewardedAd;
 
-  static const List<Widget> _widgetOptions = <Widget>[
-    HomePage(),
-    Text('Página 1'),
-    Text('Página 2'),
-    Text('Página 3'),
-  ];
-
   void _onItemTapped(int index) {
     setState(() {
       _selectedIndex = index;
     });
+    Modular.to.navigate(_getRoute(index));
   }
 
   @override
@@ -40,11 +33,28 @@ class _BottomNavigationState extends State<BottomNavigation> {
 
   @override
   Widget build(BuildContext context) {
+    final leading = SizedBox(
+      width: MediaQuery.of(context).size.width * 0.3,
+      child: Column(
+        children: [
+          ListTile(
+            onTap: () => Modular.to.navigate('/homeBottom'),
+          ),
+          ListTile(
+            onTap: () => Modular.to.navigate('/transactionsBottom'),
+          ),
+          ListTile(
+            onTap: () => Modular.to.navigate('/transactionsBottom'),
+          ),
+        ],
+      ),
+    );
     return Scaffold(
       body: Center(
         child: Stack(
           children: [
-            _widgetOptions.elementAt(_selectedIndex),
+            leading,
+            const RouterOutlet(),
             if (_isExpanded)
               Positioned(
                 bottom: 100,
@@ -54,7 +64,6 @@ class _BottomNavigationState extends State<BottomNavigation> {
                   mini: true,
                   backgroundColor: AppColors.forestGreen,
                   onPressed: () {
-                    // showInterstitialAd();
                     Modular.to.pushNamed('/addTransaction/',
                         arguments: {'add': true});
 
@@ -142,6 +151,9 @@ class _BottomNavigationState extends State<BottomNavigation> {
   }
 
   Widget item({required String icon, required int index}) {
+    final selectedColor = Theme.of(context).primaryColor;
+    const unselectedColor = Colors.black;
+
     return GestureDetector(
       onTap: () {
         _onItemTapped(index);
@@ -150,9 +162,24 @@ class _BottomNavigationState extends State<BottomNavigation> {
         icon,
         height: 24,
         width: 24,
-        color: _selectedIndex == index ? Colors.blue : Colors.black,
+        color: _selectedIndex == index ? selectedColor : unselectedColor,
       ),
     );
+  }
+
+  String _getRoute(int index) {
+    switch (index) {
+      case 0:
+        return '/bottomNavigation/homeBottom';
+      case 1:
+        return '/bottomNavigation/transactionsBottom';
+      case 2:
+        return '/homeBottom';
+      case 3:
+        return '/homeBottom';
+      default:
+        return '/bottomNavigation/homeBottom';
+    }
   }
 
   void _loadRewardedAd() {

@@ -1,5 +1,6 @@
 import 'package:finance_control/app/accounts_cards/accounts_cards_module.dart';
 import 'package:finance_control/app/add_transaction/add_transaction_module.dart';
+import 'package:finance_control/app/botton_navigation/botton_navigation.dart';
 import 'package:finance_control/app/transactions/transactions_module.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
@@ -26,6 +27,7 @@ class AppWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    Modular.setInitialRoute('/bottomNavigation/homeBottom');
     return MaterialApp.router(
       title: 'My Smart App',
       debugShowCheckedModeBanner: false,
@@ -45,6 +47,11 @@ class AppModule extends Module {
   @override
   void routes(r) {
     r.module('/', module: OnboardingModule());
+    r.child('/bottomNavigation', child: (context) => const BottomNavigation(), children: [
+      ModuleRoute('/homeBottom', module: HomeModule()),
+      ModuleRoute('/transactionsBottom', module: TransactionsModule()),
+      ModuleRoute('/homeBottom', module: HomeModule()),
+    ]);
     r.module('/home', module: HomeModule());
     r.module('/addTransaction', module: AddTransactionModule());
     r.module('/transactions', module: TransactionsModule());

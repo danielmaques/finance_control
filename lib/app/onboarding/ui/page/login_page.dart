@@ -31,7 +31,8 @@ class _LoginPageState extends State<LoginPage> {
             builder: (context, isLoggedIn, child) {
               if (isLoggedIn) {
                 WidgetsBinding.instance.addPostFrameCallback((_) {
-                  Modular.to.pushReplacementNamed('/home/');
+                  Modular.to
+                      .pushReplacementNamed('/BottomNavigation/homeBottom');
                 });
                 return Container();
               }

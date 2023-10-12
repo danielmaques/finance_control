@@ -2,11 +2,11 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:finance_control/app/home/datasource/model/transactions_model.dart';
 import 'package:finance_control/core/core.dart';
 
-abstract class IGetTransactionsData {
+abstract class IGetTransactionsHomeData {
   Future<Result<List<TransactionsModel>>> call(String uid);
 }
 
-class GetTransactionsData implements IGetTransactionsData {
+class GetTransactionsHomeData implements IGetTransactionsHomeData {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
   @override

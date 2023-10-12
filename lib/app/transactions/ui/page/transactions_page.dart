@@ -1,27 +1,34 @@
-import 'package:finance_control/app/transactions/ui/controller/transactions_controller.dart';
+import 'package:finance_control/app/home/datasource/model/balance_model.dart';
+import 'package:finance_control/app/home/ui/controller/balance_bloc.dart';
+import 'package:finance_control/app/transactions/datasource/model/transaction_model.dart';
+import 'package:finance_control/app/transactions/ui/bloc/transactions_bloc.dart';
 import 'package:finance_control/app/transactions/ui/shimmer/transaction_page_shimmer.dart';
+import 'package:finance_control/core/core.dart';
 import 'package:finance_control_ui/finance_control_ui.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 
 class TransactionsPage extends StatefulWidget {
   const TransactionsPage({
     super.key,
-    required this.controller,
   });
-
-  final TransactionsController controller;
 
   @override
   State<TransactionsPage> createState() => _TransactionsPageState();
 }
 
 class _TransactionsPageState extends State<TransactionsPage> {
+  late ITransactionsBloc bloc;
+  late IBalanceBloc balanceBloc;
+
   @override
   void initState() {
     super.initState();
-    widget.controller.getTransactions();
-    widget.controller.getBalance();
+    bloc = Modular.get();
+    balanceBloc = Modular.get();
+    bloc.getTransactions();
+    balanceBloc.getBalance();
   }
 
   @override
@@ -40,11 +47,20 @@ class _TransactionsPageState extends State<TransactionsPage> {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               FinanceText.p14('Saldo', color: AppColors.slateGray),
-              ValueListenableBuilder(
-                valueListenable: widget.controller.balance,
-                builder: (context, value, child) => FinanceText.h3(
-                  formatMoney(value),
-                ),
+              BlocBuilder(
+                bloc: balanceBloc,
+                builder: (context, state) {
+                  if (state is SuccessState<BalanceModel>) {
+                    var balance = state.data;
+                    return FinanceText.h3(
+                      formatMoney(balance.balance ?? 0.0),
+                    );
+                  } else {
+                    return FinanceText.h3(
+                      formatMoney(0.0),
+                    );
+                  }
+                },
               ),
               const SizedBox(height: 26),
               const Divider(
@@ -56,18 +72,19 @@ class _TransactionsPageState extends State<TransactionsPage> {
                     const EdgeInsets.symmetric(vertical: 20, horizontal: 20),
                 child: Column(
                   children: [
-                    ValueListenableBuilder(
-                      valueListenable: widget.controller.isLoading,
-                      builder: (context, value, child) => value == true
-                          ? const FinanceTransactionListShimmer(isLoading: true)
-                          : ValueListenableBuilder(
-                              valueListenable:
-                                  widget.controller.transactionsByMonth,
-                              builder: (context, value, child) =>
-                                  FinanceTransactionList(
-                                transactionsByMonth: value,
-                              ),
-                            ),
+                    BlocBuilder(
+                      bloc: bloc,
+                      builder: (context, state) {
+                        if (state is SuccessState<List<TransactionModel>>) {
+                          var transactions = state.data;
+                          return FinanceTransactionList(
+                            transactionsByMonth: transactions,
+                          );
+                        } else {
+                          return const FinanceTransactionListShimmer(
+                              isLoading: true);
+                        }
+                      },
                     ),
                   ],
                 ),

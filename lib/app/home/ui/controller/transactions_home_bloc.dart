@@ -1,20 +1,20 @@
-import 'package:finance_control/app/home/domain/usecase/get_transactions_usecase.dart';
+import 'package:finance_control/app/home/domain/usecase/get_transactions_home_usecase.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../../core/core.dart';
 
-abstract class ITransactionsBloc extends Cubit<BaseState> {
-  ITransactionsBloc() : super(const EmptyState());
+abstract class ITransactionsHomeBloc extends Cubit<BaseState> {
+  ITransactionsHomeBloc() : super(const EmptyState());
 
   Future<void> getTransactions();
 }
 
-class TransactionsBloc extends ITransactionsBloc {
-  final IGetTransactionsUseCase getTransactionsUseCase;
+class TransactionsHomeBloc extends ITransactionsHomeBloc {
+  final IGetTransactionsHomeUseCase GetTransactionsHomeUseCase;
 
-  TransactionsBloc(
-    this.getTransactionsUseCase,
+  TransactionsHomeBloc(
+    this.GetTransactionsHomeUseCase,
   );
 
   @override
@@ -25,7 +25,7 @@ class TransactionsBloc extends ITransactionsBloc {
     emit(const LoadingState());
 
     try {
-      final result = await getTransactionsUseCase(houseId!);
+      final result = await GetTransactionsHomeUseCase(houseId!);
       emit(SuccessState(result.getSuccessData));
     } catch (e) {
       emit(ErrorState(e.toString()));

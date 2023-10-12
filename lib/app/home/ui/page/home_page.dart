@@ -5,7 +5,7 @@ import 'package:finance_control/app/home/datasource/model/balance_model.dart';
 import 'package:finance_control/app/home/datasource/model/transactions_model.dart';
 import 'package:finance_control/app/home/ui/controller/accounts_bloc.dart';
 import 'package:finance_control/app/home/ui/controller/balance_bloc.dart';
-import 'package:finance_control/app/home/ui/controller/transactions_bloc.dart';
+import 'package:finance_control/app/home/ui/controller/transactions_home_bloc.dart';
 import 'package:finance_control_ui/finance_control_ui.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -28,7 +28,7 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   late IBalanceBloc balanceBloc;
-  late ITransactionsBloc transactionsBloc;
+  late ITransactionsHomeBloc transactionsHomeBloc;
   late IAccountsBloc accountsBloc;
 
   bool isOpen = false;
@@ -43,10 +43,10 @@ class _HomePageState extends State<HomePage> {
   void initState() {
     super.initState();
     balanceBloc = Modular.get();
-    transactionsBloc = Modular.get();
+    transactionsHomeBloc = Modular.get();
     accountsBloc = Modular.get();
     balanceBloc.getBalance();
-    transactionsBloc.getTransactions();
+    transactionsHomeBloc.getTransactions();
     accountsBloc.getAccounts();
     createBottomBannerAd();
     loadInterstitialAd();
@@ -75,7 +75,7 @@ class _HomePageState extends State<HomePage> {
                       },
                       route: () {
                         showInterstitialAd();
-                        Modular.to.pushNamed('/transactions/');
+                        Modular.to.pushNamed('/transactions/',);
                       },
                       money: balance.balance!,
                     );
@@ -189,7 +189,7 @@ class _HomePageState extends State<HomePage> {
                     )
                   : const SizedBox(height: 40),
               BlocBuilder(
-                bloc: transactionsBloc,
+                bloc: transactionsHomeBloc,
                 builder: (context, state) {
                   if (state is SuccessState<List<TransactionsModel>>) {
                     var transactions = state.data;
@@ -201,7 +201,7 @@ class _HomePageState extends State<HomePage> {
                       },
                       lits: FocusDetector(
                         onVisibilityLost: () {
-                          transactionsBloc.getTransactions();
+                          transactionsHomeBloc.getTransactions();
                         },
                         child: ListView.separated(
                           itemCount: transactions.length >= 6
