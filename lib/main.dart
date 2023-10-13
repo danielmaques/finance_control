@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import 'app/add_bank/add_bank_module.dart';
 import 'app/home/home_modular.dart';
@@ -19,7 +20,16 @@ void main() async {
   SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
     statusBarColor: Colors.transparent,
   ));
-  return runApp(ModularApp(module: AppModule(), child: const AppWidget()));
+
+  final bool hasHouseId = await checkIfYouHaveHouseId();
+
+  if (hasHouseId) {
+    Modular.setInitialRoute('/bottomNavigation/homeBottom');
+  } else {
+    Modular.setInitialRoute('/');
+  }
+
+  runApp(ModularApp(module: AppModule(), child: const AppWidget()));
 }
 
 class AppWidget extends StatelessWidget {
@@ -27,7 +37,6 @@ class AppWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Modular.setInitialRoute('/bottomNavigation/homeBottom');
     return MaterialApp.router(
       title: 'My Smart App',
       debugShowCheckedModeBanner: false,
@@ -47,15 +56,23 @@ class AppModule extends Module {
   @override
   void routes(r) {
     r.module('/', module: OnboardingModule());
-    r.child('/bottomNavigation', child: (context) => const BottomNavigation(), children: [
-      ModuleRoute('/homeBottom', module: HomeModule()),
-      ModuleRoute('/transactionsBottom', module: TransactionsModule()),
-      ModuleRoute('/homeBottom', module: HomeModule()),
-    ]);
+    r.child('/bottomNavigation',
+        child: (context) => const BottomNavigation(),
+        children: [
+          ModuleRoute('/homeBottom', module: HomeModule()),
+          ModuleRoute('/transactionsBottom', module: TransactionsModule()),
+          ModuleRoute('/homeBottom', module: HomeModule()),
+        ]);
     r.module('/home', module: HomeModule());
     r.module('/addTransaction', module: AddTransactionModule());
     r.module('/transactions', module: TransactionsModule());
     r.module('/accountsCards', module: AccountsCardsModule());
     r.module('/addBank', module: AddBankModule());
   }
+}
+
+Future<bool> checkIfYouHaveHouseId() async {
+  final prefs = await SharedPreferences.getInstance();
+  final userId = prefs.getString('user_id');
+  return userId != null && userId.isNotEmpty;
 }

@@ -190,6 +190,7 @@ class _AccountCardsPageState extends State<AccountCardsPage> {
                           } else {
                             double disponivel = cardList[index - 1].limit! -
                                 cardList[index - 1].availableLimit!;
+
                             return FinanceCard(
                               cardList: cardList,
                               index: index,

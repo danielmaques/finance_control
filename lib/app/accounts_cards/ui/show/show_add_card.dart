@@ -19,13 +19,13 @@ class ShowAddCard extends StatefulWidget {
 }
 
 class _ShowAddCardState extends State<ShowAddCard> {
-  final ValueNotifier<List<dynamic>> flagList = ValueNotifier<List<dynamic>>([
+  final List<dynamic> flagList = [
     "Visa",
     "MasterCard",
     "Elo",
     "American Express",
     "Outros",
-  ]);
+  ];
 
   late String price;
 

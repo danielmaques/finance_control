@@ -26,12 +26,11 @@ class _AddBankPageState extends State<AddBankPage> {
   SearchController searchController = SearchController();
   String? bankSelect;
 
-  final ValueNotifier<List<dynamic>> categoriesList =
-      ValueNotifier<List<dynamic>>([
+  final List<dynamic> categoriesList = [
     "Conta corrente",
     "Conta poupança",
     "Conta empresarial",
-  ]);
+  ];
 
   List<String> banks = [
     "American Express",
@@ -404,7 +403,7 @@ class _AddBankPageState extends State<AddBankPage> {
             const SizedBox(height: 20),
             FinanceDropDown(
               hint: "Selecione o proprietário",
-              categoriesList: widget.controller.users,
+              categoriesList:  [],
               onItemSelected: (p0) {
                 widget.controller.userSelect.value = p0;
               },

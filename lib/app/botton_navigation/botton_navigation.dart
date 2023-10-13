@@ -33,27 +33,10 @@ class _BottomNavigationState extends State<BottomNavigation> {
 
   @override
   Widget build(BuildContext context) {
-    final leading = SizedBox(
-      width: MediaQuery.of(context).size.width * 0.3,
-      child: Column(
-        children: [
-          ListTile(
-            onTap: () => Modular.to.navigate('/homeBottom'),
-          ),
-          ListTile(
-            onTap: () => Modular.to.navigate('/transactionsBottom'),
-          ),
-          ListTile(
-            onTap: () => Modular.to.navigate('/transactionsBottom'),
-          ),
-        ],
-      ),
-    );
     return Scaffold(
       body: Center(
         child: Stack(
           children: [
-            leading,
             const RouterOutlet(),
             if (_isExpanded)
               Positioned(

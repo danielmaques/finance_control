@@ -94,11 +94,16 @@ class _LoginPageState extends State<LoginPage> {
                           FinanceButton(
                             title: 'Entrar',
                             disabled: button,
-                            onTap: () {
-                              widget.controller.login(
+                            onTap: () async {
+                              final success = await widget.controller.login(
                                 email: widget.controller.email.text,
                                 password: widget.controller.password.text,
                               );
+
+                              if (success) {
+                                Modular.to.pushReplacementNamed(
+                                    '/home/');
+                              }
                             },
                           ),
                           const SizedBox(height: 32),

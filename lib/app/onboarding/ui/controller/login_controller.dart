@@ -2,7 +2,6 @@
 
 import 'package:finance_control/app/onboarding/domain/usecase/login_usecase.dart';
 import 'package:finance_control_ui/finance_control_ui.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -23,7 +22,7 @@ class LoginController {
     isBlockedNotifier.value = email.text.isEmpty || password.text.isEmpty;
   }
 
-  Future<void> login({required String email, required String password}) async {
+  Future<bool> login({required String email, required String password}) async {
     try {
       final user = await _loginUseCase.login(email, password);
       if (user != null && user.id != null && user.email != null) {
@@ -36,12 +35,14 @@ class LoginController {
         }
 
         isLoggedInNotifier.value = true;
+
+        return true;
       }
     } catch (e) {
-      if (kDebugMode) {
-        print(e);
-      }
+      throw Exception('Falha no login: $e');
     }
+
+    return false;
   }
 
   Future<void> autoLogin() async {

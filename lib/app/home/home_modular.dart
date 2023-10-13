@@ -30,7 +30,7 @@ class HomeModule extends Module {
 
     // GetAccounts
     i.addSingleton<IGetAccountsData>(GetAccountsData.new);
-    i.addSingleton<IGetAccountsUseCase>(GetAccountsUseCase.new);
+    i.addLazySingleton<IGetAccountsUseCase>(GetAccountsUseCase.new);
     i.addSingleton<IAccountsBloc>(AccountsBloc.new);
   }
 
