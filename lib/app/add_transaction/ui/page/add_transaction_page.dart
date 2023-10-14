@@ -89,6 +89,9 @@ class _AddTransactionPageState extends State<AddTransactionPage> {
               });
             },
             onPressed: () {},
+            color: widget.add == true
+                ? AppColors.forestGreen
+                : AppColors.cherryRed,
           ),
           Expanded(
             child: Material(
