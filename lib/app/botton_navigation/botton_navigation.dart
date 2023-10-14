@@ -4,7 +4,6 @@ import 'package:finance_control_ui/finance_control_ui.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:google_mobile_ads/google_mobile_ads.dart';
 
 class BottomNavigation extends StatefulWidget {
   const BottomNavigation({Key? key}) : super(key: key);
@@ -16,7 +15,6 @@ class BottomNavigation extends StatefulWidget {
 class _BottomNavigationState extends State<BottomNavigation> {
   int _selectedIndex = 0;
   bool _isExpanded = false;
-  RewardedAd? rewardedAd;
 
   void _onItemTapped(int index) {
     setState(() {
@@ -28,7 +26,6 @@ class _BottomNavigationState extends State<BottomNavigation> {
   @override
   void initState() {
     super.initState();
-    _loadRewardedAd();
   }
 
   @override
@@ -41,53 +38,46 @@ class _BottomNavigationState extends State<BottomNavigation> {
             if (_isExpanded)
               Positioned(
                 bottom: 100,
-                left: 0,
-                right: 80,
-                child: FloatingActionButton(
-                  mini: true,
-                  backgroundColor: AppColors.forestGreen,
-                  onPressed: () {
-                    Modular.to.pushNamed('/addTransaction/',
-                        arguments: {'add': true});
+                left: 150,
+                child: Row(
+                  children: [
+                    FloatingActionButton(
+                      mini: true,
+                      backgroundColor: AppColors.forestGreen,
+                      onPressed: () {
+                        Modular.to.pushNamed('/addTransaction/',
+                            arguments: {'add': true});
 
-                    setState(() {
-                      _isExpanded = !_isExpanded;
-                    });
-                  },
-                  child: SvgPicture.asset(
-                    'assets/icons/wallet-add.svg',
-                    height: 18,
-                    width: 18,
-                    color: AppColors.white,
-                  ),
-                ),
-              ),
-            if (_isExpanded)
-              Positioned(
-                bottom: 100,
-                left: 80,
-                right: 0,
-                child: FloatingActionButton(
-                  mini: true,
-                  backgroundColor: AppColors.cherryRed,
-                  onPressed: () {
-                    rewardedAd?.show(
-                      onUserEarnedReward: (_, reward) {
+                        setState(() {
+                          _isExpanded = !_isExpanded;
+                        });
+                      },
+                      child: SvgPicture.asset(
+                        'assets/icons/wallet-add.svg',
+                        height: 18,
+                        width: 18,
+                        color: AppColors.white,
+                      ),
+                    ),
+                    const SizedBox(width: 20),
+                    FloatingActionButton(
+                      mini: true,
+                      backgroundColor: AppColors.cherryRed,
+                      onPressed: () {
                         Modular.to.pushNamed('/addTransaction/',
                             arguments: {'add': false});
+                        setState(() {
+                          _isExpanded = !_isExpanded;
+                        });
                       },
-                    );
-
-                    setState(() {
-                      _isExpanded = !_isExpanded;
-                    });
-                  },
-                  child: SvgPicture.asset(
-                    'assets/icons/wallet-remove.svg',
-                    height: 18,
-                    width: 18,
-                    color: AppColors.white,
-                  ),
+                      child: SvgPicture.asset(
+                        'assets/icons/wallet-remove.svg',
+                        height: 18,
+                        width: 18,
+                        color: AppColors.white,
+                      ),
+                    ),
+                  ],
                 ),
               ),
           ],
@@ -163,32 +153,5 @@ class _BottomNavigationState extends State<BottomNavigation> {
       default:
         return '/bottomNavigation/homeBottom';
     }
-  }
-
-  void _loadRewardedAd() {
-    RewardedAd.load(
-      adUnitId: 'ca-app-pub-6625580398265467/8534415425',
-      request: const AdRequest(),
-      rewardedAdLoadCallback: RewardedAdLoadCallback(
-        onAdLoaded: (ad) {
-          ad.fullScreenContentCallback = FullScreenContentCallback(
-            onAdDismissedFullScreenContent: (ad) {
-              setState(() {
-                ad.dispose();
-                rewardedAd = null;
-              });
-              _loadRewardedAd();
-            },
-          );
-
-          setState(() {
-            rewardedAd = ad;
-          });
-        },
-        onAdFailedToLoad: (err) {
-          print('Failed to load a rewarded ad: ${err.message}');
-        },
-      ),
-    );
   }
 }

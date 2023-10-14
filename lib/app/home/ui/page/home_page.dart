@@ -161,7 +161,7 @@ class _HomePageState extends State<HomePage> {
                                     ),
                                   ),
                                   FinanceText.p16(
-                                    formatMoney(accounts[index].balance!),
+                                    formatMoney(accounts[index].balance ?? 0.0),
                                     color: AppColors.deepBlue,
                                     fontWeight: FontWeight.w400,
                                   ),

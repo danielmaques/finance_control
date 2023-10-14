@@ -19,8 +19,6 @@ class AddTransactionData implements IAddTransactionData {
 
       double currentBalance = 0.0;
 
-      String selectedCardId = addTransaction.cardID!;
-
       // add transaction
       DateTime now = DateTime.now();
       String monthYear = DateFormat('MMM yyyy').format(now);
@@ -59,6 +57,13 @@ class AddTransactionData implements IAddTransactionData {
         'balance': currentBalance,
       });
 
+      await _firestore
+          .collection('house')
+          .doc(uid)
+          .collection('accountBanks')
+          .doc(addTransaction.cardID!)
+          .update({'balance': currentBalance});
+
       String currentMonth = DateTime.now().toString().substring(0, 7);
 
       if (addTransaction.add == true) {
@@ -73,28 +78,6 @@ class AddTransactionData implements IAddTransactionData {
         await _firestore.collection('house').doc(uid).update({
           'gastos.$currentMonth': currentExpense,
         });
-      }
-
-      // card
-      DocumentReference cardRef = _firestore
-          .collection('house')
-          .doc(uid)
-          .collection('cards')
-          .doc(selectedCardId);
-      DocumentSnapshot cardSnapshot = await cardRef.get();
-
-      if (cardSnapshot.exists) {
-        Map<String, dynamic>? cardData =
-            cardSnapshot.data() as Map<String, dynamic>?;
-
-        if (cardData != null) {
-          double currentAvailableLimit = cardData['availableLimit'].toDouble();
-          currentAvailableLimit = addTransaction.value ?? 0;
-
-          await cardRef.update({
-            'availableLimit': currentAvailableLimit,
-          });
-        }
       }
 
       return ResultSuccess(addTransaction);
