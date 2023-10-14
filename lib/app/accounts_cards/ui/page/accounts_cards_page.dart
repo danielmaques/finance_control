@@ -1,6 +1,5 @@
 import 'package:finance_control/app/accounts_cards/ui/controller/accounts_cards_controller.dart';
 import 'package:finance_control_ui/finance_control_ui.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
@@ -11,9 +10,11 @@ class AccountCardsPage extends StatefulWidget {
   const AccountCardsPage({
     super.key,
     required this.controller,
+    required this.appBar,
   });
 
   final AccountCardsController controller;
+  final String appBar;
 
   @override
   State<AccountCardsPage> createState() => _AccountCardsPageState();
@@ -24,6 +25,7 @@ class _AccountCardsPageState extends State<AccountCardsPage> {
   bool isValid = false;
   BannerAd? bottomBannerAd;
   bool isBannerAdReady = false;
+  RewardedAd? rewardedAd;
 
   @override
   void initState() {
@@ -31,20 +33,27 @@ class _AccountCardsPageState extends State<AccountCardsPage> {
     widget.controller.getAccountBanks();
     widget.controller.getCards();
     createBottomBannerAd();
+    _loadRewardedAd();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: const Color(0xFFEEF2F8),
-      appBar: FinanceAppBar(
-        title: 'Contas e Cartões',
-        icon: true,
-        onTap: () {
-          Modular.to.pop();
-        },
-        color: AppColors.white,
-      ),
+      appBar: widget.appBar == 'true'
+          ? FinanceAppBar(
+              title: 'Contas e Cartões',
+              icon: true,
+              onTap: () {
+                Modular.to.pop();
+              },
+              color: AppColors.white,
+            )
+          : const FinanceAppBar(
+              title: 'Contas e Cartões',
+              icon: false,
+              color: AppColors.white,
+            ),
       body: SingleChildScrollView(
         child: Column(
           children: [
@@ -89,11 +98,16 @@ class _AccountCardsPageState extends State<AccountCardsPage> {
                               borderRadius: BorderRadius.circular(25),
                               child: InkWell(
                                 onTap: () {
-                                  Modular.to.pushNamed('/addBank', arguments: {
-                                    'isCriate': false,
-                                    'update':
-                                        widget.controller.getAccountBanks(),
-                                  });
+                                  rewardedAd?.show(
+                                    onUserEarnedReward: (_, reward) {
+                                      Modular.to
+                                          .pushNamed('/addBank', arguments: {
+                                        'isCriate': false,
+                                        'update':
+                                            widget.controller.getAccountBanks(),
+                                      });
+                                    },
+                                  );
                                 },
                                 borderRadius: BorderRadius.circular(25),
                                 child: Column(
@@ -220,9 +234,7 @@ class _AccountCardsPageState extends State<AccountCardsPage> {
   createBottomBannerAd() {
     try {
       bottomBannerAd = BannerAd(
-        adUnitId: kReleaseMode
-            ? 'ca-app-pub-6625580398265467/1218136997'
-            : 'ca-app-pub-3940256099942544/6300978111',
+        adUnitId: 'ca-app-pub-6625580398265467/1218136997',
         size: AdSize.banner,
         request: const AdRequest(),
         listener: BannerAdListener(
@@ -240,5 +252,32 @@ class _AccountCardsPageState extends State<AccountCardsPage> {
     } catch (e) {
       bottomBannerAd = null;
     }
+  }
+
+  void _loadRewardedAd() {
+    RewardedAd.load(
+      adUnitId: 'ca-app-pub-6625580398265467/8534415425',
+      request: const AdRequest(),
+      rewardedAdLoadCallback: RewardedAdLoadCallback(
+        onAdLoaded: (ad) {
+          ad.fullScreenContentCallback = FullScreenContentCallback(
+            onAdDismissedFullScreenContent: (ad) {
+              setState(() {
+                ad.dispose();
+                rewardedAd = null;
+              });
+              _loadRewardedAd();
+            },
+          );
+
+          setState(() {
+            rewardedAd = ad;
+          });
+        },
+        onAdFailedToLoad: (err) {
+          print('Failed to load a rewarded ad: ${err.message}');
+        },
+      ),
+    );
   }
 }

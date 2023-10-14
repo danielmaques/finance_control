@@ -99,7 +99,7 @@ class _HomePageState extends State<HomePage> {
                     return FinanceCredtCardTile(
                       onTap: () {
                         showInterstitialAd();
-                        Modular.to.pushNamed('/accountsCards/');
+                        Modular.to.pushNamed('/accountsCards/true');
                       },
                       list: FocusDetector(
                         onForegroundGained: () {
@@ -164,8 +164,9 @@ class _HomePageState extends State<HomePage> {
                                     ),
                                   ),
                                   FinanceText.b14(
-                                    formatMoney(accounts[index].balance!),
-                                    isDarkStyle: theme,
+                                    formatMoney(accounts[index].balance ?? 0.0),
+                                    color: AppColors.deepBlue,
+                                    fontWeight: FontWeight.w400,
                                   ),
                                 ],
                               ),

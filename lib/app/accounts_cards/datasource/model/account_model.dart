@@ -2,7 +2,7 @@ class AccountModel {
   String? bank;
   String? accountType;
   String? use;
-  double? balance;
+  dynamic balance;
   dynamic id;
   dynamic color;
 
@@ -10,7 +10,7 @@ class AccountModel {
     this.bank,
     this.accountType,
     this.use,
-    this.balance,
+    this.balance = 0.0,
     this.id,
     this.color,
   });

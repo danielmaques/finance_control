@@ -1,9 +1,8 @@
 import 'package:finance_control/app/accounts_cards/datasource/model/account_model.dart';
-import 'package:finance_control/app/accounts_cards/datasource/model/card_model.dart';
 import 'package:finance_control/app/add_transaction/data/model/add_transaction_model.dart';
-import 'package:finance_control/app/add_transaction/ui/controller/account_bank_bloc.dart';
-import 'package:finance_control/app/add_transaction/ui/controller/add_transaction_bloc.dart';
-import 'package:finance_control/app/add_transaction/ui/controller/card_bloc.dart';
+import 'package:finance_control/app/add_transaction/ui/bloc/account_bank_bloc.dart';
+import 'package:finance_control/app/add_transaction/ui/bloc/add_transaction_bloc.dart';
+import 'package:finance_control/app/add_transaction/ui/bloc/card_bloc.dart';
 import 'package:finance_control/core/states/base_page_state.dart';
 import 'package:finance_control_ui/finance_control_ui.dart';
 import 'package:flutter/material.dart';
@@ -38,6 +37,7 @@ class _AddTransactionPageState extends State<AddTransactionPage> {
   late String user;
   late double value;
   late double installment;
+  late double installment;
 
   late TextEditingController description = TextEditingController();
 
@@ -57,7 +57,7 @@ class _AddTransactionPageState extends State<AddTransactionPage> {
     selectedCardId = '';
     user = '';
     value = 0.00;
-    installment = 0;
+    installment = 1;
   }
 
   @override
@@ -71,7 +71,7 @@ class _AddTransactionPageState extends State<AddTransactionPage> {
     selectedCardId = '';
     user = '';
     value = 0.00;
-    installment = 0;
+    installment = 1;
   }
 
   @override
@@ -150,6 +150,9 @@ class _AddTransactionPageState extends State<AddTransactionPage> {
                               categoriesList: accountNames,
                               onItemSelected: (bank) {
                                 setState(() {
+                                  final bankID = accounts.firstWhere(
+                                      (element) => element.bank == bank);
+                                  selectedCardId = bankID.id;
                                   selectAccount = bank;
                                 });
                               },
@@ -190,7 +193,6 @@ class _AddTransactionPageState extends State<AddTransactionPage> {
                           'Pix',
                           'Transferencia',
                           'Cartão de debito',
-                          'Cartão de credito',
                         ],
                         onItemSelected: (value) {
                           setState(() {
@@ -201,35 +203,9 @@ class _AddTransactionPageState extends State<AddTransactionPage> {
                         elevation: 0,
                       ),
                       const SizedBox(height: 16),
-                      if (paymentMethod == 'Cartão de credito')
-                        BlocBuilder(
-                          bloc: cardBloc,
-                          builder: (context, state) {
-                            if (state is SuccessState<List<CardModel>>) {
-                              var cards = state.data;
-                              var cardNames =
-                                  cards.map((card) => card.cardName).toList();
-                              return FinanceDropDown(
-                                hint: 'Selecione o cartão',
-                                svg: 'assets/icons/cards.svg',
-                                categoriesList: cardNames,
-                                onItemSelected: (selectedCardName) {
-                                  setState(() {
-                                    final cardsid = cards.firstWhere((card) =>
-                                        card.cardName == selectedCardName);
-                                    selectedCard = selectedCardName;
-                                    selectedCardId = cardsid.id;
-                                  });
-                                },
-                                border: true,
-                                elevation: 0,
-                              );
-                            } else {
-                              return Container();
-                            }
-                          },
-                        ),
-                      if (paymentMethod != 'Cartão de credito') ...{
+                      if (paymentMethod == 'Cartão de debito' ||
+                          paymentMethod == 'Pix' ||
+                          paymentMethod == 'Transferencia') ...{
                         BlocBuilder(
                           bloc: accountBankBloc,
                           builder: (context, state) {
@@ -243,9 +219,12 @@ class _AddTransactionPageState extends State<AddTransactionPage> {
                                 hint: 'Selecione a conta',
                                 svg: 'assets/icons/bank.svg',
                                 categoriesList: accountNames,
-                                onItemSelected: (value) {
+                                onItemSelected: (bank) {
                                   setState(() {
-                                    selectAccount = value;
+                                    final bankID = accounts.firstWhere(
+                                        (element) => element.bank == bank);
+                                    selectedCardId = bankID.id;
+                                    selectAccount = bank;
                                   });
                                 },
                                 border: true,
@@ -255,27 +234,6 @@ class _AddTransactionPageState extends State<AddTransactionPage> {
                               return Container();
                             }
                           },
-                        ),
-                        const SizedBox(height: 16),
-                        FinanceDropDown(
-                          hint: '1 x ${formatMoney(value)}',
-                          svg: 'assets/icons/math.svg',
-                          categoriesList: List.generate(12, (index) {
-                            final installments = index + 1;
-                            final installmentValue = value / installments;
-                            final formatter = NumberFormat.currency(
-                                locale: 'pt_BR', symbol: 'R\$');
-                            final formattedValue =
-                                formatter.format(installmentValue);
-                            return '$installments x $formattedValue';
-                          }),
-                          onItemSelected: (value) {
-                            setState(() {
-                              installment = double.parse(value);
-                            });
-                          },
-                          border: true,
-                          elevation: 0,
                         ),
                       }
                     },
@@ -520,26 +478,6 @@ class _AddTransactionPageState extends State<AddTransactionPage> {
                     value: value,
                   ),
                 );
-
-                if (state is SuccessState) {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(
-                      backgroundColor: AppColors.forestGreen,
-                      content: Text('Lançamento adicionado'),
-                    ),
-                  );
-                  Modular.to
-                      .pushReplacementNamed('/bottomNavigation/homeBottom');
-                } else {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(
-                      backgroundColor: AppColors.cherryRed,
-                      content: Text(
-                          'Erro ao adicionar lançamento, tente novamente'),
-                    ),
-                  );
-                }
-                // Modular.to.pushReplacementNamed('/home/');
               },
             ),
           );
