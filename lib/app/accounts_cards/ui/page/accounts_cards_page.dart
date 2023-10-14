@@ -106,7 +106,7 @@ class _AccountCardsPageState extends State<AccountCardsPage> {
                                       color: AppColors.deepBlue,
                                     ),
                                     const SizedBox(height: 16),
-                                    FinanceText.p18(
+                                    FinanceText.b16(
                                       'Add Conta',
                                       color: AppColors.deepBlue,
                                       fontWeight: FontWeight.w500,
@@ -177,7 +177,7 @@ class _AccountCardsPageState extends State<AccountCardsPage> {
                                         color: AppColors.deepBlue,
                                       ),
                                       const SizedBox(height: 16),
-                                      FinanceText.p18(
+                                      FinanceText.b16(
                                         'Add Cartão',
                                         color: AppColors.deepBlue,
                                         fontWeight: FontWeight.w500,

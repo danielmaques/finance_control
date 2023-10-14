@@ -17,7 +17,7 @@ class AddTransaction {
     this.value,
     this.creditCard,
     this.cardID,
-  });
+  }); 
 
   AddTransaction.fromJson(Map<String, dynamic> json) {
     add = json['add'];

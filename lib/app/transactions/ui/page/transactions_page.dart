@@ -46,7 +46,7 @@ class _TransactionsPageState extends State<TransactionsPage> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              FinanceText.p14('Saldo', color: AppColors.slateGray),
+              FinanceText.l12('Saldo', color: AppColors.slateGray),
               BlocBuilder(
                 bloc: balanceBloc,
                 builder: (context, state) {

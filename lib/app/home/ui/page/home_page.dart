@@ -54,8 +54,8 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
+    bool theme = Theme.of(context).brightness == Brightness.light;
     return Scaffold(
-      backgroundColor: const Color(0xFFEEF2F8),
       body: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 20),
@@ -75,7 +75,9 @@ class _HomePageState extends State<HomePage> {
                       },
                       route: () {
                         showInterstitialAd();
-                        Modular.to.pushNamed('/transactions/',);
+                        Modular.to.pushNamed(
+                          '/transactions/',
+                        );
                       },
                       money: balance.balance!,
                     );
@@ -118,7 +120,8 @@ class _HomePageState extends State<HomePage> {
                             return Container(
                               padding: const EdgeInsets.all(16),
                               decoration: BoxDecoration(
-                                color: const Color(0xFFF8F9FA),
+                                color:
+                                    Theme.of(context).scaffoldBackgroundColor,
                                 borderRadius: BorderRadius.circular(8),
                               ),
                               child: Row(
@@ -147,21 +150,22 @@ class _HomePageState extends State<HomePage> {
                                       crossAxisAlignment:
                                           CrossAxisAlignment.start,
                                       children: [
-                                        FinanceText.p14(
+                                        FinanceText.l12(
                                           accounts[index].bank ?? '',
                                           color: const Color(0xFF495057),
                                         ),
-                                        FinanceText.p12(
+                                        Text(
                                           accounts[index].use!,
-                                          color: const Color(0xFF848C93),
+                                          style: Theme.of(context)
+                                              .textTheme
+                                              .labelLarge,
                                         ),
                                       ],
                                     ),
                                   ),
-                                  FinanceText.p16(
+                                  FinanceText.b14(
                                     formatMoney(accounts[index].balance!),
-                                    color: AppColors.deepBlue,
-                                    fontWeight: FontWeight.w400,
+                                    isDarkStyle: theme,
                                   ),
                                 ],
                               ),
@@ -231,7 +235,7 @@ class _HomePageState extends State<HomePage> {
                                       borderRadius: BorderRadius.circular(12),
                                     ),
                                     child: Center(
-                                      child: FinanceText.h4(
+                                      child: FinanceText.b18(
                                         getInitial(transaction.descricao),
                                         color: AppColors.deepBlue,
                                         fontWeight: FontWeight.w500,
@@ -246,18 +250,18 @@ class _HomePageState extends State<HomePage> {
                                       crossAxisAlignment:
                                           CrossAxisAlignment.start,
                                       children: [
-                                        FinanceText.p16(
+                                        FinanceText.b14(
                                           transaction.descricao,
                                           color: Colors.black,
                                         ),
-                                        FinanceText.p16(
+                                        FinanceText.b14(
                                           date != null ? formatDate(date) : '',
                                           color: const Color(0xFF717E95),
                                         ),
                                       ],
                                     ),
                                   ),
-                                  FinanceText.p18(
+                                  FinanceText.b16(
                                     formatMoney(transaction.valor),
                                     color: transaction.add == true
                                         ? AppColors.forestGreen

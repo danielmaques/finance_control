@@ -1,20 +1,22 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class TransactionModel {
-  bool add;
-  String categoria;
+  bool? add;
+  String? category;
+  String? description;
   DateTime? time;
-  String descricao;
-  String pagamento;
-  double valor;
+  String? method;
+  double? value;
+  String? creditCard;
 
   TransactionModel({
-    required this.add,
-    required this.categoria,
+    this.add,
+    this.category,
+    this.description,
     this.time,
-    required this.descricao,
-    required this.pagamento,
-    required this.valor,
+    this.method,
+    this.value,
+    this.creditCard,
   });
 
   factory TransactionModel.fromJson(Map<String, dynamic> json) {
@@ -23,22 +25,24 @@ class TransactionModel {
 
     return TransactionModel(
       add: json['add'] as bool? ?? false,
-      categoria: json['categoria'] as String? ?? '',
+      category: json['category'] as String? ?? '',
+      description: json['description'] as String? ?? '',
       time: time,
-      descricao: json['descricao'] as String? ?? '',
-      pagamento: json['pagamento'] as String? ?? '',
-      valor: (json['valor'] as num?)?.toDouble() ?? 0.0,
+      method: json['method'] as String? ?? '',
+      value: json['value'] as double? ?? 0.0,
+      creditCard: json['creditCard'] as String? ?? '',
     );
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
     data['add'] = add;
-    data['categoria'] = categoria;
+    data['category'] = category;
+    data['description'] = description;
     data['time'] = time;
-    data['descricao'] = descricao;
-    data['pagamento'] = pagamento;
-    data['valor'] = valor;
+    data['method'] = method;
+    data['value'] = value;
+    data['creditCard'] = creditCard;
     return data;
   }
 }

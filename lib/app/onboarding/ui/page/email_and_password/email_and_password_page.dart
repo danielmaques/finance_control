@@ -171,12 +171,12 @@ class _EmailAndPasswordPageState extends State<EmailAndPasswordPage> {
                     },
                   ),
                   const SizedBox(height: 80),
-                  FinanceText.p16(
+                  FinanceText.b14(
                     'Ao se cadastrar você está\nautomaticamente aceitando nossos',
                     textAlign: TextAlign.center,
                   ),
                   const SizedBox(height: 12),
-                  FinanceText.p16(
+                  FinanceText.b14(
                     'termos de uso',
                     color: AppColors.deepBlue,
                     textAlign: TextAlign.center,

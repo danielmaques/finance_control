@@ -378,7 +378,7 @@ class _AddBankPageState extends State<AddBankPage> {
                 return filteredBanks.map<Widget>(
                   (bank) {
                     return ListTile(
-                      title: FinanceText.p18(bank),
+                      title: FinanceText.b16(bank),
                       onTap: () {
                         setState(() {
                           bankSelect = bank;
@@ -403,7 +403,7 @@ class _AddBankPageState extends State<AddBankPage> {
             const SizedBox(height: 20),
             FinanceDropDown(
               hint: "Selecione o proprietário",
-              categoriesList:  [],
+              categoriesList: [],
               onItemSelected: (p0) {
                 widget.controller.userSelect.value = p0;
               },
@@ -461,7 +461,7 @@ class _AddBankPageState extends State<AddBankPage> {
                   size: 20,
                 ),
                 const SizedBox(width: 5),
-                FinanceText.p18('Selecione uma cor'),
+                FinanceText.b16('Selecione uma cor'),
               ],
             ),
             const Spacer(),

@@ -9,6 +9,7 @@ import 'package:finance_control_ui/finance_control_ui.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_modular/flutter_modular.dart';
+import 'package:intl/intl.dart';
 
 class AddTransactionPage extends StatefulWidget {
   const AddTransactionPage({
@@ -36,6 +37,7 @@ class _AddTransactionPageState extends State<AddTransactionPage> {
   late String selectedCardId;
   late String user;
   late double value;
+  late double installment;
 
   late TextEditingController description = TextEditingController();
 
@@ -54,7 +56,8 @@ class _AddTransactionPageState extends State<AddTransactionPage> {
     selectedCard = '';
     selectedCardId = '';
     user = '';
-    value = 0;
+    value = 0.00;
+    installment = 0;
   }
 
   @override
@@ -67,7 +70,8 @@ class _AddTransactionPageState extends State<AddTransactionPage> {
     selectedCard = '';
     selectedCardId = '';
     user = '';
-    value = 0;
+    value = 0.00;
+    installment = 0;
   }
 
   @override
@@ -225,7 +229,7 @@ class _AddTransactionPageState extends State<AddTransactionPage> {
                             }
                           },
                         ),
-                      if (paymentMethod != 'Cartão de credito')
+                      if (paymentMethod != 'Cartão de credito') ...{
                         BlocBuilder(
                           bloc: accountBankBloc,
                           builder: (context, state) {
@@ -252,6 +256,28 @@ class _AddTransactionPageState extends State<AddTransactionPage> {
                             }
                           },
                         ),
+                        const SizedBox(height: 16),
+                        FinanceDropDown(
+                          hint: '1 x ${formatMoney(value)}',
+                          svg: 'assets/icons/math.svg',
+                          categoriesList: List.generate(12, (index) {
+                            final installments = index + 1;
+                            final installmentValue = value / installments;
+                            final formatter = NumberFormat.currency(
+                                locale: 'pt_BR', symbol: 'R\$');
+                            final formattedValue =
+                                formatter.format(installmentValue);
+                            return '$installments x $formattedValue';
+                          }),
+                          onItemSelected: (value) {
+                            setState(() {
+                              installment = double.parse(value);
+                            });
+                          },
+                          border: true,
+                          elevation: 0,
+                        ),
+                      }
                     },
                     const SizedBox(height: 16),
                     // ValueListenableBuilder<List<XFile?>>(

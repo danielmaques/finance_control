@@ -46,7 +46,7 @@ class _ShowAddCardState extends State<ShowAddCard> {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          FinanceText.h4(
+          FinanceText.b18(
             'Novo Cartão',
             fontWeight: FontWeight.w500,
           ),
@@ -112,7 +112,7 @@ class _ShowAddCardState extends State<ShowAddCard> {
             ),
             keyboardType: TextInputType.number,
           ),
-          FinanceText.p16(
+          FinanceText.b14(
             'Limite',
             color: AppColors.midnightBlack,
           ),
@@ -126,7 +126,7 @@ class _ShowAddCardState extends State<ShowAddCard> {
           const SizedBox(height: 24),
           Align(
             alignment: Alignment.centerLeft,
-            child: FinanceText.p14('Data de Vencimento'),
+            child: FinanceText.l12('Data de Vencimento'),
           ),
           const SizedBox(height: 8),
           GestureDetector(
@@ -155,7 +155,7 @@ class _ShowAddCardState extends State<ShowAddCard> {
                   color: const Color(0xFFDDE2E5),
                 ),
               ),
-              child: FinanceText.p16(
+              child: FinanceText.b14(
                 widget.controller.close.value == DateTime.now()
                     ? 'Data de Vencimento'
                     : DateFormat('dd/MM/yyyy')

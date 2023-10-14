@@ -2,6 +2,7 @@ import 'package:finance_control/app/accounts_cards/accounts_cards_module.dart';
 import 'package:finance_control/app/add_transaction/add_transaction_module.dart';
 import 'package:finance_control/app/botton_navigation/botton_navigation.dart';
 import 'package:finance_control/app/transactions/transactions_module.dart';
+import 'package:finance_control_ui/finance_control_ui.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -40,10 +41,7 @@ class AppWidget extends StatelessWidget {
     return MaterialApp.router(
       title: 'My Smart App',
       debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-        scaffoldBackgroundColor: const Color(0xFFEEF2F8),
-      ),
+      theme: AppTheme.dark,
       routerConfig: Modular.routerConfig,
     );
   }
@@ -61,7 +59,7 @@ class AppModule extends Module {
         children: [
           ModuleRoute('/homeBottom', module: HomeModule()),
           ModuleRoute('/transactionsBottom', module: TransactionsModule()),
-          ModuleRoute('/homeBottom', module: HomeModule()),
+          ModuleRoute('/accountsCardsBottom', module: AccountsCardsModule()),
         ]);
     r.module('/home', module: HomeModule());
     r.module('/addTransaction', module: AddTransactionModule());

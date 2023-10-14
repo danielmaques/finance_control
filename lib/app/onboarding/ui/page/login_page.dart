@@ -88,7 +88,7 @@ class _LoginPageState extends State<LoginPage> {
                           const SizedBox(height: 6),
                           Align(
                             alignment: Alignment.centerRight,
-                            child: FinanceText.p14('Esqueci minha senha'),
+                            child: FinanceText.l12('Esqueci minha senha'),
                           ),
                           const SizedBox(height: 40),
                           FinanceButton(
@@ -101,8 +101,7 @@ class _LoginPageState extends State<LoginPage> {
                               );
 
                               if (success) {
-                                Modular.to.pushReplacementNamed(
-                                    '/home/');
+                                Modular.to.pushReplacementNamed('/home/');
                               }
                             },
                           ),
@@ -122,7 +121,7 @@ class _LoginPageState extends State<LoginPage> {
                               Padding(
                                 padding:
                                     const EdgeInsets.symmetric(horizontal: 32),
-                                child: FinanceText.p16(
+                                child: FinanceText.b14(
                                   'Ou acesse com',
                                 ),
                               ),
@@ -153,10 +152,10 @@ class _LoginPageState extends State<LoginPage> {
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
-                                FinanceText.p16(
+                                FinanceText.b14(
                                   'Não possui uma conta?',
                                 ),
-                                FinanceText.p16(
+                                FinanceText.b14(
                                   ' Criar grátis',
                                   color: AppColors.deepBlue,
                                   fontWeight: FontWeight.bold,

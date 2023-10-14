@@ -30,15 +30,16 @@ class GetTransactionsData implements IGetTransactionsData {
         allTransactions.addAll(
           querySnapshot.docs.map((doc) {
             final data = doc.data() as Map<String, dynamic>;
-            final timestamp = data['data'] as Timestamp?;
+            final timestamp = data['time'] as Timestamp?;
             final time = timestamp?.toDate();
             return TransactionModel(
               add: data['add'],
-              categoria: data['categoria'],
+              category: data['category'],
               time: time,
-              descricao: data['descricao'],
-              pagamento: data['pagamento'],
-              valor: data['valor'],
+              description: data['description'],
+              value: data['value'],
+              method: data['method'],
+              creditCard: data['creditCard'],
             );
           }).toList(),
         );
