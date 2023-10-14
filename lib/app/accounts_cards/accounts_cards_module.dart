@@ -21,9 +21,10 @@ class AccountsCardsModule extends Module {
   @override
   void routes(r) {
     r.child(
-      '/',
+      '/:appBar',
       child: (context) => AccountCardsPage(
         controller: Modular.get<AccountCardsController>(),
+        appBar: r.args.params['appBar'] ?? false,
       ),
     );
   }

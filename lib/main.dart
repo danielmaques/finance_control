@@ -61,7 +61,7 @@ class AppModule extends Module {
         children: [
           ModuleRoute('/homeBottom', module: HomeModule()),
           ModuleRoute('/transactionsBottom', module: TransactionsModule()),
-          ModuleRoute('/homeBottom', module: HomeModule()),
+          ModuleRoute('/accountsCardsBottom', module: AccountsCardsModule()),
         ]);
     r.module('/home', module: HomeModule());
     r.module('/addTransaction', module: AddTransactionModule());

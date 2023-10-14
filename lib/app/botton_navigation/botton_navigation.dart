@@ -157,7 +157,7 @@ class _BottomNavigationState extends State<BottomNavigation> {
       case 1:
         return '/bottomNavigation/transactionsBottom';
       case 2:
-        return '/homeBottom';
+        return '/bottomNavigation/accountsCardsBottom';
       case 3:
         return '/homeBottom';
       default:

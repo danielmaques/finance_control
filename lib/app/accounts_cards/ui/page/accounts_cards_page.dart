@@ -11,9 +11,11 @@ class AccountCardsPage extends StatefulWidget {
   const AccountCardsPage({
     super.key,
     required this.controller,
+    required this.appBar,
   });
 
   final AccountCardsController controller;
+  final String appBar;
 
   @override
   State<AccountCardsPage> createState() => _AccountCardsPageState();
@@ -37,14 +39,20 @@ class _AccountCardsPageState extends State<AccountCardsPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: const Color(0xFFEEF2F8),
-      appBar: FinanceAppBar(
-        title: 'Contas e Cartões',
-        icon: true,
-        onTap: () {
-          Modular.to.pop();
-        },
-        color: AppColors.white,
-      ),
+      appBar: widget.appBar == 'true'
+          ? FinanceAppBar(
+              title: 'Contas e Cartões',
+              icon: true,
+              onTap: () {
+                Modular.to.pop();
+              },
+              color: AppColors.white,
+            )
+          : const FinanceAppBar(
+              title: 'Contas e Cartões',
+              icon: false,
+              color: AppColors.white,
+            ),
       body: SingleChildScrollView(
         child: Column(
           children: [

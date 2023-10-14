@@ -75,7 +75,9 @@ class _HomePageState extends State<HomePage> {
                       },
                       route: () {
                         showInterstitialAd();
-                        Modular.to.pushNamed('/transactions/',);
+                        Modular.to.pushNamed(
+                          '/transactions/',
+                        );
                       },
                       money: balance.balance!,
                     );
@@ -97,7 +99,7 @@ class _HomePageState extends State<HomePage> {
                     return FinanceCredtCardTile(
                       onTap: () {
                         showInterstitialAd();
-                        Modular.to.pushNamed('/accountsCards/');
+                        Modular.to.pushNamed('/accountsCards/true');
                       },
                       list: FocusDetector(
                         onForegroundGained: () {
