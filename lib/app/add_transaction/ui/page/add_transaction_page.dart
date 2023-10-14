@@ -8,7 +8,6 @@ import 'package:finance_control_ui/finance_control_ui.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_modular/flutter_modular.dart';
-import 'package:intl/intl.dart';
 
 class AddTransactionPage extends StatefulWidget {
   const AddTransactionPage({
@@ -36,7 +35,6 @@ class _AddTransactionPageState extends State<AddTransactionPage> {
   late String selectedCardId;
   late String user;
   late double value;
-  late double installment;
   late double installment;
 
   late TextEditingController description = TextEditingController();
