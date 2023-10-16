@@ -167,11 +167,27 @@ class _AddTransactionPageState extends State<AddTransactionPage> {
                     FinanceDropDown(
                       hint: 'Categoria',
                       svg: 'assets/icons/category.svg',
-                      categoriesList: const [
-                        'Salário',
-                        'Renda extra',
-                        'Outros',
-                      ],
+                      categoriesList: widget.add == true
+                          ? [
+                              'Salário',
+                              'Renda extra',
+                              'Outros',
+                            ]
+                          : [
+                              'Moradia',
+                              'Alimentação',
+                              'Transporte',
+                              'Saúde',
+                              'Educação',
+                              'Lazer e Entretenimento',
+                              'Roupas e Calçados',
+                              'Dívidas',
+                              'Assinaturas e Serviços',
+                              'Impostos',
+                              'Cuidados Pessoais',
+                              'Despesas de Família',
+                              'Outros',
+                            ],
                       onItemSelected: (cat) {
                         setState(() {
                           category = cat;

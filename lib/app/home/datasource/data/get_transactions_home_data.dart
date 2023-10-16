@@ -34,11 +34,11 @@ class GetTransactionsHomeData implements IGetTransactionsHomeData {
             final time = timestamp?.toDate();
             return TransactionsModel(
               add: data['add'],
-              categoria: data['categoria'],
+              category: data['category'],
               time: time,
-              descricao: data['descricao'],
-              pagamento: data['pagamento'],
-              valor: data['valor'],
+              description: data['description'],
+              method: data['method'],
+              value: data['value'],
             );
           }).toList(),
         );

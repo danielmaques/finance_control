@@ -19,13 +19,13 @@ void main() async {
     statusBarColor: Colors.transparent,
   ));
 
-  final bool hasHouseId = await checkIfYouHaveHouseId();
+  // final bool hasHouseId = await checkIfYouHaveHouseId();
 
-  if (hasHouseId) {
-    Modular.setInitialRoute('/bottomNavigation/homeBottom');
-  } else {
-    Modular.setInitialRoute('/');
-  }
+  // if (hasHouseId) {
+  //   Modular.setInitialRoute('/bottomNavigation/homeBottom');
+  // } else {
+  //   Modular.setInitialRoute('/');
+  // }
 
   runApp(ModularApp(module: AppModule(), child: const AppWidget()));
 }

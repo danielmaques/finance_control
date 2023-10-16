@@ -4,8 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 
-import '../show/show_add_card.dart';
-
 class AccountCardsPage extends StatefulWidget {
   const AccountCardsPage({
     super.key,
@@ -40,181 +38,247 @@ class _AccountCardsPageState extends State<AccountCardsPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: const Color(0xFFEEF2F8),
-      appBar: widget.appBar == 'true'
-          ? FinanceAppBar(
-              title: 'Contas e Cartões',
-              icon: true,
-              onTap: () {
-                Modular.to.pop();
-              },
-              color: AppColors.white,
-            )
-          : const FinanceAppBar(
-              title: 'Contas e Cartões',
-              icon: false,
-              color: AppColors.white,
-            ),
+      appBar: FinanceAppBar(
+        title: 'Contas',
+        icon: widget.appBar == 'true' ? true : false,
+        onTap: () {
+          Modular.to.pop();
+        },
+      ),
       body: SingleChildScrollView(
         child: Column(
           children: [
-            FinanceToolBar(
-              selectBank: selectedTabIndex == 0,
-              selectCard: selectedTabIndex == 1,
-              onTapBank: () {
-                setState(() {
-                  selectedTabIndex = 0;
-                });
-              },
-              onTapCard: () {
-                setState(() {
-                  selectedTabIndex = 1;
-                });
-              },
-            ),
-            const SizedBox(height: 40),
-            selectedTabIndex == 0
-                ? Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 20),
-                    child: ValueListenableBuilder(
-                      valueListenable: widget.controller.accountList,
-                      builder: (context, accountList, child) =>
-                          GridView.builder(
-                        shrinkWrap: true,
-                        physics: const NeverScrollableScrollPhysics(),
-                        gridDelegate:
-                            const SliverGridDelegateWithFixedCrossAxisCount(
-                          crossAxisCount: 2,
-                          mainAxisSpacing: 35,
-                          crossAxisSpacing: 35,
-                          childAspectRatio: 1.0,
-                        ),
-                        itemCount: accountList.length >= 2
-                            ? 3
-                            : accountList.length + 1,
-                        itemBuilder: (BuildContext context, int index) {
-                          if (index == 0) {
-                            return Material(
-                              elevation: 1,
-                              borderRadius: BorderRadius.circular(25),
-                              child: InkWell(
-                                onTap: () {
-                                  rewardedAd?.show(
-                                    onUserEarnedReward: (_, reward) {
-                                      Modular.to
-                                          .pushNamed('/addBank', arguments: {
-                                        'isCriate': false,
-                                        'update':
-                                            widget.controller.getAccountBanks(),
-                                      });
-                                    },
-                                  );
-                                },
-                                borderRadius: BorderRadius.circular(25),
-                                child: Column(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                  children: [
-                                    const Icon(
-                                      Icons.add_circle_outline_rounded,
-                                      size: 40,
-                                      color: AppColors.deepBlue,
-                                    ),
-                                    const SizedBox(height: 16),
-                                    FinanceText.p18(
-                                      'Add Conta',
-                                      color: AppColors.deepBlue,
-                                      fontWeight: FontWeight.w500,
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            );
-                          } else {
-                            return FinanceAccountCardItem(
-                              selectedTabIndex: selectedTabIndex,
-                              name: accountList[index - 1].bank!,
-                              saldo: accountList[index - 1].balance!,
-                              accountType: accountList[index - 1].accountType!,
-                              colorCircle: Color(int.parse(
-                                      accountList[index - 1].color.substring(2),
-                                      radix: 16) +
-                                  0xFF000000),
-                              edit: true,
-                              delete: () {
-                                widget.controller.deleteBank(
-                                  accountList[index - 1].id!,
-                                );
-                                Modular.to.pop();
+            // FinanceToolBar(
+            //   selectBank: selectedTabIndex == 0,
+            //   selectCard: selectedTabIndex == 1,
+            //   onTapBank: () {
+            //     setState(() {
+            //       selectedTabIndex = 0;
+            //     });
+            //   },
+            //   onTapCard: () {
+            //     setState(() {
+            //       selectedTabIndex = 1;
+            //     });
+            //   },
+            // ),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 20),
+              child: ValueListenableBuilder(
+                valueListenable: widget.controller.accountList,
+                builder: (context, accountList, child) => GridView.builder(
+                  shrinkWrap: true,
+                  physics: const NeverScrollableScrollPhysics(),
+                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: 2,
+                    mainAxisSpacing: 35,
+                    crossAxisSpacing: 35,
+                    childAspectRatio: 1.0,
+                  ),
+                  itemCount:
+                      accountList.length >= 2 ? 3 : accountList.length + 1,
+                  itemBuilder: (BuildContext context, int index) {
+                    if (index == 0) {
+                      return Material(
+                        elevation: 1,
+                        borderRadius: BorderRadius.circular(25),
+                        child: InkWell(
+                          onTap: () {
+                            rewardedAd?.show(
+                              onUserEarnedReward: (_, reward) {
+                                Modular.to.pushNamed('/addBank', arguments: {
+                                  'isCriate': false,
+                                  'update': widget.controller.getAccountBanks(),
+                                });
                               },
                             );
-                          }
-                        },
-                      ),
-                    ),
-                  )
-                : Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 20),
-                    child: ValueListenableBuilder(
-                      valueListenable: widget.controller.cardList,
-                      builder: (context, cardList, child) => ListView.separated(
-                        itemCount: cardList.length + 1,
-                        shrinkWrap: true,
-                        physics: const NeverScrollableScrollPhysics(),
-                        separatorBuilder: (context, index) =>
-                            const SizedBox(height: 35),
-                        itemBuilder: (context, index) {
-                          if (index == 0) {
-                            return Material(
-                              elevation: 1,
-                              borderRadius: BorderRadius.circular(25),
-                              child: InkWell(
-                                onTap: () {
-                                  showDialog(
-                                    context: context,
-                                    builder: (context) => ShowAddCard(
-                                      controller: widget.controller,
-                                    ),
-                                  );
-                                },
-                                borderRadius: BorderRadius.circular(25),
-                                child: Container(
-                                  height: 200,
-                                  padding: const EdgeInsets.all(16),
-                                  child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.center,
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      const Icon(
-                                        Icons.add_circle_outline_rounded,
-                                        size: 40,
-                                        color: AppColors.deepBlue,
-                                      ),
-                                      const SizedBox(height: 16),
-                                      FinanceText.p18(
-                                        'Add Cartão',
-                                        color: AppColors.deepBlue,
-                                        fontWeight: FontWeight.w500,
-                                      ),
-                                    ],
-                                  ),
-                                ),
+                          },
+                          borderRadius: BorderRadius.circular(25),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              const Icon(
+                                Icons.add_circle_outline_rounded,
+                                size: 40,
+                                color: AppColors.deepBlue,
                               ),
-                            );
-                          } else {
-                            double disponivel = cardList[index - 1].limit! -
-                                cardList[index - 1].availableLimit!;
-
-                            return FinanceCard(
-                              cardList: cardList,
-                              index: index,
-                              disponivel: disponivel,
-                            );
-                          }
+                              const SizedBox(height: 16),
+                              FinanceText.p18(
+                                'Add Conta',
+                                color: AppColors.deepBlue,
+                                fontWeight: FontWeight.w500,
+                              ),
+                            ],
+                          ),
+                        ),
+                      );
+                    } else {
+                      return FinanceAccountCardItem(
+                        selectedTabIndex: selectedTabIndex,
+                        name: accountList[index - 1].bank!,
+                        saldo: accountList[index - 1].balance!,
+                        accountType: accountList[index - 1].accountType!,
+                        colorCircle: Color(int.parse(
+                                accountList[index - 1].color.substring(2),
+                                radix: 16) +
+                            0xFF000000),
+                        edit: true,
+                        delete: () {
+                          widget.controller.deleteBank(
+                            accountList[index - 1].id!,
+                          );
+                          Modular.to.pop();
                         },
-                      ),
-                    ),
-                  ),
+                      );
+                    }
+                  },
+                ),
+              ),
+            ),
+            // selectedTabIndex == 0
+            //     ? Padding(
+            //         padding: const EdgeInsets.symmetric(horizontal: 20),
+            //         child: ValueListenableBuilder(
+            //           valueListenable: widget.controller.accountList,
+            //           builder: (context, accountList, child) =>
+            //               GridView.builder(
+            //             shrinkWrap: true,
+            //             physics: const NeverScrollableScrollPhysics(),
+            //             gridDelegate:
+            //                 const SliverGridDelegateWithFixedCrossAxisCount(
+            //               crossAxisCount: 2,
+            //               mainAxisSpacing: 35,
+            //               crossAxisSpacing: 35,
+            //               childAspectRatio: 1.0,
+            //             ),
+            //             itemCount: accountList.length >= 2
+            //                 ? 3
+            //                 : accountList.length + 1,
+            //             itemBuilder: (BuildContext context, int index) {
+            //               if (index == 0) {
+            //                 return Material(
+            //                   elevation: 1,
+            //                   borderRadius: BorderRadius.circular(25),
+            //                   child: InkWell(
+            //                     onTap: () {
+            //                       rewardedAd?.show(
+            //                         onUserEarnedReward: (_, reward) {
+            //                           Modular.to
+            //                               .pushNamed('/addBank', arguments: {
+            //                             'isCriate': false,
+            //                             'update':
+            //                                 widget.controller.getAccountBanks(),
+            //                           });
+            //                         },
+            //                       );
+            //                     },
+            //                     borderRadius: BorderRadius.circular(25),
+            //                     child: Column(
+            //                       mainAxisAlignment: MainAxisAlignment.center,
+            //                       crossAxisAlignment: CrossAxisAlignment.center,
+            //                       children: [
+            //                         const Icon(
+            //                           Icons.add_circle_outline_rounded,
+            //                           size: 40,
+            //                           color: AppColors.deepBlue,
+            //                         ),
+            //                         const SizedBox(height: 16),
+            //                         FinanceText.p18(
+            //                           'Add Conta',
+            //                           color: AppColors.deepBlue,
+            //                           fontWeight: FontWeight.w500,
+            //                         ),
+            //                       ],
+            //                     ),
+            //                   ),
+            //                 );
+            //               } else {
+            //                 return FinanceAccountCardItem(
+            //                   selectedTabIndex: selectedTabIndex,
+            //                   name: accountList[index - 1].bank!,
+            //                   saldo: accountList[index - 1].balance!,
+            //                   accountType: accountList[index - 1].accountType!,
+            //                   colorCircle: Color(int.parse(
+            //                           accountList[index - 1].color.substring(2),
+            //                           radix: 16) +
+            //                       0xFF000000),
+            //                   edit: true,
+            //                   delete: () {
+            //                     widget.controller.deleteBank(
+            //                       accountList[index - 1].id!,
+            //                     );
+            //                     Modular.to.pop();
+            //                   },
+            //                 );
+            //               }
+            //             },
+            //           ),
+            //         ),
+            //       )
+            //     : Padding(
+            //         padding: const EdgeInsets.symmetric(horizontal: 20),
+            //         child: ValueListenableBuilder(
+            //           valueListenable: widget.controller.cardList,
+            //           builder: (context, cardList, child) => ListView.separated(
+            //             itemCount: cardList.length + 1,
+            //             shrinkWrap: true,
+            //             physics: const NeverScrollableScrollPhysics(),
+            //             separatorBuilder: (context, index) =>
+            //                 const SizedBox(height: 35),
+            //             itemBuilder: (context, index) {
+            //               if (index == 0) {
+            //                 return Material(
+            //                   elevation: 1,
+            //                   borderRadius: BorderRadius.circular(25),
+            //                   child: InkWell(
+            //                     onTap: () {
+            //                       showDialog(
+            //                         context: context,
+            //                         builder: (context) => ShowAddCard(
+            //                           controller: widget.controller,
+            //                         ),
+            //                       );
+            //                     },
+            //                     borderRadius: BorderRadius.circular(25),
+            //                     child: Container(
+            //                       height: 200,
+            //                       padding: const EdgeInsets.all(16),
+            //                       child: Column(
+            //                         crossAxisAlignment:
+            //                             CrossAxisAlignment.center,
+            //                         mainAxisAlignment: MainAxisAlignment.center,
+            //                         children: [
+            //                           const Icon(
+            //                             Icons.add_circle_outline_rounded,
+            //                             size: 40,
+            //                             color: AppColors.deepBlue,
+            //                           ),
+            //                           const SizedBox(height: 16),
+            //                           FinanceText.p18(
+            //                             'Add Cartão',
+            //                             color: AppColors.deepBlue,
+            //                             fontWeight: FontWeight.w500,
+            //                           ),
+            //                         ],
+            //                       ),
+            //                     ),
+            //                   ),
+            //                 );
+            //               } else {
+            //                 double disponivel = cardList[index - 1].limit! -
+            //                     cardList[index - 1].availableLimit!;
+
+            //                 return FinanceCard(
+            //                   cardList: cardList,
+            //                   index: index,
+            //                   disponivel: disponivel,
+            //                 );
+            //               }
+            //             },
+            //           ),
+            //         ),
+            //       ),
             const SizedBox(height: 30),
           ],
         ),

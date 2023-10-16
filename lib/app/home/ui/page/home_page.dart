@@ -234,7 +234,7 @@ class _HomePageState extends State<HomePage> {
                                     ),
                                     child: Center(
                                       child: FinanceText.h4(
-                                        getInitial(transaction.descricao),
+                                        getInitial(transaction.method),
                                         color: AppColors.deepBlue,
                                         fontWeight: FontWeight.w500,
                                       ),
@@ -249,7 +249,7 @@ class _HomePageState extends State<HomePage> {
                                           CrossAxisAlignment.start,
                                       children: [
                                         FinanceText.p16(
-                                          transaction.descricao,
+                                          transaction.description,
                                           color: Colors.black,
                                         ),
                                         FinanceText.p16(
@@ -260,7 +260,7 @@ class _HomePageState extends State<HomePage> {
                                     ),
                                   ),
                                   FinanceText.p18(
-                                    formatMoney(transaction.valor),
+                                    formatMoney(transaction.value),
                                     color: transaction.add == true
                                         ? AppColors.forestGreen
                                         : AppColors.cherryRed,
@@ -291,9 +291,7 @@ class _HomePageState extends State<HomePage> {
   createBottomBannerAd() {
     try {
       bottomBannerAd = BannerAd(
-        adUnitId: kReleaseMode
-            ? 'ca-app-pub-6625580398265467/1218136997'
-            : 'ca-app-pub-3940256099942544/6300978111',
+        adUnitId: 'ca-app-pub-6625580398265467/1218136997',
         size: AdSize.banner,
         request: const AdRequest(),
         listener: BannerAdListener(
@@ -315,9 +313,7 @@ class _HomePageState extends State<HomePage> {
 
   loadInterstitialAd() {
     InterstitialAd.load(
-      adUnitId: kReleaseMode
-          ? 'ca-app-pub-6625580398265467/6547703884'
-          : 'ca-app-pub-3940256099942544/1033173712',
+      adUnitId: 'ca-app-pub-6625580398265467/6547703884',
       request: const AdRequest(),
       adLoadCallback: InterstitialAdLoadCallback(
         onAdLoaded: (ad) {

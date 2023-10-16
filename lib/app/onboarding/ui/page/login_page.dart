@@ -32,7 +32,7 @@ class _LoginPageState extends State<LoginPage> {
               if (isLoggedIn) {
                 WidgetsBinding.instance.addPostFrameCallback((_) {
                   Modular.to
-                      .pushReplacementNamed('/BottomNavigation/homeBottom');
+                      .pushReplacementNamed('/bottomNavigation/homeBottom');
                 });
                 return Container();
               }
@@ -102,48 +102,9 @@ class _LoginPageState extends State<LoginPage> {
 
                               if (success) {
                                 Modular.to.pushReplacementNamed(
-                                    '/home/');
+                                    '/bottomNavigation/homeBottom');
                               }
                             },
-                          ),
-                          const SizedBox(height: 32),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Expanded(
-                                child: Container(
-                                  height: 1,
-                                  decoration: BoxDecoration(
-                                    color: const Color(0xFFE8E8E8),
-                                    borderRadius: BorderRadius.circular(5),
-                                  ),
-                                ),
-                              ),
-                              Padding(
-                                padding:
-                                    const EdgeInsets.symmetric(horizontal: 32),
-                                child: FinanceText.p16(
-                                  'Ou acesse com',
-                                ),
-                              ),
-                              Expanded(
-                                child: Container(
-                                  height: 1,
-                                  decoration: BoxDecoration(
-                                    color: const Color(0xFFE8E8E8),
-                                    borderRadius: BorderRadius.circular(5),
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                          const SizedBox(height: 32),
-                          FinanceButton(
-                            onTap: () {
-                              widget.controller.loginWithGoogle(context);
-                            },
-                            google: true,
-                            color: Colors.transparent,
                           ),
                           const SizedBox(height: 38),
                           GestureDetector(
