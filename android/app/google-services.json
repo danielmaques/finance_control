@@ -8,20 +8,12 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:513199116842:android:f8673016868f40b5f5a953",
+        "mobilesdk_app_id": "1:513199116842:android:637ab91ec66bc0d1f5a953",
         "android_client_info": {
           "package_name": "dev.dm8.finance"
         }
       },
       "oauth_client": [
-        {
-          "client_id": "513199116842-uh2skeu50s62beoad7o2e60e5fdj92he.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "dev.dm8.finance",
-            "certificate_hash": "399ac11d948b32dd27d5270a8aa54d194dd0d665"
-          }
-        },
         {
           "client_id": "513199116842-1dkafv0l32ssb9a5rise9sf8s4oeb9qa.apps.googleusercontent.com",
           "client_type": 3

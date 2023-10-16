@@ -51,7 +51,7 @@ class DefaultFirebaseOptions {
 
   static const FirebaseOptions android = FirebaseOptions(
     apiKey: 'AIzaSyDOwJcMbrBuATYpYAYhbcKpWVmy0vGX3pE',
-    appId: '1:513199116842:android:f8673016868f40b5f5a953',
+    appId: '1:513199116842:android:637ab91ec66bc0d1f5a953',
     messagingSenderId: '513199116842',
     projectId: 'finance-control-77d24',
     databaseURL: 'https://finance-control-77d24-default-rtdb.firebaseio.com',
@@ -60,12 +60,13 @@ class DefaultFirebaseOptions {
 
   static const FirebaseOptions ios = FirebaseOptions(
     apiKey: 'AIzaSyDL6wa22GESRq1NyZg_Tejyactc8ZQ6lWU',
-    appId: '1:513199116842:ios:d24160f982f10942f5a953',
+    appId: '1:513199116842:ios:8f07a352865c8adbf5a953',
     messagingSenderId: '513199116842',
     projectId: 'finance-control-77d24',
     databaseURL: 'https://finance-control-77d24-default-rtdb.firebaseio.com',
     storageBucket: 'finance-control-77d24.appspot.com',
-    iosClientId: '513199116842-842ps7ap557ltll47p1pjnrt5c88k82p.apps.googleusercontent.com',
-    iosBundleId: 'com.example.financeControl',
+    androidClientId: '513199116842-uh2skeu50s62beoad7o2e60e5fdj92he.apps.googleusercontent.com',
+    iosClientId: '513199116842-kpv3qmdldfftndcesjgeq9ja3l79g0q3.apps.googleusercontent.com',
+    iosBundleId: 'dev.dm8.financeControl',
   );
 }

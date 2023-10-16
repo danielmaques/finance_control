@@ -88,11 +88,12 @@ class _BottomNavigationState extends State<BottomNavigation> {
         padding: const EdgeInsets.symmetric(horizontal: 20),
         child: Material(
           elevation: 2,
+          color: Theme.of(context).colorScheme.secondary,
           borderRadius: BorderRadius.circular(16),
           child: Container(
             padding: const EdgeInsets.all(16),
             decoration: BoxDecoration(
-              color: Colors.white,
+              color: Theme.of(context).colorScheme.secondary,
               borderRadius: BorderRadius.circular(16),
             ),
             child: Row(
@@ -125,7 +126,7 @@ class _BottomNavigationState extends State<BottomNavigation> {
 
   Widget item({required String icon, required int index}) {
     final selectedColor = Theme.of(context).primaryColor;
-    const unselectedColor = Colors.black;
+    final unselectedColor = Theme.of(context).colorScheme.background;
 
     return GestureDetector(
       onTap: () {

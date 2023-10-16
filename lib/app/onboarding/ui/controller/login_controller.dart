@@ -22,7 +22,11 @@ class LoginController {
     isBlockedNotifier.value = email.text.isEmpty || password.text.isEmpty;
   }
 
-  Future<bool> login({required String email, required String password}) async {
+  Future<bool> login({
+    required String email,
+    required String password,
+    required BuildContext context,
+  }) async {
     try {
       final user = await _loginUseCase.login(email, password);
       if (user != null && user.id != null && user.email != null) {
@@ -35,14 +39,13 @@ class LoginController {
         }
 
         isLoggedInNotifier.value = true;
-
-        return true;
       }
+      return true;
     } catch (e) {
-      throw Exception('Falha no login: $e');
+      FinanceAlerts.error(context,
+          "Por favor, verifique se os dados estão preenchidos corretamente e tente efetuar o login novamente.");
+      return false;
     }
-
-    return false;
   }
 
   Future<void> autoLogin() async {

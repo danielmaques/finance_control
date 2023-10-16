@@ -31,13 +31,13 @@ class _EmailAndPasswordPageState extends State<EmailAndPasswordPage> {
                   const SizedBox(height: 100),
                   Row(
                     children: [
-                      FinanceText.h3(
-                        'Olá,',
-                        fontWeight: FontWeight.bold,
+                      Text(
+                        'Olá',
+                        style: Theme.of(context).textTheme.headlineSmall,
                       ),
-                      FinanceText.h3(
+                      Text(
                         ' faça seu cadastro!',
-                        fontWeight: FontWeight.normal,
+                        style: Theme.of(context).textTheme.headlineSmall,
                       ),
                     ],
                   ),
@@ -161,18 +161,20 @@ class _EmailAndPasswordPageState extends State<EmailAndPasswordPage> {
                   ),
                   const SizedBox(height: 28),
                   FinanceButton(
-                    disabled: isBlocked,
                     icon: Icons.arrow_forward_rounded,
                     onTap: () async {
-                      widget.controller.signUp(
-                        email: widget.controller.email.text,
-                        password: widget.controller.password.text,
-                      );
+                      if (isBlocked) {
+                        widget.controller.signUp(
+                          email: widget.controller.email.text,
+                          password: widget.controller.password.text,
+                        );
+                      }
                     },
                   ),
                   const SizedBox(height: 80),
-                  FinanceText.b14(
+                  Text(
                     'Ao se cadastrar você está\nautomaticamente aceitando nossos',
+                    style: Theme.of(context).textTheme.bodySmall,
                     textAlign: TextAlign.center,
                   ),
                   const SizedBox(height: 12),

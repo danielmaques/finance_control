@@ -22,6 +22,8 @@ class _LoginPageState extends State<LoginPage> {
 
   @override
   Widget build(BuildContext context) {
+    bool theme = Theme.of(context).brightness == Brightness.light;
+
     return FutureBuilder<void>(
       future: widget.controller.autoLogin(),
       builder: (context, snapshot) {
@@ -52,11 +54,11 @@ class _LoginPageState extends State<LoginPage> {
                             children: [
                               FinanceText.h3(
                                 'Olá,',
-                                fontWeight: FontWeight.bold,
+                                isDarkStyle: theme,
                               ),
                               FinanceText.h3(
                                 ' faça seu login!',
-                                fontWeight: FontWeight.normal,
+                                isDarkStyle: theme,
                               ),
                             ],
                           ),
@@ -88,61 +90,26 @@ class _LoginPageState extends State<LoginPage> {
                           const SizedBox(height: 6),
                           Align(
                             alignment: Alignment.centerRight,
-                            child: FinanceText.l12('Esqueci minha senha'),
+                            child: Text(
+                              'Esqueci minha senha',
+                              style: Theme.of(context).textTheme.labelLarge,
+                            ),
                           ),
                           const SizedBox(height: 40),
                           FinanceButton(
                             title: 'Entrar',
-                            disabled: button,
                             onTap: () async {
                               final success = await widget.controller.login(
                                 email: widget.controller.email.text,
                                 password: widget.controller.password.text,
+                                context: context,
                               );
 
                               if (success) {
-                                Modular.to.pushReplacementNamed('/home/');
+                                Modular.to.pushReplacementNamed(
+                                    '/BottomNavigation/homeBottom');
                               }
                             },
-                          ),
-                          const SizedBox(height: 32),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Expanded(
-                                child: Container(
-                                  height: 1,
-                                  decoration: BoxDecoration(
-                                    color: const Color(0xFFE8E8E8),
-                                    borderRadius: BorderRadius.circular(5),
-                                  ),
-                                ),
-                              ),
-                              Padding(
-                                padding:
-                                    const EdgeInsets.symmetric(horizontal: 32),
-                                child: FinanceText.b14(
-                                  'Ou acesse com',
-                                ),
-                              ),
-                              Expanded(
-                                child: Container(
-                                  height: 1,
-                                  decoration: BoxDecoration(
-                                    color: const Color(0xFFE8E8E8),
-                                    borderRadius: BorderRadius.circular(5),
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                          const SizedBox(height: 32),
-                          FinanceButton(
-                            onTap: () {
-                              widget.controller.loginWithGoogle(context);
-                            },
-                            google: true,
-                            color: Colors.transparent,
                           ),
                           const SizedBox(height: 38),
                           GestureDetector(
@@ -152,8 +119,9 @@ class _LoginPageState extends State<LoginPage> {
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
-                                FinanceText.b14(
+                                Text(
                                   'Não possui uma conta?',
+                                  style: Theme.of(context).textTheme.bodySmall,
                                 ),
                                 FinanceText.b14(
                                   ' Criar grátis',

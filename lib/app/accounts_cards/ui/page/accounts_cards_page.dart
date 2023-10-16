@@ -2,7 +2,6 @@ import 'package:finance_control/app/accounts_cards/ui/controller/accounts_cards_
 import 'package:finance_control_ui/finance_control_ui.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
-import 'package:google_mobile_ads/google_mobile_ads.dart';
 
 import '../show/show_add_card.dart';
 
@@ -23,17 +22,17 @@ class AccountCardsPage extends StatefulWidget {
 class _AccountCardsPageState extends State<AccountCardsPage> {
   int selectedTabIndex = 0;
   bool isValid = false;
-  BannerAd? bottomBannerAd;
+  // BannerAd? bottomBannerAd;
   bool isBannerAdReady = false;
-  RewardedAd? rewardedAd;
+  // RewardedAd? rewardedAd;
 
   @override
   void initState() {
     super.initState();
     widget.controller.getAccountBanks();
     widget.controller.getCards();
-    createBottomBannerAd();
-    _loadRewardedAd();
+    // createBottomBannerAd();
+    // _loadRewardedAd();
   }
 
   @override
@@ -98,16 +97,22 @@ class _AccountCardsPageState extends State<AccountCardsPage> {
                               borderRadius: BorderRadius.circular(25),
                               child: InkWell(
                                 onTap: () {
-                                  rewardedAd?.show(
-                                    onUserEarnedReward: (_, reward) {
-                                      Modular.to
-                                          .pushNamed('/addBank', arguments: {
-                                        'isCriate': false,
-                                        'update':
-                                            widget.controller.getAccountBanks(),
-                                      });
-                                    },
-                                  );
+                                  Modular.to.pushNamed('/addBank', arguments: {
+                                    'isCriate': false,
+                                    'update':
+                                        widget.controller.getAccountBanks(),
+                                  });
+
+                                  // rewardedAd?.show(
+                                  //   onUserEarnedReward: (_, reward) {
+                                  //     Modular.to
+                                  //         .pushNamed('/addBank', arguments: {
+                                  //       'isCriate': false,
+                                  //       'update':
+                                  //           widget.controller.getAccountBanks(),
+                                  //     });
+                                  //   },
+                                  // );
                                 },
                                 borderRadius: BorderRadius.circular(25),
                                 child: Column(
@@ -219,65 +224,65 @@ class _AccountCardsPageState extends State<AccountCardsPage> {
           ],
         ),
       ),
-      bottomNavigationBar: isBannerAdReady && bottomBannerAd != null
-          ? SizedBox(
-              height: bottomBannerAd!.size.height.toDouble(),
-              width: bottomBannerAd!.size.width.toDouble(),
-              child: AdWidget(
-                ad: bottomBannerAd!,
-              ),
-            )
-          : null,
+      // bottomNavigationBar: isBannerAdReady && bottomBannerAd != null
+      //     ? SizedBox(
+      //         height: bottomBannerAd!.size.height.toDouble(),
+      //         width: bottomBannerAd!.size.width.toDouble(),
+      //         child: AdWidget(
+      //           ad: bottomBannerAd!,
+      //         ),
+      //       )
+      //     : null,
     );
   }
 
-  createBottomBannerAd() {
-    try {
-      bottomBannerAd = BannerAd(
-        adUnitId: 'ca-app-pub-6625580398265467/1218136997',
-        size: AdSize.banner,
-        request: const AdRequest(),
-        listener: BannerAdListener(
-          onAdLoaded: (_) {
-            setState(() {
-              isBannerAdReady = true;
-            });
-          },
-          onAdFailedToLoad: (ad, error) {
-            ad.dispose();
-          },
-        ),
-      );
-      bottomBannerAd!.load();
-    } catch (e) {
-      bottomBannerAd = null;
-    }
-  }
+  // createBottomBannerAd() {
+  //   try {
+  //     bottomBannerAd = BannerAd(
+  //       adUnitId: 'ca-app-pub-6625580398265467/1218136997',
+  //       size: AdSize.banner,
+  //       request: const AdRequest(),
+  //       listener: BannerAdListener(
+  //         onAdLoaded: (_) {
+  //           setState(() {
+  //             isBannerAdReady = true;
+  //           });
+  //         },
+  //         onAdFailedToLoad: (ad, error) {
+  //           ad.dispose();
+  //         },
+  //       ),
+  //     );
+  //     bottomBannerAd!.load();
+  //   } catch (e) {
+  //     bottomBannerAd = null;
+  //   }
+  // }
 
-  void _loadRewardedAd() {
-    RewardedAd.load(
-      adUnitId: 'ca-app-pub-6625580398265467/8534415425',
-      request: const AdRequest(),
-      rewardedAdLoadCallback: RewardedAdLoadCallback(
-        onAdLoaded: (ad) {
-          ad.fullScreenContentCallback = FullScreenContentCallback(
-            onAdDismissedFullScreenContent: (ad) {
-              setState(() {
-                ad.dispose();
-                rewardedAd = null;
-              });
-              _loadRewardedAd();
-            },
-          );
+  // void _loadRewardedAd() {
+  //   RewardedAd.load(
+  //     adUnitId: 'ca-app-pub-6625580398265467/8534415425',
+  //     request: const AdRequest(),
+  //     rewardedAdLoadCallback: RewardedAdLoadCallback(
+  //       onAdLoaded: (ad) {
+  //         ad.fullScreenContentCallback = FullScreenContentCallback(
+  //           onAdDismissedFullScreenContent: (ad) {
+  //             setState(() {
+  //               ad.dispose();
+  //               rewardedAd = null;
+  //             });
+  //             _loadRewardedAd();
+  //           },
+  //         );
 
-          setState(() {
-            rewardedAd = ad;
-          });
-        },
-        onAdFailedToLoad: (err) {
-          print('Failed to load a rewarded ad: ${err.message}');
-        },
-      ),
-    );
-  }
+  //         setState(() {
+  //           rewardedAd = ad;
+  //         });
+  //       },
+  //       onAdFailedToLoad: (err) {
+  //         print('Failed to load a rewarded ad: ${err.message}');
+  //       },
+  //     ),
+  //   );
+  // }
 }

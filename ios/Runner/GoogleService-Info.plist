@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>513199116842-kpv3qmdldfftndcesjgeq9ja3l79g0q3.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.513199116842-kpv3qmdldfftndcesjgeq9ja3l79g0q3</string>
+	<key>ANDROID_CLIENT_ID</key>
+	<string>513199116842-uh2skeu50s62beoad7o2e60e5fdj92he.apps.googleusercontent.com</string>
+	<key>API_KEY</key>
+	<string>AIzaSyDL6wa22GESRq1NyZg_Tejyactc8ZQ6lWU</string>
+	<key>GCM_SENDER_ID</key>
+	<string>513199116842</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>dev.dm8.financeControl</string>
+	<key>PROJECT_ID</key>
+	<string>finance-control-77d24</string>
+	<key>STORAGE_BUCKET</key>
+	<string>finance-control-77d24.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:513199116842:ios:8f07a352865c8adbf5a953</string>
+	<key>DATABASE_URL</key>
+	<string>https://finance-control-77d24-default-rtdb.firebaseio.com</string>
+</dict>
+</plist>

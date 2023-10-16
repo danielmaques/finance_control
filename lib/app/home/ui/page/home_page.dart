@@ -7,13 +7,11 @@ import 'package:finance_control/app/home/ui/controller/accounts_bloc.dart';
 import 'package:finance_control/app/home/ui/controller/balance_bloc.dart';
 import 'package:finance_control/app/home/ui/controller/transactions_home_bloc.dart';
 import 'package:finance_control_ui/finance_control_ui.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:focus_detector_v2/focus_detector_v2.dart';
-import 'package:google_mobile_ads/google_mobile_ads.dart';
 
 import '../../../../core/core.dart';
 
@@ -32,8 +30,8 @@ class _HomePageState extends State<HomePage> {
   late IAccountsBloc accountsBloc;
 
   bool isOpen = false;
-  BannerAd? bottomBannerAd;
-  InterstitialAd? interstitialAd;
+  // BannerAd? bottomBannerAd;
+  // InterstitialAd? interstitialAd;
   bool isBannerAdReady = false;
 
   late bool gastos;
@@ -48,13 +46,12 @@ class _HomePageState extends State<HomePage> {
     balanceBloc.getBalance();
     transactionsHomeBloc.getTransactions();
     accountsBloc.getAccounts();
-    createBottomBannerAd();
-    loadInterstitialAd();
+    // createBottomBannerAd();
+    // loadInterstitialAd();
   }
 
   @override
   Widget build(BuildContext context) {
-    bool theme = Theme.of(context).brightness == Brightness.light;
     return Scaffold(
       body: SingleChildScrollView(
         child: Padding(
@@ -74,7 +71,7 @@ class _HomePageState extends State<HomePage> {
                         balanceBloc.getBalance();
                       },
                       route: () {
-                        showInterstitialAd();
+                        // showInterstitialAd();
                         Modular.to.pushNamed(
                           '/transactions/',
                         );
@@ -98,7 +95,7 @@ class _HomePageState extends State<HomePage> {
                     var accounts = state.data;
                     return FinanceCredtCardTile(
                       onTap: () {
-                        showInterstitialAd();
+                        // showInterstitialAd();
                         Modular.to.pushNamed('/accountsCards/true');
                       },
                       list: FocusDetector(
@@ -184,15 +181,16 @@ class _HomePageState extends State<HomePage> {
                   }
                 },
               ),
-              isBannerAdReady && bottomBannerAd != null
-                  ? SizedBox(
-                      height: bottomBannerAd!.size.height.toDouble() + 20,
-                      width: bottomBannerAd!.size.width.toDouble(),
-                      child: AdWidget(
-                        ad: bottomBannerAd!,
-                      ),
-                    )
-                  : const SizedBox(height: 40),
+              // isBannerAdReady && bottomBannerAd != null
+              //     ? SizedBox(
+              //         height: bottomBannerAd!.size.height.toDouble() + 20,
+              //         width: bottomBannerAd!.size.width.toDouble(),
+              //         child: AdWidget(
+              //           ad: bottomBannerAd!,
+              //         ),
+              //       )
+              //     : const
+              const SizedBox(height: 40),
               BlocBuilder(
                 bloc: transactionsHomeBloc,
                 builder: (context, state) {
@@ -201,7 +199,7 @@ class _HomePageState extends State<HomePage> {
                     return FinanceListTile(
                       transactions: transactions.toList(),
                       onTap: () {
-                        showInterstitialAd();
+                        // showInterstitialAd();
                         Modular.to.pushNamed('/transactions/');
                       },
                       lits: FocusDetector(
@@ -291,59 +289,59 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  createBottomBannerAd() {
-    try {
-      bottomBannerAd = BannerAd(
-        adUnitId: kReleaseMode
-            ? 'ca-app-pub-6625580398265467/1218136997'
-            : 'ca-app-pub-3940256099942544/6300978111',
-        size: AdSize.banner,
-        request: const AdRequest(),
-        listener: BannerAdListener(
-          onAdLoaded: (_) {
-            setState(() {
-              isBannerAdReady = true;
-            });
-          },
-          onAdFailedToLoad: (ad, error) {
-            ad.dispose();
-          },
-        ),
-      );
-      bottomBannerAd!.load();
-    } catch (e) {
-      bottomBannerAd = null;
-    }
-  }
+  // createBottomBannerAd() {
+  //   try {
+  //     bottomBannerAd = BannerAd(
+  //       adUnitId: kReleaseMode
+  //           ? 'ca-app-pub-6625580398265467/1218136997'
+  //           : 'ca-app-pub-3940256099942544/6300978111',
+  //       size: AdSize.banner,
+  //       request: const AdRequest(),
+  //       listener: BannerAdListener(
+  //         onAdLoaded: (_) {
+  //           setState(() {
+  //             isBannerAdReady = true;
+  //           });
+  //         },
+  //         onAdFailedToLoad: (ad, error) {
+  //           ad.dispose();
+  //         },
+  //       ),
+  //     );
+  //     bottomBannerAd!.load();
+  //   } catch (e) {
+  //     bottomBannerAd = null;
+  //   }
+  // }
 
-  loadInterstitialAd() {
-    InterstitialAd.load(
-      adUnitId: kReleaseMode
-          ? 'ca-app-pub-6625580398265467/6547703884'
-          : 'ca-app-pub-3940256099942544/1033173712',
-      request: const AdRequest(),
-      adLoadCallback: InterstitialAdLoadCallback(
-        onAdLoaded: (ad) {
-          setState(() {
-            interstitialAd = ad;
-          });
-        },
-        onAdFailedToLoad: (error) {
-          if (kDebugMode) {
-            print('Erro ao carregar o anúncio intersticial: $error');
-          }
-        },
-      ),
-    );
-  }
+  // loadInterstitialAd() {
+  //   InterstitialAd.load(
+  //     adUnitId: kReleaseMode
+  //         ? 'ca-app-pub-6625580398265467/6547703884'
+  //         : 'ca-app-pub-3940256099942544/1033173712',
+  //     request: const AdRequest(),
+  //     adLoadCallback: InterstitialAdLoadCallback(
+  //       onAdLoaded: (ad) {
+  //         setState(() {
+  //           interstitialAd = ad;
+  //         });
+  //       },
+  //       onAdFailedToLoad: (error) {
+  //         if (kDebugMode) {
+  //           print('Erro ao carregar o anúncio intersticial: $error');
+  //         }
+  //       },
+  //     ),
+  //   );
+  // }
 
-  void showInterstitialAd() {
-    if (interstitialAd != null) {
-      interstitialAd!.show();
-    } else {
-      if (kDebugMode) {
-        print('O anúncio intersticial ainda não foi carregado.');
-      }
-    }
-  }
+  // void showInterstitialAd() {
+  //   if (interstitialAd != null) {
+  //     interstitialAd!.show();
+  //   } else {
+  //     if (kDebugMode) {
+  //       print('O anúncio intersticial ainda não foi carregado.');
+  //     }
+  //   }
+  // }
 }

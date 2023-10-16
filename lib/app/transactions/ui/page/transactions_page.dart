@@ -37,7 +37,7 @@ class _TransactionsPageState extends State<TransactionsPage> {
       appBar: FinanceAppBar(
         title: 'Transactions',
         icon: true,
-        color: const Color(0xFFEEF2F8),
+        color: Theme.of(context).scaffoldBackgroundColor,
         onTap: () => Modular.to.pop(),
       ),
       body: SingleChildScrollView(
@@ -46,14 +46,18 @@ class _TransactionsPageState extends State<TransactionsPage> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              FinanceText.l12('Saldo', color: AppColors.slateGray),
+              Text(
+                'Saldo',
+                style: Theme.of(context).textTheme.labelLarge,
+              ),
               BlocBuilder(
                 bloc: balanceBloc,
                 builder: (context, state) {
                   if (state is SuccessState<BalanceModel>) {
                     var balance = state.data;
-                    return FinanceText.h3(
+                    return Text(
                       formatMoney(balance.balance ?? 0.0),
+                      style: Theme.of(context).textTheme.headlineMedium,
                     );
                   } else {
                     return FinanceText.h3(
